@@ -1,0 +1,4 @@
+rootProject.name = 'InfoEngine'
+include 'Sandbox'
+include 'Core'
+include 'ElipseEditor'
