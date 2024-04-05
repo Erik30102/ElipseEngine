@@ -6,18 +6,19 @@ import java.util.Date;
 // TODO: loggin to file
 public class Logger {
 
-	enum LogMode {
+	public enum LogMode {
 		CORE,
 		APPLICATION,
 	};
 
-	enum LogLevel {
+	public enum LogLevel {
 		WARN,
 		INFO,
 		ERROR,
 	};
 
 	private static Logger logger;
+	private LoggerCallbackFunc Callback;
 
 	/**
 	 * Setus up Logger has to be called befor Logging or it wont log
@@ -25,6 +26,15 @@ public class Logger {
 	public static void InitLogger() {
 		logger = new Logger();
 		c_info("Logger initialized");
+	}
+
+	/**
+	 * Set up the callback function for the logger.
+	 *
+	 * @param callback the callback function to be set
+	 */
+	public static void SetupCallback(LoggerCallbackFunc callback) {
+		logger.Callback = callback;
 	}
 
 	/**
@@ -108,5 +118,8 @@ public class Logger {
 				System.out.println(f_message);
 				break;
 		}
+
+		if (this.Callback != null)
+			Callback.Log(mode, level, f_message);
 	}
 }

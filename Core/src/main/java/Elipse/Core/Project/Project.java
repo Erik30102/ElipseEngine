@@ -11,6 +11,8 @@ import java.nio.file.Path;
 
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.EditorAssetManager;
+import Elipse.Core.ECS.Scene;
+import Elipse.Utils.Serializer.LocalSceneSerializer;
 import Elipse.Utils.Serializer.UUIDSerializer;
 
 public class Project {
@@ -43,6 +45,23 @@ public class Project {
 		}
 
 		INSTANCE = this;
+
+		Scene startScene = new Scene();
+		startScene.Create("Das ist ein Test");
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Scene.class, new LocalSceneSerializer())
+				.create();
+
+		String json = gson.toJson(startScene);
+		try {
+			Files.writeString(Path.of(AssetDir + "/StartScene.el"), json);
+			UUID id = assetManager.ImportAsset(AssetDir + "/StartScene.el");
+
+			this.StartScene = id;
+		} catch (IOException e) {
+			Logger.c_error("Project could not be saved");
+			e.printStackTrace();
+		}
 		Save();
 	}
 

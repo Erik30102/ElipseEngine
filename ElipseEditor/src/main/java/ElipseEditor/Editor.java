@@ -1,5 +1,7 @@
 package ElipseEditor;
 
+import java.util.UUID;
+
 import Elipse.Core.Application;
 
 // import java.io.File;

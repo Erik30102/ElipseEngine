@@ -5,18 +5,19 @@ import java.util.UUID;
 
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset.AssetType;
+import Elipse.Core.Assets.Importers.SceneImporter;
 
 public class AssetImporter {
 	private static HashMap<AssetType, IAssetImporter> importers;
 
 	public static void Init() {
 		importers = new HashMap<>();
-		// importers.put(AssetType.SCENE, new SceneImporter());
+		importers.put(AssetType.SCENE, new SceneImporter());
 		// importers.put(AssetType.TEXTURE2D, new Texture2DImporter());
 	}
 
 	public static Asset ImportAsset(UUID id, AssetMetaData metaData) {
-		if (importers.containsKey(metaData.getType())) {
+		if (!importers.containsKey(metaData.getType())) {
 			Logger.c_warn("Failed to import Asset " + metaData.getPath());
 
 			return null;

@@ -26,6 +26,17 @@ public abstract class Asset {
 		}
 	}
 
+	public static AssetType GetAssetTypeFromString(String type) {
+		switch (type) {
+			case "SCENE":
+				return AssetType.SCENE;
+			case "TEXTURE2D":
+				return AssetType.TEXTURE2D;
+			default:
+				return AssetType.NONE;
+		}
+	}
+
 	protected UUID id;
 
 	public UUID GetAssetHandel() {

@@ -44,19 +44,19 @@ public class EditorLayer extends Layer {
 
 		fbo = new Framebuffer(300, 200);
 
-		scene = new Scene();
-		scene.AddSystem(new BaseSystem(), new RenderSystem(fbo));
-
-		scene.Create().AddComponent(new BaseComponentWrapper(new TestComponent()));
-
-		sceneHiarchy = new SceneHiarchy(scene);
-
 		scriptEngine = new ScriptEngine();
 
 		INSTANCE = this;
 
+		// Project aproj = new
+		// Project("C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject",
+		// "test proj");
+
 		Project proj = Project
 				.LoadProject("C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Project.elprj");
+
+		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
+		sceneHiarchy = new SceneHiarchy(scene);
 	}
 
 	@Override

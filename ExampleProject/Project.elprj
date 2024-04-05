@@ -1,5 +1,8 @@
 {
-  "name": "Test Project",
+  "name": "test proj",
+  "StartScene": {
+    "uuidString": "fb8dcbad-93a9-434e-a73c-64fdfc4b3328"
+  },
   "ProjectDir": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject",
   "AssetDir": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets",
   "AssetMapPath": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets/AssetMap.elbank",

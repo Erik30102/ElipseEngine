@@ -21,7 +21,7 @@ import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.Transform;
 
-public class SceneSerializer implements JsonDeserializer<Scene>, JsonSerializer<Scene> {
+public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerializer<Scene> {
 
 	@Override
 	public JsonElement serialize(Scene src, Type typeOfSrc, JsonSerializationContext context) {
