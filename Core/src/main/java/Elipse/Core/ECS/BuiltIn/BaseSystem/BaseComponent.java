@@ -3,7 +3,7 @@ package Elipse.Core.ECS.BuiltIn.BaseSystem;
 import Elipse.Core.ECS.Entity;
 
 public abstract class BaseComponent {
-	protected Entity entity;
+	protected transient Entity entity;
 
 	final void setEntity(Entity entity) {
 		this.entity = entity;

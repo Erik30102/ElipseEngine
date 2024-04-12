@@ -2,7 +2,6 @@ package Elipse.Core.Scripting;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -11,24 +10,31 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import Elipse.Core.Logger;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 
 public class ScriptEngine {
 
-	private List<BaseComponent> components = new ArrayList<BaseComponent>();
+	private List<Class<? extends BaseComponent>> components = new ArrayList<Class<? extends BaseComponent>>();
+	private URLClassLoader classLoader;
+
+	private static ScriptEngine INSTANCE;
 
 	public ScriptEngine() {
-
+		INSTANCE = this;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void LoadJar(String jar) {
 		components.clear();
 
 		try {
 			URL jarFile = new File(jar).toURI().toURL();
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { jarFile }, this.getClass().getClassLoader());
+			classLoader = new URLClassLoader(new URL[] { jarFile }, this.getClass().getClassLoader());
 
-			Enumeration<JarEntry> entries = new JarFile(new File(jar)).entries();
+			JarFile jarFileContent = new JarFile(new File(jar));
+
+			Enumeration<JarEntry> entries = jarFileContent.entries();
 
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
@@ -39,25 +45,37 @@ public class ScriptEngine {
 					Class<?> clazz = classLoader.loadClass(className);
 
 					if (BaseComponent.class.isAssignableFrom(clazz)) {
-						BaseComponent exampleLibClass = (BaseComponent) clazz.newInstance();
-						components.add(exampleLibClass);
+						components.add((Class<? extends BaseComponent>) clazz);
 					}
 
 				}
 			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+			jarFileContent.close();
+
+		} catch (Exception e) {
+			Logger.c_error("Failed to load Content script: " + jar);
 			e.printStackTrace();
 		}
 	}
 
-	public List<BaseComponent> GetComponents() {
+	public List<Class<? extends BaseComponent>> GetComponents() {
 		return components;
+	}
+
+	public URLClassLoader GetClassLoader() {
+		return classLoader;
+	}
+
+	public void Dispose() {
+		try {
+			classLoader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ScriptEngine GetInstance() {
+		return INSTANCE;
 	}
 }

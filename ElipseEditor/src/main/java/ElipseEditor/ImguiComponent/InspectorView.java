@@ -73,6 +73,22 @@ public class InspectorView {
 						}
 					}
 				}
+
+				ImGui.separator();
+
+				for (Class<? extends BaseComponent> comp : EditorLayer.GetEditor().GetScriptEngine().GetComponents()) {
+					if (ImGui.selectable(comp.getSimpleName())) {
+						try {
+							scene.AddComponent(new BaseComponentWrapper(comp.getConstructor().newInstance()), entity);
+						} catch (Exception e) {
+							Logger.c_error(
+									"Failed while trying to add new Base Behavior Component of type: " + comp.getSimpleName()
+											+ " To Entity");
+							e.printStackTrace();
+						}
+					}
+				}
+
 				ImGui.endPopup();
 			}
 

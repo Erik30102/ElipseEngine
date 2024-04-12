@@ -55,7 +55,10 @@ public class EditorLayer extends Layer {
 		Project proj = Project
 				.LoadProject("C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Project.elprj");
 
+		this.scriptEngine.LoadJar(proj.GetScriptProjectPath());
+
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
+		this.scene.AddSystem(new RenderSystem(fbo));
 		sceneHiarchy = new SceneHiarchy(scene);
 	}
 
@@ -76,6 +79,14 @@ public class EditorLayer extends Layer {
 						ImGuiFileDialogFlags.None);
 			}
 
+			if (ImGui.menuItem("Save project")) {
+				Project.GetActive().Save();
+			}
+
+			if (ImGui.menuItem("Load project")) {
+				// TODO:
+			}
+
 			ImGui.endMenu();
 		}
 
@@ -92,8 +103,8 @@ public class EditorLayer extends Layer {
 
 		ImGui.begin("Debug Menu");
 
-		for (BaseComponent baseComponent : this.scriptEngine.GetComponents()) {
-			ImGui.text(baseComponent.getClass().getName());
+		for (Class<? extends BaseComponent> baseComponent : this.scriptEngine.GetComponents()) {
+			ImGui.text(baseComponent.getName());
 		}
 
 		ImGui.dragInt("Texture id", texId, 1, 1, 20);

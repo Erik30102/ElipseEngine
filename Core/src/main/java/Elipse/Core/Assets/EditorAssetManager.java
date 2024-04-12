@@ -31,10 +31,18 @@ public class EditorAssetManager implements AssetManager {
 		AssetImporter.Init();
 	}
 
+	/**
+	 * Returns the asset with the given UUID and loades it if it isn't loaded
+	 * already
+	 * 
+	 * @param <T> Type of the asset
+	 * @param id  UUID of the object
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Asset GetAsset(UUID id) {
+	public <T extends Asset> T GetAsset(UUID id) {
 		if (this.IsAssetLoaded(id)) {
-			return loadedAssets.get(id.toString());
+			return (T) loadedAssets.get(id.toString());
 		}
 
 		if (this.IsUUIDValid(id)) {
@@ -43,7 +51,7 @@ public class EditorAssetManager implements AssetManager {
 			if (asset != null) {
 				asset.id = id;
 				loadedAssets.put(id.toString(), asset);
-				return asset;
+				return (T) asset;
 			}
 		}
 

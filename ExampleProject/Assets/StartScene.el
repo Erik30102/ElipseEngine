@@ -13,7 +13,17 @@
         },
         "rotation": 0.0
       },
-      "Components": []
+      "Components": [
+        {
+          "type": "Sandbox.ExampleLib",
+          "properties": {
+            "comp": {
+              "time": 0.81940365
+            }
+          },
+          "compType": "Base"
+        }
+      ]
     }
   ]
 }

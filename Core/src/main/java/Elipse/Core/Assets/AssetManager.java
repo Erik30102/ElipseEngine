@@ -5,7 +5,7 @@ import java.util.UUID;
 import Elipse.Core.Assets.Asset.AssetType;
 
 public interface AssetManager {
-	public Asset GetAsset(UUID id);
+	public <T extends Asset> T GetAsset(UUID id);
 
 	public boolean IsAssetLoaded(UUID id);
 

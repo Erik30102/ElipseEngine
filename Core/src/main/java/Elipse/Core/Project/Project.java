@@ -133,5 +133,18 @@ public class Project {
 			Logger.c_error("Project could not be saved");
 			e.printStackTrace();
 		}
+
+		// TODO: clean up
+
+		Gson scene_gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Scene.class, new LocalSceneSerializer())
+				.create();
+
+		String scene_json = scene_gson.toJson((Scene) this.assetManager.GetAsset(StartScene));
+		try {
+			Files.writeString(Path.of(AssetDir + "/StartScene.el"), scene_json);
+		} catch (IOException e) {
+			Logger.c_error("Project could not be saved");
+			e.printStackTrace();
+		}
 	}
 }

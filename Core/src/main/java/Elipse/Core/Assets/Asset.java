@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import com.google.gson.annotations.SerializedName;
 
+import Elipse.Core.ECS.Scene;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
+
 public abstract class Asset {
 	public enum AssetType {
 		@SerializedName("NONE")
@@ -44,4 +47,14 @@ public abstract class Asset {
 	}
 
 	public abstract AssetType GetAssetType();
+
+	public static AssetType GetAssetTypeFromClass(Class<? extends Asset> clazz) {
+		if (clazz == Scene.class) {
+			return AssetType.SCENE;
+		} else if (clazz == Texture2D.class) {
+			return AssetType.TEXTURE2D;
+		} else {
+			return AssetType.NONE;
+		}
+	}
 }
