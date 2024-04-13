@@ -11,10 +11,12 @@ import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
+import imgui.type.ImString;
 
 public class InspectorView {
 
@@ -34,9 +36,31 @@ public class InspectorView {
 
 				ImGui.text("Entity name:");
 				ImGui.nextColumn();
+				ImString EntityName = new ImString(entity.GetName());
+				if (ImGui.inputText("##T", EntityName)) {
+					entity.SetName(EntityName.get());
+				}
 
-				ImGui.text(entity.GetName());
+				ImGui.nextColumn();
+
+				ImGui.text("Position: ");
+				ImGui.nextColumn();
+				float[] f = { entity.transform.GetPosition().x,
+						entity.transform.GetPosition().y };
+				if (ImGui.dragFloat2("##P", f, 0.1f)) {
+					entity.transform.setPosition(f[0], f[1]);
+				}
+				ImGui.nextColumn();
+				ImGui.text("Rotation: ");
+				ImGui.nextColumn();
+				float[] r = { entity.transform.rotation };
+				if (ImGui.dragFloat("##R", r, 0.1f)) {
+					entity.transform.setRotation(r[0]);
+				}
+				ImGui.nextColumn();
+
 			}
+			ImGui.columns(1);
 
 			for (Component component : scene.GetComponents(entity)) {
 				if (component.getClass() == BaseComponentWrapper.class) {
@@ -54,6 +78,29 @@ public class InspectorView {
 				if (ImGui.collapsingHeader(component.getClass().getSimpleName())) {
 					if (component.getClass() == SpriteRenderComponent.class) {
 
+					} else if (component.getClass() == CameraComponent.class) {
+						ImGui.columns(2);
+
+						ImGui.text("Zoom: ");
+
+						ImGui.nextColumn();
+
+						float[] f = { ((CameraComponent) component).GetZoom() };
+						if (ImGui.dragFloat("##Zoom", f, 0.1f)) {
+							((CameraComponent) component).SetZoom(f[0]);
+						}
+
+						ImGui.nextColumn();
+
+						ImGui.text("active");
+
+						ImGui.nextColumn();
+
+						if (ImGui.checkbox("##Active", ((CameraComponent) component).isActive())) {
+							((CameraComponent) component).SetActive(!((CameraComponent) component).isActive());
+						}
+
+						ImGui.columns(1);
 					}
 				}
 			}

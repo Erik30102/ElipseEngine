@@ -1,9 +1,12 @@
 package Elipse.Core.Assets;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -80,7 +83,7 @@ public class EditorAssetManager implements AssetManager {
 
 	public UUID ImportAsset(String path) {
 		AssetType type = GetTypeFromPath(path);
-		AssetMetaData metaData = new AssetMetaData(type, path);
+		AssetMetaData metaData = new AssetMetaData(type, new File(path).getPath());
 
 		UUID id = UUID.randomUUID();
 
@@ -94,6 +97,27 @@ public class EditorAssetManager implements AssetManager {
 			return id;
 		}
 		return null;
+	}
+
+	public boolean IsAssetImported(String path) {
+		for (AssetMetaData metaData : assetMap.values()) {
+			if (metaData.getPath().equals(path)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<AssetMetaData> GetAssetsFromType(AssetType assetType) {
+		List<AssetMetaData> assets = new ArrayList<AssetMetaData>();
+
+		for (Map.Entry<String, AssetMetaData> entry : assetMap.entrySet()) {
+			if (entry.getValue().getType() == assetType) {
+				assets.add(entry.getValue());
+			}
+		}
+
+		return assets;
 	}
 
 	@Override
@@ -137,6 +161,15 @@ public class EditorAssetManager implements AssetManager {
 			e.printStackTrace();
 		}
 
+	}
+
+	public UUID GetUUIDFromMetadata(AssetMetaData metaData) {
+		for (Map.Entry<String, AssetMetaData> entry : assetMap.entrySet()) {
+			if (entry.getValue().getPath().equals(metaData.getPath())) {
+				return UUID.fromString(entry.getKey());
+			}
+		}
+		return null;
 	}
 
 }

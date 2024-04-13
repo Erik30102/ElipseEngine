@@ -8,6 +8,7 @@ import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Transform;
 import Elipse.Renderer.Opengl.Framebuffer;
 import Elipse.Renderer.Opengl.Renderer2D;
+import Elipse.Renderer.Opengl.RendererApi;
 import Elipse.Utils.Pair;
 
 public class RenderSystem extends ECSSystem {
@@ -25,12 +26,30 @@ public class RenderSystem extends ECSSystem {
 	@Override
 	public void step(float dt) {
 
+		List<Pair<Entity, Component>> CameraComponents = scene.GetComponents(CameraComponent.class);
+
+		if (CameraComponents == null)
+			return;
+
+		for (Pair<Entity, Component> pair : CameraComponents) {
+			CameraComponent camera = (CameraComponent) pair.getValue();
+			if (camera.isActive()) {
+				Transform transform = pair.getKey().transform;
+
+				camera.adjustViewMatrix(transform.position);
+
+				fbo.Bind();
+				RendererApi.SetViewport(fbo.GetWidth(), fbo.GetHeight());
+
+				Renderer2D.BeginScene(camera);
+
+				break;
+			}
+		}
+
+		// Renderer2D.DrawQuad();
+
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
-
-		fbo.Bind();
-
-		Renderer2D.BeginScene();
-		Renderer2D.DrawQuad();
 
 		if (components != null) {
 			for (Pair<Entity, Component> component : components) {

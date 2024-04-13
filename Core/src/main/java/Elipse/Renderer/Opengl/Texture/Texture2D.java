@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.stb.STBImage;
 
@@ -77,9 +78,9 @@ public class Texture2D extends Texture {
 		this.height = height;
 		this.format = format;
 
-		this.textureId = GL46.glGenTextures();
+		// this.textureId = GL46.glGenTextures();
 
-		GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
+		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
 		GL46.glTextureStorage2D(this.textureId, 1, this.internalFormat, this.width, this.height);
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
@@ -89,6 +90,9 @@ public class Texture2D extends Texture {
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_S, this.InternalWrapModeToGLWrapMode(wrapMode));
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_T, this.InternalWrapModeToGLWrapMode(wrapMode));
+
+		GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalDataFormat,
+				GL30.GL_UNSIGNED_BYTE, 0);
 	}
 
 	@Override

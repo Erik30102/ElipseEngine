@@ -1,6 +1,21 @@
 {
   "entities": [
     {
+      "Name": "Entity: 2",
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "rotation": 0.0
+      },
+      "Components": []
+    },
+    {
       "Name": "Das ist ein Test",
       "transform": {
         "position": {
@@ -18,7 +33,7 @@
           "type": "Sandbox.ExampleLib",
           "properties": {
             "comp": {
-              "time": 0.81940365
+              "time": 1.2776076
             }
           },
           "compType": "Base"

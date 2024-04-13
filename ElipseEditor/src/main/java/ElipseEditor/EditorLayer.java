@@ -1,12 +1,18 @@
 package ElipseEditor;
 
+import java.util.List;
+
 import Elipse.Core.Application;
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.Asset;
+import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.ECS.Component;
+import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseSystem;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.RenderSystem;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Core.EventSystem.Events.Event;
@@ -18,11 +24,16 @@ import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.ScriptEngine;
 import Elipse.Renderer.Opengl.Framebuffer;
 import Elipse.Renderer.Opengl.Shader;
+import Elipse.Utils.Pair;
+import ElipseEditor.ImguiComponent.AssetPicker;
+import ElipseEditor.ImguiComponent.ContentBrowser;
 import ElipseEditor.ImguiComponent.SceneHiarchy;
 import ElipseEditor.test.TestComponent;
 import imgui.ImGui;
+import imgui.ImVec2;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
+import imgui.flag.ImGuiWindowFlags;
 
 public class EditorLayer extends Layer {
 
@@ -32,17 +43,19 @@ public class EditorLayer extends Layer {
 
 	private SceneHiarchy sceneHiarchy;
 	private ScriptEngine scriptEngine;
+	private ContentBrowser contentBrowser;
 
 	private Framebuffer fbo;
+	private int fboWidth = 200, fboHeight = 200;
 
 	private Class<? extends Component>[] components;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void OnAttach() {
-		components = new Class[] { SpriteRenderComponent.class, BaseComponentWrapper.class };
+		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class };
 
-		fbo = new Framebuffer(300, 200);
+		fbo = new Framebuffer(200, 200);
 
 		scriptEngine = new ScriptEngine();
 
@@ -59,7 +72,11 @@ public class EditorLayer extends Layer {
 
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
 		this.scene.AddSystem(new RenderSystem(fbo));
+
 		sceneHiarchy = new SceneHiarchy(scene);
+		contentBrowser = new ContentBrowser();
+
+		AssetPicker.Init();
 	}
 
 	@Override
@@ -70,6 +87,7 @@ public class EditorLayer extends Layer {
 	@Override
 	public void OnImguiRender() {
 		sceneHiarchy.OnImgui();
+		contentBrowser.OnImgui();
 
 		ImGui.beginMainMenuBar();
 
@@ -103,8 +121,12 @@ public class EditorLayer extends Layer {
 
 		ImGui.begin("Debug Menu");
 
-		for (Class<? extends BaseComponent> baseComponent : this.scriptEngine.GetComponents()) {
-			ImGui.text(baseComponent.getName());
+		if (ImGui.button("test")) {
+			AssetPicker.Open("test", AssetType.SCENE);
+		}
+
+		if (AssetPicker.Display("test")) {
+
 		}
 
 		ImGui.dragInt("Texture id", texId, 1, 1, 20);
@@ -112,9 +134,24 @@ public class EditorLayer extends Layer {
 
 		ImGui.end();
 
-		ImGui.begin("viewport");
+		ImGui.begin("viewport", ImGuiWindowFlags.NoScrollbar);
 
-		ImGui.image(fbo.GetTexture().GetTextureId(), 300, 200, 0, 1, 1, 0);
+		ImVec2 windowSize = new ImVec2();
+		ImGui.getContentRegionAvail(windowSize);
+
+		if (windowSize.x != fboWidth || windowSize.y != fboHeight) {
+			fboWidth = (int) windowSize.x;
+			fboHeight = (int) windowSize.y;
+
+			fbo.Resize(fboWidth, fboHeight);
+
+			List<Pair<Entity, Component>> cameras = scene.GetComponents(CameraComponent.class);
+
+			if (cameras != null)
+				cameras.forEach(c -> ((CameraComponent) c.getValue()).Resize(fboWidth, fboHeight));
+		}
+
+		ImGui.image(fbo.GetTexture().GetTextureId(), windowSize.x, windowSize.y, 0, 1, 1, 0);
 
 		ImGui.end();
 	}

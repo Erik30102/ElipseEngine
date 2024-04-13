@@ -32,4 +32,8 @@ public class Entity {
 		this.transform = transform2;
 	}
 
+	public void SetName(String string) {
+		this.name = string;
+	}
+
 }

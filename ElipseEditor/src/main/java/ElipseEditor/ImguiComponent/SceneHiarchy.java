@@ -2,6 +2,7 @@ package ElipseEditor.ImguiComponent;
 
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
+import Elipse.Core.Layers.ImGuiLayer;
 import imgui.ImGui;
 
 public class SceneHiarchy {
@@ -23,6 +24,10 @@ public class SceneHiarchy {
 
 	public void OnImgui() {
 		ImGui.begin("Scene Hiarchy");
+
+		if (ImGui.button("Add New Entity")) {
+			scene.Create();
+		}
 
 		int index = 0;
 

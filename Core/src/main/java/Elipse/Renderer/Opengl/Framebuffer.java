@@ -31,6 +31,7 @@ public class Framebuffer {
 		}
 
 		FramebufferID = GL30.glGenFramebuffers();
+		int rboId = GL30.glGenRenderbuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, FramebufferID);
 
 		FboTexture = new Texture2D(width, height, TextureFormat.RGBA8, TextureFiltering.NEAREST,
@@ -39,7 +40,6 @@ public class Framebuffer {
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D,
 				FboTexture.GetTextureId(), 0);
 
-		int rboId = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, rboId);
 		GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL30.GL_DEPTH_COMPONENT32, width, height);
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT,
@@ -68,5 +68,13 @@ public class Framebuffer {
 
 	public void Unbind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+	}
+
+	public int GetWidth() {
+		return this.width;
+	}
+
+	public int GetHeight() {
+		return this.height;
 	}
 }
