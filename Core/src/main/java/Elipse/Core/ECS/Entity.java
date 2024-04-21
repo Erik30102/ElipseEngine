@@ -1,5 +1,7 @@
 package Elipse.Core.ECS;
 
+import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
+
 public class Entity {
 
 	private String name;
@@ -34,6 +36,10 @@ public class Entity {
 
 	public void SetName(String string) {
 		this.name = string;
+	}
+
+	public <T extends Component> T GetComponent(Class<T> clazz) {
+		return scene.GetComponent(this, clazz);
 	}
 
 }

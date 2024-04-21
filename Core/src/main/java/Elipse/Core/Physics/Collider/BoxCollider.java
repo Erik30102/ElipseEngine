@@ -1,5 +1,12 @@
 package Elipse.Core.Physics.Collider;
 
-public class BoxCollider {
+import org.jbox2d.collision.shapes.PolygonShape;
+
+public class BoxCollider extends Collider {
+
+	public BoxCollider(float width, float height) {
+		shape = new PolygonShape();
+		((PolygonShape) shape).setAsBox(width, height);
+	}
 
 }

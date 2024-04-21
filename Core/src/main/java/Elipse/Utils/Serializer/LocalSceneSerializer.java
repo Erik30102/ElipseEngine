@@ -20,12 +20,12 @@ import Elipse.Core.Logger;
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.Transform;
-import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseSystem;
-import Elipse.Core.ECS.BuiltIn.RenderSystem.RenderSystem;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Utils.Serializer.Components.BaseComponentSerializer;
+import Elipse.Utils.Serializer.Components.CameraComponentSerializer;
 import Elipse.Utils.Serializer.Components.SpriteRenderComponentSerializer;
 
 public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerializer<Scene> {
@@ -58,6 +58,15 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 							.getAsJsonObject();
 
 					componentResult.add("compType", new JsonPrimitive("Sprite"));
+					componentArray.add(componentResult);
+				} else if (component instanceof CameraComponent) {
+					JsonObject componentResult = new CameraComponentSerializer()
+							.serialize((CameraComponent) component,
+									CameraComponent.class,
+									context)
+							.getAsJsonObject();
+
+					componentResult.add("compType", new JsonPrimitive("Camera"));
 					componentArray.add(componentResult);
 				}
 			}
@@ -105,6 +114,12 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 					case "Sprite":
 						SpriteRenderComponentSerializer sprite_ser = new SpriteRenderComponentSerializer();
 						comp = sprite_ser.deserialize(componentObject, SpriteRenderComponent.class, context);
+
+						entity.AddComponent(comp);
+						break;
+					case "Camera":
+						CameraComponentSerializer camera_ser = new CameraComponentSerializer();
+						comp = camera_ser.deserialize(componentObject, CameraComponent.class, context);
 
 						entity.AddComponent(comp);
 						break;

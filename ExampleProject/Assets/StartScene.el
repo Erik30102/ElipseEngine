@@ -1,11 +1,11 @@
 {
   "entities": [
     {
-      "Name": "Entity: 2",
+      "Name": "Das ist ein Test",
       "transform": {
         "position": {
-          "x": 0.0,
-          "y": 0.0
+          "x": -1.6821368,
+          "y": 0.8706079
         },
         "scale": {
           "x": 1.0,
@@ -13,10 +13,24 @@
         },
         "rotation": 0.0
       },
-      "Components": []
+      "Components": [
+        {
+          "type": "Sandbox.ExampleLib",
+          "properties": {
+            "comp": {
+              "speed": 18.0
+            }
+          },
+          "compType": "Base"
+        },
+        {
+          "texAssetId": "INTERNAL",
+          "compType": "Sprite"
+        }
+      ]
     },
     {
-      "Name": "Das ist ein Test",
+      "Name": "Entity: 2",
       "transform": {
         "position": {
           "x": 0.0,
@@ -30,13 +44,9 @@
       },
       "Components": [
         {
-          "type": "Sandbox.ExampleLib",
-          "properties": {
-            "comp": {
-              "time": 1.2776076
-            }
-          },
-          "compType": "Base"
+          "zoom": 5.0,
+          "isActive": true,
+          "compType": "Camera"
         }
       ]
     }

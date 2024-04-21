@@ -1,17 +1,21 @@
 package ElipseEditor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import Elipse.Core.Application;
 import Elipse.Core.Logger;
-import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
-import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
-import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
-import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseSystem;
+import Elipse.Core.ECS.BuiltIn.Physics.BoxColliderComponent;
+import Elipse.Core.ECS.BuiltIn.Physics.PhysicsSystem;
+import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.RenderSystem;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
@@ -23,12 +27,10 @@ import Elipse.Core.Layers.Layer;
 import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.ScriptEngine;
 import Elipse.Renderer.Opengl.Framebuffer;
-import Elipse.Renderer.Opengl.Shader;
 import Elipse.Utils.Pair;
 import ElipseEditor.ImguiComponent.AssetPicker;
 import ElipseEditor.ImguiComponent.ContentBrowser;
 import ElipseEditor.ImguiComponent.SceneHiarchy;
-import ElipseEditor.test.TestComponent;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
@@ -53,7 +55,8 @@ public class EditorLayer extends Layer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void OnAttach() {
-		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class };
+		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class, RidgedBodyComponent.class,
+				BoxColliderComponent.class };
 
 		fbo = new Framebuffer(200, 200);
 
@@ -71,7 +74,7 @@ public class EditorLayer extends Layer {
 		this.scriptEngine.LoadJar(proj.GetScriptProjectPath());
 
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
-		this.scene.AddSystem(new RenderSystem(fbo));
+		this.scene.AddSystem(new RenderSystem(fbo), new PhysicsSystem());
 
 		sceneHiarchy = new SceneHiarchy(scene);
 		contentBrowser = new ContentBrowser();
@@ -131,6 +134,25 @@ public class EditorLayer extends Layer {
 
 		ImGui.dragInt("Texture id", texId, 1, 1, 20);
 		ImGui.image(texId[0], 200, 200, 0, 1, 1, 0);
+
+		if (ImGui.button("test funtion")) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+				try {
+					oos.writeObject(new String("tesats"));
+
+					Files.write(Path.of("test.dat"), baos.toByteArray());
+
+					oos.close();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			baos.toString();
+		}
 
 		ImGui.end();
 

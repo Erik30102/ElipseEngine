@@ -21,7 +21,14 @@ public class SpriteRenderComponentSerializer
 	@Override
 	public JsonElement serialize(SpriteRenderComponent src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject result = new JsonObject();
-		result.add("texAssetId", new JsonPrimitive(src.getTexture().GetAssetHandel().toString()));
+		String texAssetId = "INTERNAL";
+
+		UUID uid = src.getTexture().GetAssetHandel();
+		if (uid != null) {
+			texAssetId = uid.toString();
+		}
+
+		result.add("texAssetId", new JsonPrimitive(texAssetId));
 		return result;
 	}
 
@@ -29,12 +36,18 @@ public class SpriteRenderComponentSerializer
 	public SpriteRenderComponent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject jsonObject = json.getAsJsonObject();
-		UUID texAssetId = UUID.fromString(jsonObject.get("texAssetId").getAsString());
-		SpriteRenderComponent comp = new SpriteRenderComponent();
 
-		comp.SetTexture(Project.GetActive().GetAssetManager().GetAsset(texAssetId));
+		String uuid = jsonObject.get("texAssetId").getAsString();
 
-		return comp;
+		if (!uuid.equals("INTERNAL")) {
+			UUID texAssetId = UUID.fromString(uuid);
+			SpriteRenderComponent comp = new SpriteRenderComponent();
+
+			comp.SetTexture(Project.GetActive().GetAssetManager().GetAsset(texAssetId));
+			return comp;
+		} else {
+			return new SpriteRenderComponent();
+		}
 	}
 
 }

@@ -1,14 +1,12 @@
 package ElipseEditor.ImguiComponent;
 
-import java.util.UUID;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.AssetMetaData;
+import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.Project.Project;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
@@ -46,7 +44,7 @@ public class AssetPicker {
 				for (AssetMetaData metaData : INSTANCE.ChashedAssets) {
 					if (ImGui.button(metaData.getPath(), 64, 64)) {
 						INSTANCE.selected = Project.GetActive().GetAssetManager()
-								.GetAsset(Project.GetActive().GetAssetManager().GetUUIDFromMetadata(metaData));
+								.GetAsset(((EditorAssetManager) Project.GetActive().GetAssetManager()).GetUUIDFromMetadata(metaData));
 
 						INSTANCE.showDialog = false;
 						ImGui.endPopup();
@@ -73,6 +71,7 @@ public class AssetPicker {
 		INSTANCE.type = type;
 		INSTANCE.selected = null;
 
-		INSTANCE.ChashedAssets = Project.GetActive().GetAssetManager().GetAssetsFromType(INSTANCE.type);
+		INSTANCE.ChashedAssets = ((EditorAssetManager) Project.GetActive().GetAssetManager())
+				.GetAssetsFromType(INSTANCE.type);
 	}
 }

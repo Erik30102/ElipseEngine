@@ -33,6 +33,11 @@ public class Vector {
 		this.y = y;
 	}
 
+	public Vector(Vector vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+	}
+
 	/**
 	 * Gets the x component of the vector.
 	 * 
@@ -130,5 +135,20 @@ public class Vector {
 	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ")";
+	}
+
+	public void set(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public void set(Vector vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+	}
+
+	public void add(float x, float y) {
+		this.x += x;
+		this.y += y;
 	}
 }

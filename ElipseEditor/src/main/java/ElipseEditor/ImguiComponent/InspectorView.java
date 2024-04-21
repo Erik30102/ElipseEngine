@@ -13,7 +13,6 @@ import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
-import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
 import imgui.type.ImString;
@@ -156,6 +155,7 @@ public class InspectorView {
 			Field[] fields = component.getClass().getDeclaredFields();
 			for (Field field : fields) {
 				if (!Modifier.isPrivate(field.getModifiers())) {
+					@SuppressWarnings("rawtypes")
 					Class type = field.getType();
 					Object value = field.get(component);
 					String name = field.getName();

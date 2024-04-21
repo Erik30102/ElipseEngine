@@ -24,6 +24,12 @@ public class ScriptEngine {
 		INSTANCE = this;
 	}
 
+	/**
+	 * Loads jar into script engine and makes the compoennts in the game logic jar
+	 * available to internal engine use
+	 * 
+	 * @param jar
+	 */
 	@SuppressWarnings("unchecked")
 	public void LoadJar(String jar) {
 		components.clear();
@@ -47,7 +53,6 @@ public class ScriptEngine {
 					if (BaseComponent.class.isAssignableFrom(clazz)) {
 						components.add((Class<? extends BaseComponent>) clazz);
 					}
-
 				}
 			}
 
@@ -59,6 +64,9 @@ public class ScriptEngine {
 		}
 	}
 
+	/**
+	 * @return the list of compoents currently loaded into the engine
+	 */
 	public List<Class<? extends BaseComponent>> GetComponents() {
 		return components;
 	}
@@ -67,6 +75,10 @@ public class ScriptEngine {
 		return classLoader;
 	}
 
+	/**
+	 * Disposes the class loader used by the script engine to load all of the
+	 * compoentns
+	 */
 	public void Dispose() {
 		try {
 			classLoader.close();
@@ -75,6 +87,9 @@ public class ScriptEngine {
 		}
 	}
 
+	/**
+	 * @return the current instance of the script engine in a static way
+	 */
 	public static ScriptEngine GetInstance() {
 		return INSTANCE;
 	}

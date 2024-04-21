@@ -2,7 +2,6 @@ package ElipseEditor.ImguiComponent;
 
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
-import Elipse.Core.Layers.ImGuiLayer;
 import imgui.ImGui;
 
 public class SceneHiarchy {

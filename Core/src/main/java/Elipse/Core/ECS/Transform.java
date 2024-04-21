@@ -2,15 +2,17 @@ package Elipse.Core.ECS;
 
 import org.joml.Vector2f;
 
+import Elipse.Core.Maths.Vector;
+
 /**
  * Represents a 2D transformation of an entity in a game engine.
  * This class stores the position, scale, and rotation of an entity.
  */
 public class Transform {
 
-	public final Vector2f position;
+	public final Vector position;
 
-	public final Vector2f scale;
+	public final Vector scale;
 
 	public float rotation;
 
@@ -21,7 +23,7 @@ public class Transform {
 	 * @param scale    The initial scale of the entity.
 	 * @param rotation The initial rotation of the entity in degrees.
 	 */
-	public Transform(Vector2f position, Vector2f scale, float rotation) {
+	public Transform(Vector position, Vector scale, float rotation) {
 		this.position = position;
 		this.scale = scale;
 		this.rotation = rotation;
@@ -34,7 +36,7 @@ public class Transform {
 	 * - rotation: 0 degrees
 	 */
 	public Transform() {
-		this(new Vector2f(0, 0), new Vector2f(1, 1), 0);
+		this(new Vector(0, 0), new Vector(1, 1), 0);
 	}
 
 	/**
@@ -42,7 +44,7 @@ public class Transform {
 	 *
 	 * @param vec The amount to move the entity by on the X and Y axes.
 	 */
-	public void move(Vector2f vec) {
+	public void move(Vector vec) {
 		this.position.add(vec);
 	}
 
@@ -61,7 +63,7 @@ public class Transform {
 	 *
 	 * @param vec The new position of the entity.
 	 */
-	public void setPosition(Vector2f vec) {
+	public void setPosition(Vector vec) {
 		this.position.set(vec);
 	}
 
@@ -98,8 +100,8 @@ public class Transform {
 	 *
 	 * @return A copy of the current position vector.
 	 */
-	public Vector2f GetPosition() {
-		return new Vector2f(position);
+	public Vector GetPosition() {
+		return new Vector(position);
 	}
 
 	/**
@@ -107,8 +109,8 @@ public class Transform {
 	 *
 	 * @return A copy of the current scale vector.
 	 */
-	public Vector2f GetScale() {
-		return new Vector2f(scale);
+	public Vector GetScale() {
+		return new Vector(scale);
 	}
 
 	/**
@@ -116,7 +118,7 @@ public class Transform {
 	 *
 	 * @param scale The new scale of the entity.
 	 */
-	public void setScale(Vector2f scale) {
+	public void setScale(Vector scale) {
 		this.scale.set(scale);
 	}
 

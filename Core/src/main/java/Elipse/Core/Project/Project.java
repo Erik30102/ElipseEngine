@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.AssetManager;
 import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.ECS.Scene;
 import Elipse.Utils.Serializer.LocalSceneSerializer;
@@ -24,7 +25,7 @@ public class Project {
 	private String ProjectDir, AssetDir, AssetMapPath, ScriptProject;
 
 	// TODO: dynamic when i implement a runtime Asset Manager
-	private transient EditorAssetManager assetManager = new EditorAssetManager();
+	private transient AssetManager assetManager = new EditorAssetManager();
 
 	public Project(String dir, String Name) {
 		ProjectDir = dir;
@@ -55,7 +56,7 @@ public class Project {
 		String json = gson.toJson(startScene);
 		try {
 			Files.writeString(Path.of(AssetDir + "/StartScene.el"), json);
-			UUID id = assetManager.ImportAsset(AssetDir + "/StartScene.el");
+			UUID id = ((EditorAssetManager) assetManager).ImportAsset(AssetDir + "/StartScene.el");
 
 			this.StartScene = id;
 		} catch (IOException e) {
@@ -80,7 +81,7 @@ public class Project {
 
 			project.assetManager = new EditorAssetManager();
 
-			project.GetAssetManager().DeserializeAssetBank();
+			((EditorAssetManager) project.GetAssetManager()).DeserializeAssetBank();
 
 			return project;
 		} catch (IOException e) {
@@ -103,7 +104,7 @@ public class Project {
 		return AssetMapPath;
 	}
 
-	public EditorAssetManager GetAssetManager() {
+	public AssetManager GetAssetManager() {
 		return assetManager;
 	}
 

@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import Elipse.Core.ECS.Component;
+import Elipse.Core.Maths.Vector;
 
 // TODO: abstraction to seperate camera class
 
@@ -35,7 +36,7 @@ public class CameraComponent implements Component {
 		projectionMatrix.ortho(-width, width, -height, height, 0f, 100f);
 	}
 
-	public void adjustViewMatrix(Vector2f positon) {
+	public void adjustViewMatrix(Vector positon) {
 		Vector3f cameraFront = new Vector3f(0, 0, -1);
 		Vector3f cameraUp = new Vector3f(0, 1, 0);
 
