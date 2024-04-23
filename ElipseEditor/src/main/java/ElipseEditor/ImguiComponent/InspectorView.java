@@ -224,4 +224,8 @@ public class InspectorView {
 	public void SetEntity(Entity entity) {
 		this.entity = entity;
 	}
+
+	public Entity GetEntity() {
+		return this.entity;
+	}
 }

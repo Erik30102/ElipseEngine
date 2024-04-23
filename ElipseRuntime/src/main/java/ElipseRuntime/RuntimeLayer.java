@@ -24,7 +24,7 @@ public class RuntimeLayer extends Layer {
 
 	@Override
 	public void OnUpdate(double dt) {
-		this.scene.step((float) dt);
+		this.scene.OnRuntimeStep((float) dt);
 	}
 
 }

@@ -11,7 +11,7 @@ import Elipse.Utils.Pair;
 public class BaseSystem extends ECSSystem implements IEntityListener<BaseComponentWrapper> {
 
 	@Override
-	public void step(float dt) {
+	public void OnRuntimeStep(float dt) {
 		List<Pair<Entity, Component>> comp = scene.GetComponents(BaseComponentWrapper.class);
 
 		if (comp == null)

@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import Elipse.Core.Application;
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset.AssetType;
@@ -35,9 +38,19 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
+import imgui.extension.imguizmo.ImGuizmo;
+import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 
 public class EditorLayer extends Layer {
+
+	private enum SceneState {
+		PLAYING, EDITING
+	}
+
+	private SceneState sceneState = SceneState.EDITING;
+
+	private SceneCamera sceneCamera;
 
 	private Scene scene;
 
@@ -51,6 +64,8 @@ public class EditorLayer extends Layer {
 	private int fboWidth = 200, fboHeight = 200;
 
 	private Class<? extends Component>[] components;
+
+	private RenderSystem renderSystem;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -73,18 +88,33 @@ public class EditorLayer extends Layer {
 
 		this.scriptEngine.LoadJar(proj.GetScriptProjectPath());
 
+		sceneCamera = new SceneCamera();
+
+		renderSystem = new RenderSystem(fbo);
+		renderSystem.SetCamera(this.sceneCamera.GetCamera());
+
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
-		this.scene.AddSystem(new RenderSystem(fbo), new PhysicsSystem());
+		this.scene.AddSystem(renderSystem, new PhysicsSystem());
 
 		sceneHiarchy = new SceneHiarchy(scene);
 		contentBrowser = new ContentBrowser();
 
 		AssetPicker.Init();
+
 	}
 
 	@Override
 	public void OnUpdate(double dt) {
-		scene.step((float) dt);
+		switch (this.sceneState) {
+			case EDITING:
+				sceneCamera.OnUpdate();
+				scene.OnEditorStep((float) dt);
+				break;
+
+			case PLAYING:
+				scene.OnRuntimeStep((float) dt);
+				break;
+		}
 	}
 
 	@Override
@@ -156,7 +186,8 @@ public class EditorLayer extends Layer {
 
 		ImGui.end();
 
-		ImGui.begin("viewport", ImGuiWindowFlags.NoScrollbar);
+		ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
+		ImGui.begin("##viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoCollapse);
 
 		ImVec2 windowSize = new ImVec2();
 		ImGui.getContentRegionAvail(windowSize);
@@ -165,6 +196,7 @@ public class EditorLayer extends Layer {
 			fboWidth = (int) windowSize.x;
 			fboHeight = (int) windowSize.y;
 
+			this.sceneCamera.Resize(fboWidth, fboHeight);
 			fbo.Resize(fboWidth, fboHeight);
 
 			List<Pair<Entity, Component>> cameras = scene.GetComponents(CameraComponent.class);
@@ -174,6 +206,58 @@ public class EditorLayer extends Layer {
 		}
 
 		ImGui.image(fbo.GetTexture().GetTextureId(), windowSize.x, windowSize.y, 0, 1, 1, 0);
+
+		// #region ImGuizmo
+
+		Entity activeEntity = this.sceneHiarchy.GetInspector().GetEntity();
+		if (activeEntity != null && this.sceneState == SceneState.EDITING) {
+
+			ImGuizmo.setOrthographic(true);
+			ImGuizmo.setDrawList();
+			ImGuizmo.setRect(ImGui.getWindowPosX(), ImGui.getWindowPosY(), ImGui.getWindowSizeX(), ImGui.getWindowSizeY());
+
+			Matrix4f cameraView = sceneCamera.GetCamera().GetView();
+			Matrix4f cameraProj = sceneCamera.GetCamera().GetProjection();
+
+			Matrix4f trans = new Matrix4f().identity()
+					.translate(activeEntity.transform.position.x, activeEntity.transform.position.y, 0)
+					.scale(activeEntity.transform.scale.x, activeEntity.transform.scale.y, 0)
+					.rotateZ((float) Math.toRadians(activeEntity.transform.rotation));
+
+			float[] _trans = new float[16];
+
+			ImGuizmo.manipulate(cameraView.get(new float[16]), cameraProj.get(new float[16]), trans.get(_trans),
+					1 << 0 | 1 << 1 | 1 << 3 | 1 << 4 | 1 << 7 | 1 << 8, 1);
+
+			if (ImGuizmo.isUsing()) {
+				trans = new Matrix4f().set(_trans);
+
+				Vector3f pos = new Vector3f();
+				Vector3f scale = new Vector3f();
+
+				trans.getTranslation(pos);
+				trans.getScale(scale);
+
+				activeEntity.transform.setScale(scale.x, scale.y);
+				activeEntity.transform.setPosition(pos.x, pos.y);
+			}
+		}
+		// #endregion
+
+		ImGui.end();
+		ImGui.popStyleVar();
+
+		ImGui.begin("##runornot",
+				ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoScrollbar);
+
+		if (ImGui.button(this.sceneState == SceneState.EDITING ? "play" : "stop")) {
+			if (this.sceneState == SceneState.EDITING) {
+				this.sceneState = SceneState.PLAYING;
+			} else if (this.sceneState == SceneState.PLAYING) {
+				this.scene.OnDisposeEditor();
+				this.sceneState = SceneState.EDITING;
+			}
+		}
 
 		ImGui.end();
 	}

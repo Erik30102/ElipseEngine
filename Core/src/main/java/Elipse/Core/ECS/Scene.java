@@ -83,6 +83,9 @@ public class Scene extends Asset implements Cloneable {
 		return Create("Entity: " + (entities.size() + 1));
 	}
 
+	/**
+	 * @return Retrun the internal map of the entities
+	 */
 	public HashMap<Entity, List<Component>> GetEntities() {
 		return entities;
 	}
@@ -116,6 +119,12 @@ public class Scene extends Asset implements Cloneable {
 		}
 	}
 
+	/**
+	 * Removes a specifc component from an specific entity
+	 * 
+	 * @param component the class to remove
+	 * @param entity    the entity to remove from
+	 */
 	public void RemoveComponent(Component component, Entity entity) {
 		entities.get(entity).remove(component);
 		componentDictionary.get(component.getClass()).removeIf(f -> f.getKey() == entity && f.getValue() == component);
@@ -172,19 +181,56 @@ public class Scene extends Asset implements Cloneable {
 	 * Called every frame to update all systems and the entitys assoisiated with
 	 * them
 	 * 
+	 * Only call this in runtime and not in editor mode
+	 * 
 	 * @param dt the time delta between the last frame and this frame
 	 */
-	public void step(float dt) {
+	public void OnRuntimeStep(float dt) {
 		for (ECSSystem system : systems) {
-			system.step(dt);
+			system.OnRuntimeStep(dt);
 		}
 	}
 
+	/**
+	 * Disposes all of the elements of the scene when the game is nolonger running
+	 * but no the resources needed for displaying to viewport
+	 */
+	public void OnDisposeEditor() {
+		for (ECSSystem system : systems) {
+			system.OnEditorDispose();
+		}
+	}
+
+	/**
+	 * Dispose all resources used by the scene
+	 */
+	public void OnDisposeRuntime() {
+		for (ECSSystem system : systems) {
+			system.OnRuntimeDispose();
+		}
+	}
+
+	/**
+	 * Called every frame of the editor to have somthing display in the editor
+	 * viewport while you are not playing
+	 * 
+	 * @param dt the time delta between the last frame and this frame
+	 */
+	public void OnEditorStep(float dt) {
+		for (ECSSystem system : systems) {
+			system.OnEditorStep(dt);
+		}
+	}
+
+	/**
+	 * @return a deep copy of the scene
+	 */
 	public Scene Copy() {
 		try {
 			return (Scene) this.clone();
 		} catch (CloneNotSupportedException e) {
-			Logger.c_warn(e.toString());
+			Logger.c_warn("couldn't copy scene: ");
+			e.printStackTrace();
 			return null;
 		}
 	}

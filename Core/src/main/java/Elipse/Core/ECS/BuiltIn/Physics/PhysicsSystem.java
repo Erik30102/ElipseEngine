@@ -13,7 +13,7 @@ import Elipse.Utils.Pair;
 public class PhysicsSystem extends ECSSystem {
 
 	@Override
-	public void step(float dt) {
+	public void OnRuntimeStep(float dt) {
 		PhyscisEngine.GetInstance().Step(dt);
 
 		List<Pair<Entity, Component>> components = this.scene.GetComponents(RidgedBodyComponent.class);

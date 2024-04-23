@@ -15,6 +15,10 @@ public class SceneHiarchy {
 		inspectorView = new InspectorView(scene);
 	}
 
+	public InspectorView GetInspector() {
+		return this.inspectorView;
+	}
+
 	public void SetScene(Scene scene) {
 		this.scene = scene;
 

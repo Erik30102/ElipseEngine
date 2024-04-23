@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import Elipse.Core.ECS.Component;
 import Elipse.Core.Maths.Vector;
+import Elipse.Renderer.OrthograhicCamera;
 
 // TODO: abstraction to seperate camera class
 
@@ -14,61 +15,83 @@ public class CameraComponent implements Component {
 
 	public boolean isActive = true;
 
-	private transient Matrix4f projectionMatrix;
-	private transient Matrix4f viewMatrix;
+	private transient OrthograhicCamera orthograhicCamera;
 
 	public CameraComponent() {
-		zoom = 5f;
+		orthograhicCamera = new OrthograhicCamera();
 
-		this.projectionMatrix = new Matrix4f();
-		this.viewMatrix = new Matrix4f();
+		zoom = 5f;
 
 		this.Resize(1, 1);
 	}
 
-	public void Resize(int w, int h) {
-		float aspectRatio = (float) w / h;
-
-		float width = zoom * 0.5f * aspectRatio;
-		float height = zoom / 2;
-
-		projectionMatrix.identity();
-		projectionMatrix.ortho(-width, width, -height, height, 0f, 100f);
+	/**
+	 * Resize camera and the projection matrix to fit the new aspect ratio
+	 * 
+	 * @param width widht of the window
+	 * @param h     height of the window
+	 */
+	public void Resize(int width, int height) {
+		orthograhicCamera.Resize(width, height);
 	}
 
+	/**
+	 * Recalculate View Matrix based on camera position
+	 * 
+	 * @param positon the position of the camera
+	 */
 	public void adjustViewMatrix(Vector positon) {
-		Vector3f cameraFront = new Vector3f(0, 0, -1);
-		Vector3f cameraUp = new Vector3f(0, 1, 0);
-
-		viewMatrix.identity();
-		viewMatrix = viewMatrix.lookAt(
-				new Vector3f(
-						positon.x,
-						positon.y, 20),
-				cameraFront.add(positon.x, positon.y, 0), cameraUp);
+		orthograhicCamera.Move(positon);
 	}
 
+	/**
+	 * @return wheter the this camera is the active one
+	 */
 	public boolean isActive() {
 		return isActive;
 	}
 
+	/**
+	 * @return the projection matrix used for later rendering
+	 */
 	public Matrix4f GetProjection() {
-		return projectionMatrix;
+		return orthograhicCamera.GetProjection();
 	}
 
+	/**
+	 * @return the view matrix used for later rendering
+	 */
 	public Matrix4f GetView() {
-		return viewMatrix;
+		return orthograhicCamera.GetView();
 	}
 
+	/**
+	 * TODO: implement proper zoom
+	 * 
+	 * @param f the factor of which by it zooms
+	 */
 	public void SetZoom(float f) {
 		zoom = f;
 	}
 
+	/**
+	 * @return the current zoom
+	 */
 	public float GetZoom() {
 		return zoom;
 	}
 
-	public void SetActive(boolean b) {
-		isActive = b;
+	/**
+	 * @param futur whether the camera should be active
+	 */
+	public void SetActive(boolean futur) {
+		isActive = futur;
+	}
+
+	/**
+	 * @return the internal represnettation of a camera
+	 */
+	public OrthograhicCamera GetCamera() {
+		return orthograhicCamera;
 	}
 }

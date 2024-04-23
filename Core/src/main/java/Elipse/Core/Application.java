@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import Elipse.Core.EventSystem.Events.Event;
 import Elipse.Core.EventSystem.Events.WindowCloseEvent;
 import Elipse.Core.EventSystem.Events.WindowResizeEvent;
+import Elipse.Core.Input.Input;
 import Elipse.Core.Layers.Layer;
 import Elipse.Core.Layers.LayerStack;
 import Elipse.Renderer.Window;
@@ -46,6 +47,8 @@ public abstract class Application {
 		while (running) {
 			double dt = GLFW.glfwGetTime() - lastFrametime;
 			lastFrametime = GLFW.glfwGetTime();
+
+			Input.Update();
 
 			layerStack.OnUpdate(dt);
 			layerStack.OnImguiRender();

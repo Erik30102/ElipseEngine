@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL30;
 
 import Elipse.Core.ECS.Transform;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
+import Elipse.Renderer.OrthograhicCamera;
 import Elipse.Renderer.Opengl.Buffers.BufferElement;
 import Elipse.Renderer.Opengl.Buffers.BufferElement.DataType;
 import Elipse.Renderer.Opengl.Buffers.BufferLayout;
@@ -89,7 +90,7 @@ public class Renderer2D {
 		quad.unbind();
 	}
 
-	public static void BeginScene(CameraComponent camera) {
+	public static void BeginScene(OrthograhicCamera camera) {
 		sceneData.projectionMatrix = camera.GetProjection();
 		sceneData.viewMatrix = camera.GetView();
 

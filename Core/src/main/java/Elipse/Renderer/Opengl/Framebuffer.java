@@ -24,6 +24,9 @@ public class Framebuffer {
 		Resize(width, height);
 	}
 
+	/**
+	 * Invalidate the framebuffer and create a new one
+	 */
 	public void Invalidate() {
 		if (FramebufferID != -1) {
 			GL30.glDeleteFramebuffers(FramebufferID);
@@ -51,6 +54,12 @@ public class Framebuffer {
 		Unbind();
 	}
 
+	/**
+	 * Set the size of the framebuffer and invalidate to take in effect
+	 * 
+	 * @param width  the height of the framebuffer
+	 * @param height the width of the framebuffer
+	 */
 	public void Resize(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -58,22 +67,37 @@ public class Framebuffer {
 		Invalidate();
 	}
 
+	/**
+	 * @return The texture object on which the framebuffer draws
+	 */
 	public Texture2D GetTexture() {
 		return FboTexture;
 	}
 
+	/**
+	 * Bind the framebuffer to capchure all the draw calls
+	 */
 	public void Bind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, FramebufferID);
 	}
 
+	/**
+	 * unbind the framebuffer
+	 */
 	public void Unbind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 	}
 
+	/**
+	 * @return the current width of the framebuffer
+	 */
 	public int GetWidth() {
 		return this.width;
 	}
 
+	/**
+	 * @return the current height of the framebuffer
+	 */
 	public int GetHeight() {
 		return this.height;
 	}
