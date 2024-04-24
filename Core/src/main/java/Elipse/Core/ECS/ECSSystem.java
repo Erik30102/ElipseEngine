@@ -2,6 +2,7 @@ package Elipse.Core.ECS;
 
 public abstract class ECSSystem {
 
+	/** the scene the system is attached to */
 	protected Scene scene;
 
 	/**

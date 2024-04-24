@@ -27,6 +27,12 @@ public class Project {
 	// TODO: dynamic when i implement a runtime Asset Manager
 	private transient AssetManager assetManager = new EditorAssetManager();
 
+	/**
+	 * Creates a Project with name at given directory
+	 * 
+	 * @param dir  the directory to create the project in
+	 * @param Name the name of the project
+	 */
 	public Project(String dir, String Name) {
 		ProjectDir = dir;
 		AssetDir = dir + "/Assets";
@@ -92,6 +98,11 @@ public class Project {
 		return null;
 	}
 
+	// TODO: make the asset and assetMapPath relative to the porject dir
+
+	/**
+	 * @return the path of the project
+	 */
 	public String GetProjectDir() {
 		return ProjectDir;
 	}
@@ -120,6 +131,9 @@ public class Project {
 		return ScriptProject;
 	}
 
+	/**
+	 * @return the current active project for use with the asset manager
+	 */
 	public static Project GetActive() {
 		return INSTANCE;
 	}

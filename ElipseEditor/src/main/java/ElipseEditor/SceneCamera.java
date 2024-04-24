@@ -2,7 +2,6 @@ package ElipseEditor;
 
 import org.joml.Vector2d;
 
-import Elipse.Core.Logger;
 import Elipse.Core.Input.Input;
 import Elipse.Core.Input.KeyCode;
 import Elipse.Core.Maths.Vector;
@@ -21,10 +20,19 @@ public class SceneCamera {
 		this.camera.Move(new Vector());
 	}
 
+	/**
+	 * Resizes the projection matrix to fit the aspect ratio
+	 * 
+	 * @param width  the width of the viewport
+	 * @param height the height of the viewport
+	 */
 	public void Resize(int width, int height) {
 		camera.Resize(width, height);
 	}
 
+	/**
+	 * Gets called every frame to update the camera and for it to move on input
+	 */
 	public void OnUpdate() {
 		if (Input.IsKeyPressed(KeyCode.EL_KEY_LEFT_ALT)) {
 			if (Input.IsMouseButtonPressed(KeyCode.EL_MOUSE_BUTTON_1)) {
@@ -36,6 +44,9 @@ public class SceneCamera {
 		}
 	}
 
+	/**
+	 * @return the Internal camera used for rendering
+	 */
 	public OrthograhicCamera GetCamera() {
 		return this.camera;
 	}
