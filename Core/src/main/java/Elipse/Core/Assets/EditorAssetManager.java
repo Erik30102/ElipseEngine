@@ -25,12 +25,7 @@ public class EditorAssetManager implements AssetManager {
 	public Map<String, Asset> loadedAssets = new HashMap<>();
 	public Map<String, AssetMetaData> assetMap = new HashMap<>();
 
-	private Map<String, AssetType> extensionDir = new HashMap<>();
-
 	public EditorAssetManager() {
-		extensionDir.put("png", AssetType.TEXTURE2D);
-		extensionDir.put("el", AssetType.SCENE);
-
 		AssetImporter.Init();
 	}
 
@@ -67,22 +62,8 @@ public class EditorAssetManager implements AssetManager {
 		return assetMap.containsKey(id.toString());
 	}
 
-	private AssetType GetTypeFromPath(String path) {
-		String extension = path.substring(path.lastIndexOf('.') + 1);
-
-		Logger.c_info("!!! NEED TO DELETE !!! AssetType: " + extension);
-
-		if (!extensionDir.containsKey(extension)) {
-			Logger.c_error("AssetType not found for URL: " + path);
-
-			return AssetType.NONE;
-		}
-
-		return extensionDir.get(extension);
-	}
-
 	public UUID ImportAsset(String path) {
-		AssetType type = GetTypeFromPath(path);
+		AssetType type = Asset.GetTypeFromPath(path);
 		AssetMetaData metaData = new AssetMetaData(type, new File(path).getPath());
 
 		UUID id = UUID.randomUUID();

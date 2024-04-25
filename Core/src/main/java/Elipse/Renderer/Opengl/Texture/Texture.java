@@ -73,7 +73,14 @@ public abstract class Texture extends Asset {
 		}
 	}
 
-	protected int InternalFormatTOGLDataFormat(TextureFormat format) {
+	/**
+	 * Converts the Internal Fomrat to the Opengl Data Format
+	 * 
+	 * @param format The Internal Format to return
+	 * @return a value which can be passed to the gpu which will be interpreted as
+	 *         the data format
+	 */
+	protected int InternalFormatToGLDataFormat(TextureFormat format) {
 		switch (format) {
 			case RGB8:
 				return GL46.GL_RGB;

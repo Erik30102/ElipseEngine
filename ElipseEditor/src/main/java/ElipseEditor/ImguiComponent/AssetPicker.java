@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import Elipse.Core.Assets.Asset.AssetType;
+import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.AssetMetaData;
 import Elipse.Core.Assets.EditorAssetManager;
@@ -61,8 +62,14 @@ public class AssetPicker {
 		return false;
 	}
 
-	public static Asset GetSelected() {
-		return INSTANCE.selected;
+	@SuppressWarnings("unchecked")
+	public static <T extends Asset> T GetSelected(Class<T> clazz) {
+		if (INSTANCE.selected.getClass() != clazz) {
+			Logger.c_warn("Selected asset is not of type " + clazz.getSimpleName() + " Edior bug please report!");
+			return null;
+		}
+
+		return (T) INSTANCE.selected;
 	}
 
 	public static void Open(String key, AssetType type) {

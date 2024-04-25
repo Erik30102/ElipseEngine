@@ -49,8 +49,6 @@ public class RenderSystem extends ECSSystem {
 			}
 		}
 
-		// Renderer2D.DrawQuad();
-
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
 
 		if (components != null) {
@@ -90,6 +88,11 @@ public class RenderSystem extends ECSSystem {
 		fbo.Unbind();
 	}
 
+	/**
+	 * Sets the camera for rendering in the editor
+	 * 
+	 * @param camera editor camera
+	 */
 	public void SetCamera(OrthograhicCamera camera) {
 		this.camera = camera;
 	}

@@ -23,6 +23,42 @@ public class BaseSystem extends ECSSystem implements IEntityListener<BaseCompone
 	}
 
 	@Override
+	public void OnEditorDispose() {
+		List<Pair<Entity, Component>> comp = scene.GetComponents(BaseComponentWrapper.class);
+
+		if (comp == null)
+			return;
+
+		comp.forEach(c -> {
+			((BaseComponentWrapper) c.getValue()).OnDisposeEditor();
+		});
+	}
+
+	@Override
+	public void OnRuntimeDispose() {
+		List<Pair<Entity, Component>> comp = scene.GetComponents(BaseComponentWrapper.class);
+
+		if (comp == null)
+			return;
+
+		comp.forEach(c -> {
+			((BaseComponentWrapper) c.getValue()).OnDispse();
+		});
+	}
+
+	@Override
+	public void OnEditorStep(float dt) {
+		List<Pair<Entity, Component>> comp = scene.GetComponents(BaseComponentWrapper.class);
+
+		if (comp == null)
+			return;
+
+		comp.forEach(c -> {
+			((BaseComponentWrapper) c.getValue()).OnUpdateEditor(dt);
+		});
+	}
+
+	@Override
 	public void OnStart() {
 		this.scene.AddListener(BaseComponentWrapper.class, this);
 	}
@@ -30,10 +66,12 @@ public class BaseSystem extends ECSSystem implements IEntityListener<BaseCompone
 	@Override
 	public void OnEntityAdded(Entity entity, BaseComponentWrapper component) {
 		component.SetEntity(entity);
+
+		component.OnStart();
 	}
 
 	@Override
 	public void OnEntityRemoved(Entity entity, BaseComponentWrapper component) {
-
+		component.OnDispse();
 	}
 }

@@ -11,6 +11,7 @@ uniform mat4 transformMat;
 out vec2 texCoord;
 
 void main() {
+	texCoord = atexCoord;
 	gl_Position = projectionMat * viewMat * transformMat * vec4(a_Position, 1.0);
 }
 

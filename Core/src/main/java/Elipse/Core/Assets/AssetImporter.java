@@ -6,14 +6,18 @@ import java.util.UUID;
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Assets.Importers.SceneImporter;
+import Elipse.Core.Assets.Importers.Texture2DImporter;
 
 public class AssetImporter {
 	private static HashMap<AssetType, IAssetImporter> importers;
 
+	// TODO: !!!!IMPORTANT!!!! UUID IS NOT SET INTERNALLY WHEN LOADING AN ASSET HAS
+	// TO BE FIXED
+
 	public static void Init() {
 		importers = new HashMap<>();
 		importers.put(AssetType.SCENE, new SceneImporter());
-		// importers.put(AssetType.TEXTURE2D, new Texture2DImporter());
+		importers.put(AssetType.TEXTURE2D, new Texture2DImporter());
 	}
 
 	public static Asset ImportAsset(UUID id, AssetMetaData metaData) {

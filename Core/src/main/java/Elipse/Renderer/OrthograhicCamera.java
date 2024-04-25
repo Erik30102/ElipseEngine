@@ -12,6 +12,10 @@ public class OrthograhicCamera {
 
 	private float zoom = 5f;
 
+	/**
+	 * Internal Representation of a camera for 2D rendering prettymuch no need to
+	 * use this just use the CameraComponent in the ECS System
+	 */
 	public OrthograhicCamera() {
 		projection = new Matrix4f();
 		transform = new Matrix4f();

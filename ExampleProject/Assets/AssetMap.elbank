@@ -2,5 +2,17 @@
   "fb8dcbad-93a9-434e-a73c-64fdfc4b3328": {
     "type": "SCENE",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets/StartScene.el"
+  },
+  "24ddd739-f9db-48cd-8544-850244435790": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\wall_mid.png"
+  },
+  "850013df-74d4-464c-b9cc-ec39280cbf69": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\knight_m_idle_anim_f0.png"
+  },
+  "8356db31-6ace-47a8-8f15-026bed2896e0": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\floor_1.png"
   }
 }

@@ -1,8 +1,6 @@
 package Elipse.Core.ECS.BuiltIn.RenderSystem;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 import Elipse.Core.ECS.Component;
 import Elipse.Core.Maths.Vector;
@@ -28,8 +26,8 @@ public class CameraComponent implements Component {
 	/**
 	 * Resize camera and the projection matrix to fit the new aspect ratio
 	 * 
-	 * @param width widht of the window
-	 * @param h     height of the window
+	 * @param width  widht of the window
+	 * @param height height of the window
 	 */
 	public void Resize(int width, int height) {
 		orthograhicCamera.Resize(width, height);

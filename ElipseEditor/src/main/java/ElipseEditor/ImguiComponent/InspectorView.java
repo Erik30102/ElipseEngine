@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import org.joml.Vector3f;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
@@ -13,6 +14,7 @@ import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
 import imgui.type.ImString;
@@ -76,7 +78,19 @@ public class InspectorView {
 
 				if (ImGui.collapsingHeader(component.getClass().getSimpleName())) {
 					if (component.getClass() == SpriteRenderComponent.class) {
+						ImGui.columns(2);
 
+						ImGui.text("Texture: ");
+						ImGui.nextColumn();
+						if (ImGui.button("Select Texture")) {
+							AssetPicker.Open("TEX", AssetType.TEXTURE2D);
+						}
+
+						if (AssetPicker.Display("TEX")) {
+							((SpriteRenderComponent) component).SetTexture(AssetPicker.GetSelected(Texture2D.class));
+						}
+
+						ImGui.columns(1);
 					} else if (component.getClass() == CameraComponent.class) {
 						ImGui.columns(2);
 

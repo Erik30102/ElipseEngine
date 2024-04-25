@@ -14,6 +14,9 @@ public class Texture2D extends Texture {
 
 	public Texture2D(String path, TextureFiltering filtering,
 			TextureWrapMode wrapMode) {
+		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, textureId);
+
 		this.path = path;
 
 		IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -36,7 +39,7 @@ public class Texture2D extends Texture {
 				return;
 			}
 
-			this.internalDataFormat = this.InternalFormatTOGLDataFormat(format);
+			this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
 			this.internalFormat = this.InternalFormatToGLInternalFormat(format);
 
 			GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
@@ -47,13 +50,16 @@ public class Texture2D extends Texture {
 			GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_S, this.InternalWrapModeToGLWrapMode(wrapMode));
 			GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_T, this.InternalWrapModeToGLWrapMode(wrapMode));
 
-			GL46.glTextureSubImage2D(textureId, 0, 0, 0, this.width, this.height, this.internalDataFormat,
-					GL46.GL_UNSIGNED_BYTE, image);
+			GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
+					this.internalDataFormat, this.width, this.height,
+					0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, image);
 
 		} else {
 			Logger.c_error("Texture: Could not load image '" + path + "'");
 			return;
 		}
+
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -72,7 +78,7 @@ public class Texture2D extends Texture {
 			TextureFiltering filtering,
 			TextureWrapMode wrapMode) {
 
-		this.internalDataFormat = this.InternalFormatTOGLDataFormat(format);
+		this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
 		this.internalFormat = this.InternalFormatToGLInternalFormat(format);
 		this.width = width;
 		this.height = height;

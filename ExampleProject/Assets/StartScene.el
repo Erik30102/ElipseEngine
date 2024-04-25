@@ -4,11 +4,11 @@
       "Name": "Das ist ein Test",
       "transform": {
         "position": {
-          "x": -1.6821368,
-          "y": 0.8706079
+          "x": -0.84211755,
+          "y": 0.22007754
         },
         "scale": {
-          "x": 1.0,
+          "x": 0.9925065,
           "y": 1.0
         },
         "rotation": 0.0
@@ -18,13 +18,13 @@
           "type": "Sandbox.ExampleLib",
           "properties": {
             "comp": {
-              "speed": 18.0
+              "speed": 300.0
             }
           },
           "compType": "Base"
         },
         {
-          "texAssetId": "INTERNAL",
+          "texAssetId": "24ddd739-f9db-48cd-8544-850244435790",
           "compType": "Sprite"
         }
       ]

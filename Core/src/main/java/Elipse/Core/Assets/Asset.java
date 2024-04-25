@@ -1,9 +1,12 @@
 package Elipse.Core.Assets;
 
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 
+import Elipse.Core.Logger;
 import Elipse.Core.ECS.Scene;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 
@@ -29,6 +32,10 @@ public abstract class Asset {
 		}
 	}
 
+	// TODO: to asset helper class has no reason to be here
+
+	private static Map<String, AssetType> extensionDir = null;
+
 	public static AssetType GetAssetTypeFromString(String type) {
 		switch (type) {
 			case "SCENE":
@@ -47,6 +54,22 @@ public abstract class Asset {
 	}
 
 	public abstract AssetType GetAssetType();
+
+	public static AssetType GetTypeFromPath(String path) {
+		if (extensionDir == null) {
+			extensionDir = new HashMap<>();
+			extensionDir.put("png", AssetType.TEXTURE2D);
+			extensionDir.put("el", AssetType.SCENE);
+		}
+
+		String extension = path.substring(path.lastIndexOf('.') + 1);
+
+		if (!extensionDir.containsKey(extension)) {
+			return AssetType.NONE;
+		}
+
+		return extensionDir.get(extension);
+	}
 
 	public static AssetType GetAssetTypeFromClass(Class<? extends Asset> clazz) {
 		if (clazz == Scene.class) {

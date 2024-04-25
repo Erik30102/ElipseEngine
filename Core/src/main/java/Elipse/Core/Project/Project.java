@@ -139,6 +139,10 @@ public class Project {
 	}
 
 	public void Save() {
+		if (this.GetAssetManager() instanceof EditorAssetManager) {
+			((EditorAssetManager) this.GetAssetManager()).SerializeAssetBank();
+		}
+
 		Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(UUID.class, new UUIDSerializer()).create();
 		String json = gson.toJson(this);
 

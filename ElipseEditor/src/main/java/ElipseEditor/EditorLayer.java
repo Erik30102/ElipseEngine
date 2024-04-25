@@ -70,18 +70,14 @@ public class EditorLayer extends Layer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void OnAttach() {
+		INSTANCE = this;
+
 		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class, RidgedBodyComponent.class,
 				BoxColliderComponent.class };
 
 		fbo = new Framebuffer(200, 200);
 
 		scriptEngine = new ScriptEngine();
-
-		INSTANCE = this;
-
-		// Project aproj = new
-		// Project("C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject",
-		// "test proj");
 
 		Project proj = Project
 				.LoadProject("C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Project.elprj");
@@ -100,7 +96,6 @@ public class EditorLayer extends Layer {
 		contentBrowser = new ContentBrowser();
 
 		AssetPicker.Init();
-
 	}
 
 	@Override
@@ -154,35 +149,8 @@ public class EditorLayer extends Layer {
 
 		ImGui.begin("Debug Menu");
 
-		if (ImGui.button("test")) {
-			AssetPicker.Open("test", AssetType.SCENE);
-		}
-
-		if (AssetPicker.Display("test")) {
-
-		}
-
 		ImGui.dragInt("Texture id", texId, 1, 1, 20);
 		ImGui.image(texId[0], 200, 200, 0, 1, 1, 0);
-
-		if (ImGui.button("test funtion")) {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-				try {
-					oos.writeObject(new String("tesats"));
-
-					Files.write(Path.of("test.dat"), baos.toByteArray());
-
-					oos.close();
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			baos.toString();
-		}
 
 		ImGui.end();
 

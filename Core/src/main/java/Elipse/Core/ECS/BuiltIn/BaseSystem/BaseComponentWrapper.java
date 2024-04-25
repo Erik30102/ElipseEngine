@@ -19,6 +19,22 @@ public class BaseComponentWrapper implements Component {
 		this.comp.OnUpdate(dt);
 	}
 
+	public void OnUpdateEditor(float dt) {
+		this.comp.OnUpdateEditor(dt);
+	}
+
+	public void OnDispse() {
+		this.comp.OnDispse();
+	}
+
+	public void OnDisposeEditor() {
+		this.comp.OnDisposeEditor();
+	}
+
+	public void OnStart() {
+		this.comp.OnStart();
+	}
+
 	public BaseComponent GetComponent() {
 		return this.comp;
 	}

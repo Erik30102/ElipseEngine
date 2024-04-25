@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import Elipse.Core.Assets.Asset;
+import Elipse.Core.Assets.EditorAssetManager;
+import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Project.Project;
 import imgui.ImGui;
 
@@ -42,17 +45,36 @@ public class ContentBrowser {
 
 		for (File file : content.get(currentPath)) {
 			if (file.isDirectory()) {
-				if (ImGui.button(file.getName(), size, size)) {
+				if (ImGui.button("Folder", size, size)) {
 					currentPath = file.getPath();
 				}
+				ImGui.text(file.getName());
 			} else {
-				ImGui.button(file.getName(), size, size);
+				HandelFile(file);
 			}
 			ImGui.nextColumn();
 		}
 		ImGui.columns(1);
 
 		ImGui.end();
+	}
+
+	private void HandelFile(File file) {
+		AssetType type = Asset.GetTypeFromPath(file.getPath());
+
+		ImGui.pushID(file.getPath());
+		if (ImGui.button(type != AssetType.NONE ? type.name() : "NF", size, size)) {
+			if (type != AssetType.NONE) {
+				EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
+
+				if (!assetManager.IsAssetImported(file.getPath())) {
+					assetManager.ImportAsset(file.getPath());
+				}
+			}
+		}
+		ImGui.popID();
+
+		ImGui.text(file.getName());
 	}
 
 	private void Refresh() {
