@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL30;
 import Elipse.Core.ECS.Transform;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Renderer.OrthograhicCamera;
+import Elipse.Renderer.Lighting.LightingManager;
 import Elipse.Renderer.Opengl.Buffers.BufferElement;
 import Elipse.Renderer.Opengl.Buffers.BufferElement.DataType;
 import Elipse.Renderer.Opengl.Buffers.BufferLayout;
@@ -25,6 +26,8 @@ public class Renderer2D {
 
 	private static VertexArray quad;
 	private static Shader Shader_Quad;
+
+	private static LightingManager lightingManager = new LightingManager();
 
 	public static void Init() {
 		RendererApi.Init();
@@ -78,9 +81,11 @@ public class Renderer2D {
 		Shader_Quad.loadMatrix4("viewMat", sceneData.viewMatrix);
 		Shader_Quad.loadMatrix4("projectionMat", sceneData.projectionMatrix);
 		Shader_Quad.loadMatrix4("transformMat",
-				new Matrix4f().identity().translate(transform.position.x,
-						transform.position.y, 10).scale(transform.scale.x, transform.scale.y, 1)
+				new Matrix4f().identity().translate(transform.position.getX(),
+						transform.position.getY(), 10).scale(transform.scale.getX(), transform.scale.getY(), 1)
 						.rotateZ((float) Math.toRadians(transform.rotation)));
+
+		LightingManager.GetInstance().Bind(Shader_Quad);
 
 		texture.Bind(0);
 		Shader_Quad.loadInt("tex", 0);

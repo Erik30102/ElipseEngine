@@ -9,6 +9,7 @@ public class Editor extends Application {
 	}
 
 	public static void main(String[] args) {
+		// TODO: while true for restarting when script jar changes
 		new Editor().Run();
 	}
 

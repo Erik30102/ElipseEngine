@@ -9,19 +9,36 @@ uniform mat4 projectionMat;
 uniform mat4 transformMat;
 
 out vec2 texCoord;
+out vec2 WordPos;
 
 void main() {
 	texCoord = atexCoord;
 	gl_Position = projectionMat * viewMat * transformMat * vec4(a_Position, 1.0);
+	WordPos = vec3(transformMat * vec4(a_Position, 1.0)).xy;
 }
 
 #type fragment
 #version 330 core
+struct PointLight {
+	vec2 position;
+	vec3 color;
+	float brightness;
+};
+
+#define MAX_POINT_LIGHTS 200
+
 layout(location = 0) out vec4 color;
+
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform int lightCount;
 
 uniform sampler2D tex;
 
 in vec2 texCoord;
+in vec2 WordPos;
+
+const vec3 ambientColor = vec3(1.0, 1.0, 1.0);
+const float ambientStrenght = 0.2;
 
 void main() {
 	vec4 c = texture(tex, texCoord);
@@ -29,5 +46,23 @@ void main() {
 	if(c.a < 0.1)
 		discard;
 
-	color = c;
+	vec3 _out = vec3(0.0);
+
+	for(int i = 0; i < lightCount; i++) {
+		float diffX = pointLights[i].position.x - WordPos.x;
+		float diffY = pointLights[i].position.y - WordPos.y;
+
+		float distance2 = (diffX * diffX) + (diffY * diffY);
+
+		if(distance2 < pointLights[i].brightness) {
+			float distance = sqrt(distance2);
+
+			float attentuation = 1.0 - smoothstep(0, pointLights[i].brightness, distance);
+
+			vec3 Diffuse = pointLights[i].color * clamp(attentuation, 0.0, 1.0);
+			_out += Diffuse;
+		}
+	}
+
+	color = c * vec4(ambientColor, 1) * ambientStrenght + vec4(_out, 1);
 }

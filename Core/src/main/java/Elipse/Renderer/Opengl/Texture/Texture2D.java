@@ -84,8 +84,6 @@ public class Texture2D extends Texture {
 		this.height = height;
 		this.format = format;
 
-		// this.textureId = GL46.glGenTextures();
-
 		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
 		GL46.glTextureStorage2D(this.textureId, 1, this.internalFormat, this.width, this.height);
 
@@ -103,7 +101,8 @@ public class Texture2D extends Texture {
 
 	@Override
 	public void Bind(int slot) {
-		GL46.glBindTextureUnit(slot, this.textureId);
+		GL46.glActiveTexture(GL46.GL_TEXTURE0 + slot);
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, this.textureId);
 	}
 
 	@Override

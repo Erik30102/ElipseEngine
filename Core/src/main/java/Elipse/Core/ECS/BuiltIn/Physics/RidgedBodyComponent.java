@@ -8,6 +8,7 @@ import Elipse.Core.Physics.PhysicsBody.BodyType;
 
 public class RidgedBodyComponent implements Component {
 	public PhysicsBody rg;
+	public boolean RotationLocked = false;
 
 	public RidgedBodyComponent() {
 		rg = new PhysicsBody(BodyType.DYNAMIC);
@@ -43,5 +44,13 @@ public class RidgedBodyComponent implements Component {
 
 	public void ApplyImpulse(float x, float y) {
 		rg.ApplyImpulse(x, y);
+	}
+
+	public boolean IsRotationLocked() {
+		return this.RotationLocked;
+	}
+
+	public void SetIsRotationLocked(boolean isRotationLocked) {
+		this.RotationLocked = isRotationLocked;
 	}
 }

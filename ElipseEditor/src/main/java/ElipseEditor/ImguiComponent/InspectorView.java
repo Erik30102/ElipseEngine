@@ -13,7 +13,9 @@ import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
+import Elipse.Core.Maths.Color;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
@@ -46,8 +48,8 @@ public class InspectorView {
 
 				ImGui.text("Position: ");
 				ImGui.nextColumn();
-				float[] f = { entity.transform.GetPosition().x,
-						entity.transform.GetPosition().y };
+				float[] f = { entity.transform.GetPosition().getX(),
+						entity.transform.GetPosition().getY() };
 				if (ImGui.dragFloat2("##P", f, 0.1f)) {
 					entity.transform.setPosition(f[0], f[1]);
 				}
@@ -114,7 +116,33 @@ public class InspectorView {
 						}
 
 						ImGui.columns(1);
+					} else if (component.getClass() == PointLightComponent.class) {
+						ImGui.columns(2);
+
+						PointLightComponent light = (PointLightComponent) component;
+
+						ImGui.text("Intensity: ");
+
+						ImGui.nextColumn();
+
+						float[] f = { light.GetIntensity() };
+						if (ImGui.dragFloat("##Intensity", f, 0.1f)) {
+							light.SetIntensity(f[0]);
+						}
+
+						ImGui.nextColumn();
+
+						ImGui.text("Color: ");
+
+						ImGui.nextColumn();
+
+						float[] r = { light.GetColor().getRed(), light.GetColor().getGreen(), light.GetColor().getBlue() };
+						if (ImGui.colorPicker3("##ColorP", r)) {
+							light.SetColor(new Color((int) r[0], (int) r[1], (int) r[2]));
+						}
+						ImGui.columns(1);
 					}
+
 				}
 			}
 
@@ -136,18 +164,23 @@ public class InspectorView {
 
 				ImGui.separator();
 
-				for (Class<? extends BaseComponent> comp : EditorLayer.GetEditor().GetScriptEngine().GetComponents()) {
-					if (ImGui.selectable(comp.getSimpleName())) {
-						try {
-							scene.AddComponent(new BaseComponentWrapper(comp.getConstructor().newInstance()), entity);
-						} catch (Exception e) {
-							Logger.c_error(
-									"Failed while trying to add new Base Behavior Component of type: " + comp.getSimpleName()
-											+ " To Entity");
-							e.printStackTrace();
-						}
-					}
-				}
+				// TODO: reimplment with cashing
+
+				// for (Class<? extends BaseComponent> comp :
+				// EditorLayer.GetEditor().GetScriptEngine().GetComponents()) {
+				// if (ImGui.selectable(comp.getSimpleName())) {
+				// try {
+				// scene.AddComponent(new
+				// BaseComponentWrapper(comp.getConstructor().newInstance()), entity);
+				// } catch (Exception e) {
+				// Logger.c_error(
+				// "Failed while trying to add new Base Behavior Component of type: " +
+				// comp.getSimpleName()
+				// + " To Entity");
+				// e.printStackTrace();
+				// }
+				// }
+				// }
 
 				ImGui.endPopup();
 			}

@@ -7,13 +7,12 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.system.MemoryStack;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Maths.Vector;
+import Elipse.Core.Maths.Vector3;
 import Elipse.Utils.Pair;
 
 public class Shader {
@@ -91,9 +90,6 @@ public class Shader {
 			}
 		}
 
-		// Logger.c_info("vertexSrc: " + vertexSrc);
-		// Logger.c_info("fragmentSrc: " + fragmentSrc);
-
 		return new Pair<String, String>(vertexSrc, fragmentSrc);
 	}
 
@@ -152,9 +148,9 @@ public class Shader {
 	 * @param location the location to load the value to
 	 * @param val      the Vector2f value to load
 	 */
-	public void loadVector2(String location, Vector2f val) {
+	public void loadVector2(String location, Vector val) {
 		chckUniform(location);
-		GL46.glUniform2f(uniforms.get(location), val.x, val.y);
+		GL46.glUniform2f(uniforms.get(location), val.getX(), val.getY());
 	}
 
 	/**
@@ -163,20 +159,9 @@ public class Shader {
 	 * @param location the location to load the value to
 	 * @param val      the Vector3f value to load
 	 */
-	public void loadVector3(String location, Vector3f val) {
+	public void loadVector3(String location, Vector3 val) {
 		chckUniform(location);
-		GL46.glUniform3f(uniforms.get(location), val.x, val.y, val.z);
-	}
-
-	/**
-	 * Loads a Vector4f value to the specified location.
-	 *
-	 * @param location the location to load the value to
-	 * @param val      the Vector4f value to load
-	 */
-	public void loadVector4(String location, Vector4f val) {
-		chckUniform(location);
-		GL46.glUniform4f(uniforms.get(location), val.x, val.y, val.z, val.w);
+		GL46.glUniform3f(uniforms.get(location), val.getX(), val.getY(), val.getZ());
 	}
 
 	/**

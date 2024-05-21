@@ -6,16 +6,24 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import Elipse.Core.Logger;
+import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
+import Elipse.Core.Scripting.Scripts.BaseComponentScript;
+import Elipse.Core.Scripting.Scripts.ComponentScript;
+import Elipse.Core.Scripting.Scripts.ScriptableObjectScript;
+import Elipse.Core.Scripting.Scripts.SystemScript;
 
 public class ScriptEngine {
 
-	private List<Class<? extends BaseComponent>> components = new ArrayList<Class<? extends BaseComponent>>();
+	private Map<String, Script> ScriptDirectory = new HashMap<>();
+
 	private URLClassLoader classLoader;
 
 	private static ScriptEngine INSTANCE;
@@ -30,9 +38,8 @@ public class ScriptEngine {
 	 * 
 	 * @param jar
 	 */
-	@SuppressWarnings("unchecked")
 	public void LoadJar(String jar) {
-		components.clear();
+		this.ScriptDirectory.clear();
 
 		try {
 			URL jarFile = new File(jar).toURI().toURL();
@@ -50,9 +57,7 @@ public class ScriptEngine {
 
 					Class<?> clazz = classLoader.loadClass(className);
 
-					if (BaseComponent.class.isAssignableFrom(clazz)) {
-						components.add((Class<? extends BaseComponent>) clazz);
-					}
+					this.ImplmentClass(clazz);
 				}
 			}
 
@@ -64,15 +69,28 @@ public class ScriptEngine {
 		}
 	}
 
-	/**
-	 * @return the list of compoents currently loaded into the engine
-	 */
-	public List<Class<? extends BaseComponent>> GetComponents() {
-		return components;
+	// TODO: refactor this is ass
+	private void ImplmentClass(Class<?> clazz) {
+		if (BaseComponent.class.isAssignableFrom(clazz)) {
+			this.ScriptDirectory.put(clazz.getCanonicalName(), new BaseComponentScript(clazz));
+		} else if (ScriptableObject.class.isAssignableFrom(clazz)) {
+			this.ScriptDirectory.put(clazz.getCanonicalName(), new ScriptableObjectScript(clazz));
+		} else if (System.class.isAssignableFrom(clazz)) {
+			this.ScriptDirectory.put(clazz.getCanonicalName(), new SystemScript(clazz));
+		} else if (Component.class.isAssignableFrom(clazz)) {
+			this.ScriptDirectory.put(clazz.getCanonicalName(), new ComponentScript(clazz));
+		} else {
+			Logger.c_info("Could not load script: " + clazz.getCanonicalName()
+					+ " either because it is helper class or the script type your trying to use is not implmented yet or mabey just so major engine fuckup");
+		}
 	}
 
 	public URLClassLoader GetClassLoader() {
 		return classLoader;
+	}
+
+	public Script GetScript(String type) {
+		return this.ScriptDirectory.get(type);
 	}
 
 	/**

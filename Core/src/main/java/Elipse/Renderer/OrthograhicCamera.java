@@ -78,8 +78,8 @@ public class OrthograhicCamera {
 		transform.identity();
 		transform = transform.lookAt(
 				new Vector3f(
-						positon.x,
-						positon.y, 20),
-				cameraFront.add(positon.x, positon.y, 0), cameraUp);
+						positon.getX(),
+						positon.getY(), 20),
+				cameraFront.add(positon.getX(), positon.getY(), 0), cameraUp);
 	}
 }

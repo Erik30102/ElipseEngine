@@ -7,7 +7,7 @@ import Elipse.Core.Input.KeyCode;
 
 public class ExampleLib extends BaseComponent {
 
-	public float speed = 3;
+	public float speed = 300;
 
 	@Override
 	public void OnUpdate(float dt) {

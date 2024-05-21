@@ -35,16 +35,10 @@ public class BaseComponentSerializer
 		JsonObject jsonObject = json.getAsJsonObject();
 		String type = jsonObject.get("type").getAsString();
 		JsonObject properties = jsonObject.get("properties").getAsJsonObject();
-		try {
-			BaseComponent baseComp = context.deserialize(properties,
-					ScriptEngine.GetInstance().GetClassLoader().loadClass(type));
-			return new BaseComponentWrapper(baseComp);
-		} catch (ClassNotFoundException e) {
-			Logger.c_error("failed trying to create class from json of type: " + type);
-			e.printStackTrace();
-		}
 
-		return null;
+		BaseComponent baseComp = context.deserialize(properties,
+				ScriptEngine.GetInstance().GetScript(type).GetBaseClazz());
+		return new BaseComponentWrapper(baseComp);
 	}
 
 }

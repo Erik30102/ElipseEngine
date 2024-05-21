@@ -6,8 +6,8 @@ import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 
-import Elipse.Core.Logger;
 import Elipse.Core.ECS.Scene;
+import Elipse.Core.Scripting.ScriptableObject;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 
 public abstract class Asset {
@@ -19,7 +19,10 @@ public abstract class Asset {
 		SCENE(1),
 
 		@SerializedName("TEXTURE2D")
-		TEXTURE2D(2);
+		TEXTURE2D(2),
+
+		@SerializedName("SCRIPTABLEOBJ")
+		SCRIPTABLEOBJ(3);
 
 		private int id;
 
@@ -42,6 +45,8 @@ public abstract class Asset {
 				return AssetType.SCENE;
 			case "TEXTURE2D":
 				return AssetType.TEXTURE2D;
+			case "SCRIPTABLEOBJ":
+				return AssetType.SCRIPTABLEOBJ;
 			default:
 				return AssetType.NONE;
 		}
@@ -60,6 +65,7 @@ public abstract class Asset {
 			extensionDir = new HashMap<>();
 			extensionDir.put("png", AssetType.TEXTURE2D);
 			extensionDir.put("el", AssetType.SCENE);
+			extensionDir.put(".elobj", AssetType.SCRIPTABLEOBJ);
 		}
 
 		String extension = path.substring(path.lastIndexOf('.') + 1);
@@ -76,6 +82,8 @@ public abstract class Asset {
 			return AssetType.SCENE;
 		} else if (clazz == Texture2D.class) {
 			return AssetType.TEXTURE2D;
+		} else if (clazz == ScriptableObject.class) {
+			return AssetType.SCRIPTABLEOBJ;
 		} else {
 			return AssetType.NONE;
 		}

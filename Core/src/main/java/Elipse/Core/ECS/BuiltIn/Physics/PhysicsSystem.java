@@ -24,6 +24,7 @@ public class PhysicsSystem extends ECSSystem {
 		components.forEach((pair) -> {
 			Entity e = pair.getKey();
 			e.transform.position.set(((RidgedBodyComponent) pair.getValue()).GetPosition());
+			// TODO: rotation
 		});
 	}
 

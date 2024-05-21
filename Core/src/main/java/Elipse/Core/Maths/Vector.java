@@ -8,12 +8,12 @@ public class Vector {
 	/**
 	 * X component of the vector.
 	 */
-	public float x;
+	private float x;
 
 	/**
 	 * Y component of the vector.
 	 */
-	public float y;
+	private float y;
 
 	/**
 	 * Creates a new Vector object with default values (0, 0).
@@ -137,16 +137,34 @@ public class Vector {
 		return "(" + x + ", " + y + ")";
 	}
 
+	/**
+	 * Sets the x and y components of the vector to the specified values.
+	 *
+	 * @param x the new value for the x component
+	 * @param y the new value for the y component
+	 */
 	public void set(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * Sets the x and y components of this vector to the values of the given vector.
+	 *
+	 * @param vector the vector whose x and y components will be copied to this
+	 *               vector
+	 */
 	public void set(Vector vector) {
 		this.x = vector.x;
 		this.y = vector.y;
 	}
 
+	/**
+	 * Adds the specified values to the x and y components of the vector.
+	 * 
+	 * @param x the value to add to the x component
+	 * @param y the value to add to the y component
+	 */
 	public void add(float x, float y) {
 		this.x += x;
 		this.y += y;

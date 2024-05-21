@@ -28,6 +28,16 @@ public class RenderSystem extends ECSSystem {
 
 	@Override
 	public void OnRuntimeStep(float dt) {
+		List<Pair<Entity, Component>> PointLights = scene.GetComponents(PointLightComponent.class);
+
+		if (PointLights != null) {
+			for (Pair<Entity, Component> pair : PointLights) {
+				PointLightComponent pointLight = (PointLightComponent) pair.getValue();
+
+				pointLight.SetPosition(pair.getKey().transform.position);
+			}
+		}
+
 		List<Pair<Entity, Component>> CameraComponents = scene.GetComponents(CameraComponent.class);
 
 		if (CameraComponents == null)
@@ -67,6 +77,18 @@ public class RenderSystem extends ECSSystem {
 
 	@Override
 	public void OnEditorStep(float dt) {
+		// LIGHTING
+
+		List<Pair<Entity, Component>> PointLights = scene.GetComponents(PointLightComponent.class);
+
+		if (PointLights != null) {
+			for (Pair<Entity, Component> pair : PointLights) {
+				PointLightComponent pointLight = (PointLightComponent) pair.getValue();
+
+				pointLight.SetPosition(pair.getKey().transform.position);
+			}
+		}
+
 		fbo.Bind();
 		RendererApi.SetViewport(fbo.GetWidth(), fbo.GetHeight());
 

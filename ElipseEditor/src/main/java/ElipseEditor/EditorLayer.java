@@ -1,10 +1,5 @@
 package ElipseEditor;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.joml.Matrix4f;
@@ -12,14 +7,13 @@ import org.joml.Vector3f;
 
 import Elipse.Core.Application;
 import Elipse.Core.Logger;
-import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.BuiltIn.Physics.BoxColliderComponent;
-import Elipse.Core.ECS.BuiltIn.Physics.PhysicsSystem;
 import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.RenderSystem;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Core.EventSystem.Events.Event;
@@ -73,7 +67,7 @@ public class EditorLayer extends Layer {
 		INSTANCE = this;
 
 		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class, RidgedBodyComponent.class,
-				BoxColliderComponent.class };
+				BoxColliderComponent.class, PointLightComponent.class };
 
 		fbo = new Framebuffer(200, 200);
 
@@ -90,7 +84,7 @@ public class EditorLayer extends Layer {
 		renderSystem.SetCamera(this.sceneCamera.GetCamera());
 
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
-		this.scene.AddSystem(renderSystem, new PhysicsSystem());
+		this.scene.AddSystem(renderSystem);
 
 		sceneHiarchy = new SceneHiarchy(scene);
 		contentBrowser = new ContentBrowser();
@@ -188,8 +182,8 @@ public class EditorLayer extends Layer {
 			Matrix4f cameraProj = sceneCamera.GetCamera().GetProjection();
 
 			Matrix4f trans = new Matrix4f().identity()
-					.translate(activeEntity.transform.position.x, activeEntity.transform.position.y, 0)
-					.scale(activeEntity.transform.scale.x, activeEntity.transform.scale.y, 0)
+					.translate(activeEntity.transform.position.getX(), activeEntity.transform.position.getY(), 0)
+					.scale(activeEntity.transform.scale.getX(), activeEntity.transform.scale.getY(), 0)
 					.rotateZ((float) Math.toRadians(activeEntity.transform.rotation));
 
 			float[] _trans = new float[16];

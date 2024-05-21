@@ -14,6 +14,9 @@ public class AssetImporter {
 	// TODO: !!!!IMPORTANT!!!! UUID IS NOT SET INTERNALLY WHEN LOADING AN ASSET HAS
 	// TO BE FIXED
 
+	// INFO: i think this is already fixxed but still the whole asset system seems a
+	// bit shakey at the moment has to be looked at
+
 	public static void Init() {
 		importers = new HashMap<>();
 		importers.put(AssetType.SCENE, new SceneImporter());

@@ -98,7 +98,7 @@ public class PhysicsBody {
 	 * @param impuls the 2d vector representation of the impuls
 	 */
 	public void ApplyImpulse(Vector impuls) {
-		body.applyForce(new Vec2(impuls.x, impuls.y), new Vec2(this.GetX(), this.GetY()));
+		body.applyForce(new Vec2(impuls.getX(), impuls.getY()), new Vec2(this.GetX(), this.GetY()));
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class PhysicsBody {
 	 * @param location the 2d location from where the impulse is applied
 	 */
 	public void ApplyImpulse(Vector impuls, Vector location) {
-		body.applyForce(new Vec2(impuls.x, impuls.y), new Vec2(location.x, location.y));
+		body.applyForce(new Vec2(impuls.getX(), impuls.getY()), new Vec2(location.getX(), location.getY()));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class PhysicsBody {
 	 * @param position the new position of the object
 	 */
 	public void SetPosition(Vector position) {
-		body.setTransform(new Vec2(position.x, position.y), body.getAngle());
+		body.setTransform(new Vec2(position.getX(), position.getY()), body.getAngle());
 	}
 
 	/**

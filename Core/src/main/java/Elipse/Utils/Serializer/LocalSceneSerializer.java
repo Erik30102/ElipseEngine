@@ -22,10 +22,15 @@ import Elipse.Core.ECS.Scene;
 import Elipse.Core.ECS.Transform;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseSystem;
+import Elipse.Core.ECS.BuiltIn.Physics.BoxColliderComponent;
+import Elipse.Core.ECS.BuiltIn.Physics.PhysicsSystem;
+import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Utils.Serializer.Components.BaseComponentSerializer;
+import Elipse.Utils.Serializer.Components.BoxColliderComponentSerializer;
 import Elipse.Utils.Serializer.Components.CameraComponentSerializer;
+import Elipse.Utils.Serializer.Components.RidgetbodyComponentSerializer;
 import Elipse.Utils.Serializer.Components.SpriteRenderComponentSerializer;
 
 public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerializer<Scene> {
@@ -68,6 +73,24 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 
 					componentResult.add("compType", new JsonPrimitive("Camera"));
 					componentArray.add(componentResult);
+				} else if (component instanceof BoxColliderComponent) {
+					JsonObject componentResult = new BoxColliderComponentSerializer()
+							.serialize((BoxColliderComponent) component,
+									BoxColliderComponent.class,
+									context)
+							.getAsJsonObject();
+
+					componentResult.add("compType", new JsonPrimitive("BoxCollider"));
+					componentArray.add(componentResult);
+				} else if (component instanceof RidgedBodyComponent) {
+					JsonObject componentResult = new RidgetbodyComponentSerializer()
+							.serialize((RidgedBodyComponent) component,
+									RidgedBodyComponent.class,
+									context)
+							.getAsJsonObject();
+
+					componentResult.add("compType", new JsonPrimitive("RidgetBody"));
+					componentArray.add(componentResult);
 				}
 			}
 
@@ -87,7 +110,7 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 		JsonArray entitiesArray = sceneObject.getAsJsonArray("entities");
 
 		Scene scene = new Scene();
-		scene.AddSystem(new BaseSystem());
+		scene.AddSystem(new BaseSystem(), new PhysicsSystem());
 
 		for (JsonElement entityElement : entitiesArray) {
 			JsonObject entityObject = entityElement.getAsJsonObject();
@@ -120,6 +143,18 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 					case "Camera":
 						CameraComponentSerializer camera_ser = new CameraComponentSerializer();
 						comp = camera_ser.deserialize(componentObject, CameraComponent.class, context);
+
+						entity.AddComponent(comp);
+						break;
+					case "RidgetBody":
+						RidgetbodyComponentSerializer rigidbody_ser = new RidgetbodyComponentSerializer();
+						comp = rigidbody_ser.deserialize(componentObject, RidgedBodyComponent.class, context);
+
+						entity.AddComponent(comp);
+						break;
+					case "BoxCollider":
+						BoxColliderComponentSerializer boxcollider_ser = new BoxColliderComponentSerializer();
+						comp = boxcollider_ser.deserialize(componentObject, BoxColliderComponent.class, context);
 
 						entity.AddComponent(comp);
 						break;
