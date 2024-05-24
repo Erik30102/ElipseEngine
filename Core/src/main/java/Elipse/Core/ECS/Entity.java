@@ -32,8 +32,12 @@ public class Entity {
 		this.transform = transform2;
 	}
 
-	public void SetName(String string) {
-		this.name = string;
+	public void SetName(String newname) {
+		this.name = newname;
+	}
+
+	public Scene GetScene() {
+		return this.scene;
 	}
 
 	public <T extends Component> T GetComponent(Class<T> clazz) {

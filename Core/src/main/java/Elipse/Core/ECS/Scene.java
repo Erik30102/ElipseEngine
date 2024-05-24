@@ -97,7 +97,7 @@ public class Scene extends Asset implements Cloneable {
 	 * @return the entity with the specified name, or null if not found
 	 */
 	public Entity GetEntityByName(String name) {
-		return entities.keySet().stream().filter(e -> e.GetName() == name).findFirst().orElse(null);
+		return entities.keySet().stream().filter(e -> e.GetName().equals(name)).findFirst().orElse(null);
 	}
 
 	/**

@@ -7,10 +7,16 @@ import Elipse.Core.Input.KeyCode;
 
 public class ExampleLib extends BaseComponent {
 
-	public float speed = 300;
+	public float movementSpeed = 100;
+	public float decellSpeed = 5;
+
+	private transient RidgedBodyComponent rg;
 
 	@Override
 	public void OnUpdate(float dt) {
+		if (rg == null)
+			rg = entity.GetComponent(RidgedBodyComponent.class);
+
 		int deltax = 0;
 		int deltay = 0;
 
@@ -27,11 +33,22 @@ public class ExampleLib extends BaseComponent {
 			deltax += 1;
 		}
 
-		RidgedBodyComponent rg = entity.GetComponent(RidgedBodyComponent.class);
+		this.move(deltax, deltay);
 
-		if (rg != null) {
-			rg.ApplyImpulse(deltax * speed * dt, deltay * speed * dt);
-		}
+	}
 
+	private void move(int deltaX, int deltaY) {
+		float targetY = deltaY * this.movementSpeed;
+		float targetX = deltaX * this.movementSpeed;
+
+		float speedDiffY = targetY - rg.GetVelocity().getY() * this.decellSpeed;
+		float speedDiffX = targetX - rg.GetVelocity().getX() * this.decellSpeed;
+
+		float movementY = (float) Math.pow(Math.abs(speedDiffY) * 30, 0.9)
+				* Math.signum(speedDiffY);
+		float movementX = (float) Math.pow(Math.abs(speedDiffX) * 30, 0.9)
+				* Math.signum(speedDiffX);
+
+		rg.ApplyImpulse(movementX, movementY);
 	}
 }

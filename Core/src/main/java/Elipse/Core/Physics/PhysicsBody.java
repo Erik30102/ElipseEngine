@@ -131,4 +131,8 @@ public class PhysicsBody {
 	public void ApplyImpulse(float x, float y) {
 		this.ApplyImpulse(new Vector(x, y));
 	}
+
+	public Vector GetVelocity() {
+		return new Vector(this.body.getLinearVelocity().x, this.body.getLinearVelocity().y);
+	}
 }

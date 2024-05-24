@@ -43,7 +43,8 @@ public class InspectorView {
 
 				ImGui.text("Entity name:");
 				ImGui.nextColumn();
-				ImString EntityName = new ImString(entity.GetName());
+				ImString EntityName = new ImString();
+				EntityName.set(entity.GetName());
 				if (ImGui.inputText("##T", EntityName)) {
 					entity.SetName(EntityName.get());
 				}

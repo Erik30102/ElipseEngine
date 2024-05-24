@@ -1,11 +1,39 @@
 {
   "entities": [
     {
-      "Name": "Das ist ein Test",
+      "Name": "Camera",
       "transform": {
         "position": {
-          "x": -0.23682447,
-          "y": -0.68804854
+          "x": 0.0,
+          "y": 1.4776118
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "rotation": 0.0
+      },
+      "Components": [
+        {
+          "zoom": 6.0,
+          "isActive": true,
+          "compType": "Camera"
+        },
+        {
+          "type": "Sandbox.CameraScript",
+          "properties": {
+            "comp": {}
+          },
+          "compType": "Base"
+        }
+      ]
+    },
+    {
+      "Name": "Player",
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": 1.4776117
         },
         "scale": {
           "x": 0.9925065,
@@ -15,16 +43,7 @@
       },
       "Components": [
         {
-          "type": "Sandbox.ExampleLib",
-          "properties": {
-            "comp": {
-              "speed": 300.0
-            }
-          },
-          "compType": "Base"
-        },
-        {
-          "texAssetId": "8356db31-6ace-47a8-8f15-026bed2896e0",
+          "texAssetId": "850013df-74d4-464c-b9cc-ec39280cbf69",
           "compType": "Sprite"
         },
         {
@@ -33,6 +52,16 @@
         },
         {
           "compType": "BoxCollider"
+        },
+        {
+          "type": "Sandbox.ExampleLib",
+          "properties": {
+            "comp": {
+              "movementSpeed": 100.0,
+              "decellSpeed": 5.0
+            }
+          },
+          "compType": "Base"
         }
       ]
     },
@@ -40,8 +69,8 @@
       "Name": "Entity: 3",
       "transform": {
         "position": {
-          "x": -1.0453923,
-          "y": -0.6464928
+          "x": -1.0,
+          "y": 2.035763
         },
         "scale": {
           "x": 1.0,
@@ -51,34 +80,8 @@
       },
       "Components": [
         {
-          "Strength": 1.0,
-          "Color": {
-            "red": 255,
-            "green": 255,
-            "blue": 255
-          },
-          "compType": "PointLight"
-        }
-      ]
-    },
-    {
-      "Name": "Entity: 2",
-      "transform": {
-        "position": {
-          "x": 0.0,
-          "y": 0.0
-        },
-        "scale": {
-          "x": 1.0,
-          "y": 1.0
-        },
-        "rotation": 0.0
-      },
-      "Components": [
-        {
-          "zoom": 5.0,
-          "isActive": true,
-          "compType": "Camera"
+          "texAssetId": "8356db31-6ace-47a8-8f15-026bed2896e0",
+          "compType": "Sprite"
         }
       ]
     }

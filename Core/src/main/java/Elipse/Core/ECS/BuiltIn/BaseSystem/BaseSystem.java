@@ -74,4 +74,5 @@ public class BaseSystem extends ECSSystem implements IEntityListener<BaseCompone
 	public void OnEntityRemoved(Entity entity, BaseComponentWrapper component) {
 		component.OnDispse();
 	}
+
 }

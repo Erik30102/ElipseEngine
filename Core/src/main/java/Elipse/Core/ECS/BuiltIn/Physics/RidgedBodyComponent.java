@@ -38,6 +38,10 @@ public class RidgedBodyComponent implements Component {
 		return rg.GetPosition();
 	}
 
+	public Vector GetVelocity() {
+		return rg.GetVelocity();
+	}
+
 	public void SetPosition(Vector position) {
 		rg.SetPosition(position);
 	}
