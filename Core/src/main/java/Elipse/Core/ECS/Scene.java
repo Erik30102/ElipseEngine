@@ -235,6 +235,13 @@ public class Scene extends Asset implements Cloneable {
 		}
 	}
 
+	/**
+	 * @return a list of all the systems in the scene
+	 */
+	public List<ECSSystem> GetSystems() {
+		return this.systems;
+	}
+
 	@Override
 	public AssetType GetAssetType() {
 		return AssetType.SCENE;

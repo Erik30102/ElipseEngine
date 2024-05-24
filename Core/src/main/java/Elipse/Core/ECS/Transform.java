@@ -1,7 +1,5 @@
 package Elipse.Core.ECS;
 
-import org.joml.Vector2f;
-
 import Elipse.Core.Maths.Vector;
 
 /**

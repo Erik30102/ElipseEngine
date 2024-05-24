@@ -28,6 +28,7 @@ import Elipse.Utils.Pair;
 import ElipseEditor.ImguiComponent.AssetPicker;
 import ElipseEditor.ImguiComponent.ContentBrowser;
 import ElipseEditor.ImguiComponent.SceneHiarchy;
+import ElipseEditor.ImguiComponent.SettingsInspector;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
@@ -50,6 +51,7 @@ public class EditorLayer extends Layer {
 
 	private static EditorLayer INSTANCE;
 
+	private SettingsInspector settingsInspector;
 	private SceneHiarchy sceneHiarchy;
 	private ScriptEngine scriptEngine;
 	private ContentBrowser contentBrowser;
@@ -88,6 +90,7 @@ public class EditorLayer extends Layer {
 
 		sceneHiarchy = new SceneHiarchy(scene);
 		contentBrowser = new ContentBrowser();
+		settingsInspector = new SettingsInspector(scene);
 
 		AssetPicker.Init();
 	}
@@ -110,6 +113,7 @@ public class EditorLayer extends Layer {
 	public void OnImguiRender() {
 		sceneHiarchy.OnImgui();
 		contentBrowser.OnImgui();
+		settingsInspector.OnImgui();
 
 		ImGui.beginMainMenuBar();
 

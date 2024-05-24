@@ -32,13 +32,13 @@ layout(location = 0) out vec4 color;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int lightCount;
 
+uniform vec3 ambientColor;
+uniform float ambientStrenght;
+
 uniform sampler2D tex;
 
 in vec2 texCoord;
 in vec2 WordPos;
-
-const vec3 ambientColor = vec3(1.0, 1.0, 1.0);
-const float ambientStrenght = 0.2;
 
 void main() {
 	vec4 c = texture(tex, texCoord);
@@ -54,7 +54,7 @@ void main() {
 
 		float distance2 = (diffX * diffX) + (diffY * diffY);
 
-		if(distance2 < pointLights[i].brightness) {
+		if(distance2 < pointLights[i].brightness*pointLights[i].brightness) {
 			float distance = sqrt(distance2);
 
 			float attentuation = 1.0 - smoothstep(0, pointLights[i].brightness, distance);

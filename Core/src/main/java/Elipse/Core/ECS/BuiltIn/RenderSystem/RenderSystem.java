@@ -50,8 +50,10 @@ public class RenderSystem extends ECSSystem {
 
 				camera.adjustViewMatrix(transform.position);
 
-				fbo.Bind();
-				RendererApi.SetViewport(fbo.GetWidth(), fbo.GetHeight());
+				if (fbo != null) {
+					fbo.Bind();
+					RendererApi.SetViewport(fbo.GetWidth(), fbo.GetHeight());
+				}
 
 				Renderer2D.BeginScene(camera.GetCamera());
 
@@ -72,7 +74,8 @@ public class RenderSystem extends ECSSystem {
 
 		Renderer2D.EndScene();
 
-		fbo.Unbind();
+		if (fbo != null)
+			fbo.Unbind();
 	}
 
 	@Override

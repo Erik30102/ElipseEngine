@@ -16,6 +16,10 @@ import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Core.Maths.Color;
+import Elipse.Core.Scripting.ScriptEngine;
+import Elipse.Core.Scripting.Script.ScriptType;
+import Elipse.Core.Scripting.Scripts.BaseComponentScript;
+import Elipse.Core.Scripting.Scripts.ComponentScript;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
@@ -138,7 +142,7 @@ public class InspectorView {
 
 						float[] r = { light.GetColor().getRed(), light.GetColor().getGreen(), light.GetColor().getBlue() };
 						if (ImGui.colorPicker3("##ColorP", r)) {
-							light.SetColor(new Color((int) r[0], (int) r[1], (int) r[2]));
+							light.SetColor(new Color((int) (r[0] * 255), (int) (r[1] * 255), (int) (r[2] * 255)));
 						}
 						ImGui.columns(1);
 					}
@@ -166,21 +170,35 @@ public class InspectorView {
 
 				// TODO: reimplment with cashing
 
-				// for (Class<? extends BaseComponent> comp :
-				// EditorLayer.GetEditor().GetScriptEngine().GetComponents()) {
-				// if (ImGui.selectable(comp.getSimpleName())) {
-				// try {
-				// scene.AddComponent(new
-				// BaseComponentWrapper(comp.getConstructor().newInstance()), entity);
-				// } catch (Exception e) {
-				// Logger.c_error(
-				// "Failed while trying to add new Base Behavior Component of type: " +
-				// comp.getSimpleName()
-				// + " To Entity");
-				// e.printStackTrace();
-				// }
-				// }
-				// }
+				for (BaseComponentScript comp : ScriptEngine.GetInstance().GetScripts(ScriptType.BASECOMPONENT,
+						BaseComponentScript.class)) {
+					if (ImGui.selectable(comp.GetBaseClazz().getSimpleName())) {
+						try {
+							scene.AddComponent(new BaseComponentWrapper(comp.GetScript(BaseComponent.class)), entity);
+						} catch (Exception e) {
+							Logger.c_error(
+									"Failed while trying to add new Base Behavior Component of type: " +
+											comp.GetBaseClazz().getSimpleName()
+											+ " To Entity");
+							e.printStackTrace();
+						}
+					}
+				}
+
+				ImGui.separator();
+
+				for (ComponentScript comp : ScriptEngine.GetInstance().GetScripts(ScriptType.COMPONENT,
+						ComponentScript.class)) {
+					if (ImGui.selectable(comp.GetBaseClazz().getSimpleName())) {
+						try {
+							scene.AddComponent(comp.GetScript(Component.class), entity);
+						} catch (Exception e) {
+							Logger.c_error(
+									"Failed while trying to add new Component of type: " + comp.GetBaseClazz().getSimpleName()
+											+ " To Entity");
+						}
+					}
+				}
 
 				ImGui.endPopup();
 			}

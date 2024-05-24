@@ -6,9 +6,19 @@ import java.util.Map;
 
 import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.EditorAssetManager;
+import Elipse.Core.ECS.Scene;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Project.Project;
+import Elipse.Core.Scripting.Script;
+import Elipse.Core.Scripting.ScriptEngine;
+import Elipse.Core.Scripting.Script.ScriptType;
+import Elipse.Utils.Serializer.LocalSceneSerializer;
+import ElipseEditor.Utils.SerializingHelper;
 import imgui.ImGui;
+import imgui.flag.ImGuiMouseButton;
+import imgui.flag.ImGuiWindowFlags;
+import imgui.type.ImBoolean;
+import imgui.type.ImString;
 
 public class ContentBrowser {
 	public String Path;
@@ -26,9 +36,42 @@ public class ContentBrowser {
 	}
 
 	private static int size = 64;
+	// Create modal
+	private ImString filename = new ImString();
 
 	public void OnImgui() {
+		if (ImGui.beginPopupModal("assetmodal", new ImBoolean(true),
+				ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar)) {
+			ImGui.inputText("Filename", filename);
+
+			if (ImGui.button("Create")) {
+				// TODO: dynamic
+				SerializingHelper.SaveToPath(currentPath + "/" + filename.get() + ".el",
+						SerializingHelper.Serialize(Scene.class, new LocalSceneSerializer(), new Scene()));
+			}
+			ImGui.endPopup();
+		}
+
 		ImGui.begin("Content Browser");
+
+		if (ImGui.beginPopup("CreateNewAsset")) {
+			if (ImGui.selectable("New Scene")) {
+				ImGui.openPopup("assetmodal");
+			}
+
+			ImGui.separator();
+			ImGui.text("Scritable Objects");
+			ImGui.separator();
+			for (Script script : ScriptEngine.GetInstance().GetScripts()) {
+				if (script.GetScriptType() == ScriptType.SCRIPTABLEOBJ) {
+					if (ImGui.selectable(script.GetBaseClazz().getSimpleName())) {
+
+					}
+				}
+			}
+
+			ImGui.endPopup();
+		}
 
 		if (ImGui.button("Refresh")) {
 			Refresh();
@@ -55,6 +98,10 @@ public class ContentBrowser {
 			ImGui.nextColumn();
 		}
 		ImGui.columns(1);
+
+		if (ImGui.isMouseClicked(ImGuiMouseButton.Right) && ImGui.isWindowHovered()) {
+			ImGui.openPopup("CreateNewAsset");
+		}
 
 		ImGui.end();
 	}

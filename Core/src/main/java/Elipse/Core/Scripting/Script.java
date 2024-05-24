@@ -3,6 +3,9 @@ package Elipse.Core.Scripting;
 import java.lang.reflect.InvocationTargetException;
 
 import Elipse.Core.Logger;
+import Elipse.Core.ECS.Component;
+import Elipse.Core.ECS.ECSSystem;
+import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
 
 public abstract class Script {
 
@@ -19,7 +22,10 @@ public abstract class Script {
 		SYSTEM;
 
 		public static boolean CheckType(ScriptType type, Class<?> clazz) {
-			return false;
+			return (type == SCRIPTABLEOBJ && ScriptableObject.class.isAssignableFrom(clazz))
+					|| (type == BASECOMPONENT && BaseComponent.class.isAssignableFrom(clazz))
+					|| (type == COMPONENT && Component.class.isAssignableFrom(clazz))
+					|| (type == SYSTEM && ECSSystem.class.isAssignableFrom(clazz));
 		}
 	}
 

@@ -35,7 +35,6 @@ public class Color {
 	 * @param hex the hexadecimal color representation (e.g., 0xRRGGBB)
 	 */
 	public Color(int hex) {
-		// Extract red, green, and blue components from the hexadecimal color
 		this.red = (hex >> 16) & 0xFF;
 		this.green = (hex >> 8) & 0xFF;
 		this.blue = hex & 0xFF;
@@ -114,7 +113,7 @@ public class Color {
 	 * @return a Vector3 representing the color
 	 */
 	public Vector3 toShaderVector() {
-		return new Vector3(red / 255f, green / 255f, blue / 255f);
+		return new Vector3((float) red / 255f, (float) green / 255f, (float) blue / 255f);
 	}
 
 	/**

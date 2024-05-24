@@ -52,7 +52,7 @@ public abstract class Asset {
 		}
 	}
 
-	protected UUID id;
+	protected transient UUID id;
 
 	public UUID GetAssetHandel() {
 		return id;
@@ -82,7 +82,7 @@ public abstract class Asset {
 			return AssetType.SCENE;
 		} else if (clazz == Texture2D.class) {
 			return AssetType.TEXTURE2D;
-		} else if (clazz == ScriptableObject.class) {
+		} else if (ScriptableObject.class.isAssignableFrom(clazz)) {
 			return AssetType.SCRIPTABLEOBJ;
 		} else {
 			return AssetType.NONE;

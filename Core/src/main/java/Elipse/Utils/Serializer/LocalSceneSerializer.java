@@ -26,10 +26,12 @@ import Elipse.Core.ECS.BuiltIn.Physics.BoxColliderComponent;
 import Elipse.Core.ECS.BuiltIn.Physics.PhysicsSystem;
 import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
 import Elipse.Utils.Serializer.Components.BaseComponentSerializer;
 import Elipse.Utils.Serializer.Components.BoxColliderComponentSerializer;
 import Elipse.Utils.Serializer.Components.CameraComponentSerializer;
+import Elipse.Utils.Serializer.Components.PointLightComponentSerializer;
 import Elipse.Utils.Serializer.Components.RidgetbodyComponentSerializer;
 import Elipse.Utils.Serializer.Components.SpriteRenderComponentSerializer;
 
@@ -90,6 +92,15 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 							.getAsJsonObject();
 
 					componentResult.add("compType", new JsonPrimitive("RidgetBody"));
+					componentArray.add(componentResult);
+				} else if (component instanceof PointLightComponent) {
+					JsonObject componentResult = new PointLightComponentSerializer()
+							.serialize((PointLightComponent) component,
+									PointLightComponent.class,
+									context)
+							.getAsJsonObject();
+
+					componentResult.add("compType", new JsonPrimitive("PointLight"));
 					componentArray.add(componentResult);
 				}
 			}
@@ -155,6 +166,12 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 					case "BoxCollider":
 						BoxColliderComponentSerializer boxcollider_ser = new BoxColliderComponentSerializer();
 						comp = boxcollider_ser.deserialize(componentObject, BoxColliderComponent.class, context);
+
+						entity.AddComponent(comp);
+						break;
+					case "PointLight":
+						PointLightComponentSerializer pointlight_ser = new PointLightComponentSerializer();
+						comp = pointlight_ser.deserialize(componentObject, PointLightComponent.class, context);
 
 						entity.AddComponent(comp);
 						break;

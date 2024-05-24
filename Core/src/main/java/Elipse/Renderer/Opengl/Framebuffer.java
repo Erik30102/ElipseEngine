@@ -28,6 +28,7 @@ public class Framebuffer {
 	 * Invalidate the framebuffer and create a new one
 	 */
 	public void Invalidate() {
+
 		if (FramebufferID != -1) {
 			GL30.glDeleteFramebuffers(FramebufferID);
 			FboTexture.Dispose();

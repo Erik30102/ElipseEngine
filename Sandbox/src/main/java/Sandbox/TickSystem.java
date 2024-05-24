@@ -9,7 +9,7 @@ import Elipse.Utils.Pair;
 
 public class TickSystem extends ECSSystem {
 
-	private float tickLength;
+	private float tickLength = 2f;
 	private float time = 0;
 
 	@Override

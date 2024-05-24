@@ -26,5 +26,5 @@ public class AssetPack {
 		}
 	}
 
-	private byte[] appBinary;
+	// private byte[] appBinary;
 }

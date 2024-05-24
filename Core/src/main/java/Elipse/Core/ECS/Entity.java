@@ -1,7 +1,5 @@
 package Elipse.Core.ECS;
 
-import Elipse.Core.ECS.BuiltIn.Physics.RidgedBodyComponent;
-
 public class Entity {
 
 	private String name;

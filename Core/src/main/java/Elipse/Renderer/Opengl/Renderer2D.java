@@ -4,7 +4,6 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;
 
 import Elipse.Core.ECS.Transform;
-import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Renderer.OrthograhicCamera;
 import Elipse.Renderer.Lighting.LightingManager;
 import Elipse.Renderer.Opengl.Buffers.BufferElement;
@@ -27,10 +26,10 @@ public class Renderer2D {
 	private static VertexArray quad;
 	private static Shader Shader_Quad;
 
-	private static LightingManager lightingManager = new LightingManager();
-
 	public static void Init() {
 		RendererApi.Init();
+
+		LightingManager.Init();
 
 		sceneData = new SceneData();
 
@@ -90,16 +89,16 @@ public class Renderer2D {
 		texture.Bind(0);
 		Shader_Quad.loadInt("tex", 0);
 
-		quad.bind();
-		GL30.glDrawElements(GL30.GL_TRIANGLES, quad.getIndexBuffer().GetCount(), GL30.GL_UNSIGNED_INT, 0);
-		quad.unbind();
+		RendererApi.DrawIndexed(quad);
+
+		texture.Unbind();
 	}
 
 	public static void BeginScene(OrthograhicCamera camera) {
 		sceneData.projectionMatrix = camera.GetProjection();
 		sceneData.viewMatrix = camera.GetView();
 
-		RendererApi.setClearColor(0.5f, 0.5f, 1);
+		RendererApi.setClearColor(0.2f, 0.2f, 0.2f);
 		RendererApi.clear();
 	}
 }

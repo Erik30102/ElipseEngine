@@ -4,17 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import Elipse.Core.Logger;
 import Elipse.Core.ECS.Component;
+import Elipse.Core.ECS.ECSSystem;
 import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponent;
+import Elipse.Core.Scripting.Script.ScriptType;
 import Elipse.Core.Scripting.Scripts.BaseComponentScript;
 import Elipse.Core.Scripting.Scripts.ComponentScript;
 import Elipse.Core.Scripting.Scripts.ScriptableObjectScript;
@@ -75,7 +78,7 @@ public class ScriptEngine {
 			this.ScriptDirectory.put(clazz.getCanonicalName(), new BaseComponentScript(clazz));
 		} else if (ScriptableObject.class.isAssignableFrom(clazz)) {
 			this.ScriptDirectory.put(clazz.getCanonicalName(), new ScriptableObjectScript(clazz));
-		} else if (System.class.isAssignableFrom(clazz)) {
+		} else if (ECSSystem.class.isAssignableFrom(clazz)) {
 			this.ScriptDirectory.put(clazz.getCanonicalName(), new SystemScript(clazz));
 		} else if (Component.class.isAssignableFrom(clazz)) {
 			this.ScriptDirectory.put(clazz.getCanonicalName(), new ComponentScript(clazz));
@@ -91,6 +94,19 @@ public class ScriptEngine {
 
 	public Script GetScript(String type) {
 		return this.ScriptDirectory.get(type);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Script> List<T> GetScripts(ScriptType type, Class<T> clazz) {
+		List<T> scripts = new ArrayList<>();
+
+		for (Script script : this.ScriptDirectory.values()) {
+			if (script.GetScriptType() == type) {
+				scripts.add((T) script);
+			}
+		}
+
+		return scripts;
 	}
 
 	/**
@@ -110,5 +126,9 @@ public class ScriptEngine {
 	 */
 	public static ScriptEngine GetInstance() {
 		return INSTANCE;
+	}
+
+	public Collection<Script> GetScripts() {
+		return this.ScriptDirectory.values();
 	}
 }

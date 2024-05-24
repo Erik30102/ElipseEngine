@@ -56,6 +56,8 @@ public abstract class Texture extends Asset {
 
 	public abstract void Bind(int slot);
 
+	public abstract void Unbind();
+
 	public abstract TextureType GetType();
 
 	public abstract void SetData(IntBuffer buffer);

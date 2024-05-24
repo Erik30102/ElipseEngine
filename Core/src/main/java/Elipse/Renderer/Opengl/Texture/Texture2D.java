@@ -126,4 +126,9 @@ public class Texture2D extends Texture {
 		return AssetType.TEXTURE2D;
 	}
 
+	@Override
+	public void Unbind() {
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
+	}
+
 }
