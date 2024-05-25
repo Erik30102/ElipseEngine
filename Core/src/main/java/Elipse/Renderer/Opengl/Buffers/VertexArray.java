@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL46;
 
 public class VertexArray {
 
@@ -25,23 +26,16 @@ public class VertexArray {
 	 * 
 	 * @param extraInfo    the extra info associated with the vertex buffer layout
 	 */
-	public void addVertexBuffer(VertexBuffer vertexBuffer, float[][] extraInfo) {
+	public void addVertexBuffer(VertexBuffer vertexBuffer) {
 		this.bind();
 		vertexBuffer.bind();
-		GL30.glEnableVertexAttribArray(0);
-		GL30.glVertexAttribPointer(0, 3, GL30.GL_FLOAT, false, 0, 0);
 
 		int index = 0;
 		if (vertexBuffer.GetLayout() != null) {
 			for (BufferElement element : vertexBuffer.GetLayout().getElements()) {
-				int vbo = GL30.glGenBuffers();
-				FloatBuffer buffer = VertexBuffer.createFloatBuffer(extraInfo[index]);
-
-				GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vbo);
-				GL30.glBufferData(GL30.GL_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
-
-				GL30.glEnableVertexAttribArray(index + 1);
-				GL30.glVertexAttribPointer(index + 1, element.GetComponentCount(), element.GetOpenGLBaseType(), false, 0, 0);
+				GL46.glEnableVertexAttribArray(index);
+				GL46.glVertexAttribPointer(index, element.GetComponentCount(), element.GetOpenGLBaseType(), false,
+						vertexBuffer.GetLayout().CalculateStride(), element.GetOffset());
 				index++;
 			}
 		}

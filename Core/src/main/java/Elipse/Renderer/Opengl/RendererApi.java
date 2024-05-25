@@ -68,9 +68,11 @@ public class RendererApi {
 	}
 
 	public static void DrawIndexed(VertexArray vertexArray) {
-		vertexArray.bind();
+		DrawIndexed(vertexArray, vertexArray.getIndexBuffer().GetCount());
+	}
 
-		GL46.glDrawElements(GL46.GL_TRIANGLES, vertexArray.getIndexBuffer().GetCount(), GL46.GL_UNSIGNED_INT, 0);
+	public static void DrawIndexed(VertexArray vertexArray, int count) {
+		GL46.glDrawElements(GL46.GL_TRIANGLES, count, GL46.GL_UNSIGNED_INT, 0);
 	}
 
 	public static void SetViewport(int getWidth, int getHeight) {

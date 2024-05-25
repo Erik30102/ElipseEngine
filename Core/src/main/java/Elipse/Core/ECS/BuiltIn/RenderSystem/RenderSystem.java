@@ -1,12 +1,14 @@
 package Elipse.Core.ECS.BuiltIn.RenderSystem;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.ECSSystem;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Transform;
 import Elipse.Renderer.OrthograhicCamera;
+import Elipse.Renderer.Batching.RenderBatch;
 import Elipse.Renderer.Opengl.Framebuffer;
 import Elipse.Renderer.Opengl.Renderer2D;
 import Elipse.Renderer.Opengl.RendererApi;
@@ -16,7 +18,8 @@ public class RenderSystem extends ECSSystem {
 
 	private Framebuffer fbo;
 
-	private OrthograhicCamera camera;
+	private OrthograhicCamera scenecamera;
+	private List<RenderBatch> renderBatch = new ArrayList<>();
 
 	public RenderSystem(Framebuffer fbo) {
 		super();
@@ -24,6 +27,8 @@ public class RenderSystem extends ECSSystem {
 		this.fbo = fbo;
 
 		Renderer2D.Init();
+
+		renderBatch.add(new RenderBatch(20000));
 	}
 
 	@Override
@@ -43,8 +48,10 @@ public class RenderSystem extends ECSSystem {
 		if (CameraComponents == null)
 			return;
 
+		CameraComponent camera = null;
+
 		for (Pair<Entity, Component> pair : CameraComponents) {
-			CameraComponent camera = (CameraComponent) pair.getValue();
+			camera = (CameraComponent) pair.getValue();
 			if (camera.isActive()) {
 				Transform transform = pair.getKey().transform;
 
@@ -61,15 +68,37 @@ public class RenderSystem extends ECSSystem {
 			}
 		}
 
+		renderBatch.get(0).Begin();
+
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
+
+		// TODO: check if the spritebatch has the texture and if it has still use that
+
+		int batchIndex = 0;
 
 		if (components != null) {
 			for (Pair<Entity, Component> component : components) {
 				SpriteRenderComponent SpriteRenderComp = (SpriteRenderComponent) component.getValue();
 				Transform transform = component.getKey().transform;
 
-				Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
+				// Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
+
+				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
+					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
+				} else {
+					batchIndex++;
+					if (renderBatch.get(batchIndex) == null) {
+						renderBatch.add(new RenderBatch(20000));
+					}
+					renderBatch.get(batchIndex).Begin();
+					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
+				}
 			}
+		}
+
+		for (RenderBatch batch : renderBatch) {
+			batch.reloadData();
+			batch.render(camera.GetView(), camera.GetProjection());
 		}
 
 		Renderer2D.EndScene();
@@ -95,17 +124,36 @@ public class RenderSystem extends ECSSystem {
 		fbo.Bind();
 		RendererApi.SetViewport(fbo.GetWidth(), fbo.GetHeight());
 
-		Renderer2D.BeginScene(camera);
+		Renderer2D.BeginScene(scenecamera);
 
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
+
+		renderBatch.get(0).Begin();
+		int batchIndex = 0;
 
 		if (components != null) {
 			for (Pair<Entity, Component> component : components) {
 				SpriteRenderComponent SpriteRenderComp = (SpriteRenderComponent) component.getValue();
 				Transform transform = component.getKey().transform;
 
-				Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
+				// Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
+
+				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
+					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
+				} else {
+					batchIndex++;
+					if (renderBatch.get(batchIndex) == null) {
+						renderBatch.add(new RenderBatch(20000));
+					}
+					renderBatch.get(batchIndex).Begin();
+					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
+				}
 			}
+		}
+
+		for (RenderBatch batch : renderBatch) {
+			batch.reloadData();
+			batch.render(scenecamera.GetView(), scenecamera.GetProjection());
 		}
 
 		Renderer2D.EndScene();
@@ -119,7 +167,7 @@ public class RenderSystem extends ECSSystem {
 	 * @param camera editor camera
 	 */
 	public void SetCamera(OrthograhicCamera camera) {
-		this.camera = camera;
+		this.scenecamera = camera;
 	}
 
 }

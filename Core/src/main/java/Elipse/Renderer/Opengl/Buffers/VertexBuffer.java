@@ -4,11 +4,28 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL46;
 
 public class VertexBuffer {
 
 	private int bufferId;
 	private BufferLayout Layout;
+
+	public enum BUFFER_USAGE {
+		STATIC_DRAW,
+		DYNAMIC_DRAW;
+
+		public static int GetUsage(BUFFER_USAGE usage) {
+			switch (usage) {
+				case STATIC_DRAW:
+					return GL30.GL_STATIC_DRAW;
+				case DYNAMIC_DRAW:
+					return GL30.GL_DYNAMIC_DRAW;
+				default:
+					return GL30.GL_STATIC_DRAW;
+			}
+		}
+	}
 
 	/**
 	 * internal code used for sending the data to the gpu
@@ -22,13 +39,21 @@ public class VertexBuffer {
 		return buffer;
 	}
 
+	public VertexBuffer(float[] vertecies, BUFFER_USAGE usage) {
+		bufferId = GL30.glGenBuffers();
+		GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, bufferId);
+		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, createFloatBuffer(vertecies), BUFFER_USAGE.GetUsage(usage));
+	}
+
 	/**
 	 * @param vertecies all the vertecies that should be stored on the gpu
 	 */
 	public VertexBuffer(float[] vertecies) {
-		bufferId = GL30.glGenBuffers();
-		GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, bufferId);
-		GL30.glBufferData(GL30.GL_ARRAY_BUFFER, createFloatBuffer(vertecies), GL30.GL_STATIC_DRAW);
+		this(vertecies, BUFFER_USAGE.STATIC_DRAW);
+	}
+
+	public void SetData(float[] vertecies) {
+		GL46.glBufferSubData(GL30.GL_ARRAY_BUFFER, 0, vertecies);
 	}
 
 	/**

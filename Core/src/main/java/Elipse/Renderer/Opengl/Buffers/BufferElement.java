@@ -1,5 +1,7 @@
 package Elipse.Renderer.Opengl.Buffers;
 
+import java.nio.ByteBuffer;
+
 import org.lwjgl.opengl.GL30;
 
 import Elipse.Core.Logger;
@@ -11,6 +13,7 @@ public class BufferElement {
 
 	public String Name;
 	public DataType DataType;
+	private int offset;
 
 	public BufferElement(String Name, DataType DataType) {
 		this.Name = Name;
@@ -49,6 +52,10 @@ public class BufferElement {
 		return 0;
 	}
 
+	public void SetOffset(int offset) {
+		this.offset = offset;
+	}
+
 	/**
 	 * @return The count of the elements used by the Buffertype
 	 */
@@ -79,5 +86,13 @@ public class BufferElement {
 		}
 		Logger.c_error("Unsupported DataType for BufferElement");
 		return 0;
+	}
+
+	public int GetSize() {
+		return this.DataType != DataType.BOOL ? GetComponentCount() * 4 : 1;
+	}
+
+	public int GetOffset() {
+		return this.offset;
 	}
 }

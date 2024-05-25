@@ -66,6 +66,14 @@ public class InspectorView {
 					entity.transform.setRotation(r[0]);
 				}
 				ImGui.nextColumn();
+				ImGui.text("Scale: ");
+				ImGui.nextColumn();
+				float[] s = { entity.transform.GetScale().getX(),
+						entity.transform.GetScale().getY() };
+				if (ImGui.dragFloat2("##S", s, 0.1f)) {
+					entity.transform.setScale(s[0], s[1]);
+				}
+				ImGui.nextColumn();
 
 			}
 			ImGui.columns(1);

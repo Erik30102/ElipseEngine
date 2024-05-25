@@ -153,4 +153,13 @@ public class EditorAssetManager implements AssetManager {
 		return null;
 	}
 
+	public Asset GetAssetFromPath(String path) {
+		for (AssetMetaData metaData : assetMap.values()) {
+			if (metaData.getPath().equals(path)) {
+				return GetAsset(GetUUIDFromMetadata(metaData));
+			}
+		}
+		return null;
+	}
+
 }

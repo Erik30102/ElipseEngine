@@ -22,7 +22,10 @@ public abstract class Asset {
 		TEXTURE2D(2),
 
 		@SerializedName("SCRIPTABLEOBJ")
-		SCRIPTABLEOBJ(3);
+		SCRIPTABLEOBJ(3),
+
+		@SerializedName("TILEMAP")
+		TILEMAP(4);
 
 		private int id;
 

@@ -215,4 +215,9 @@ public class Shader {
 	public void unbind() {
 		GL46.glUseProgram(0);
 	}
+
+	public void loadIntArray(String location, int[] is) {
+		chckUniform(location);
+		GL46.glUniform1iv(uniforms.get(location), is);
+	}
 }

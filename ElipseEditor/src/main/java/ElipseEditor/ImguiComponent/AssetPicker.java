@@ -9,6 +9,7 @@ import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.AssetMetaData;
 import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.Project.Project;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
@@ -43,14 +44,27 @@ public class AssetPicker {
 				ImGui.columns(columCount == 0 ? 1 : columCount, "##assetPicker", false);
 
 				for (AssetMetaData metaData : INSTANCE.ChashedAssets) {
-					if (ImGui.button(metaData.getPath(), 64, 64)) {
-						INSTANCE.selected = Project.GetActive().GetAssetManager()
-								.GetAsset(((EditorAssetManager) Project.GetActive().GetAssetManager()).GetUUIDFromMetadata(metaData));
+					if (INSTANCE.type != AssetType.TEXTURE2D) {
+						if (ImGui.button(metaData.getPath(), 64, 64)) {
+							INSTANCE.selected = Project.GetActive().GetAssetManager()
+									.GetAsset(((EditorAssetManager) Project.GetActive().GetAssetManager()).GetUUIDFromMetadata(metaData));
 
-						INSTANCE.showDialog = false;
-						ImGui.endPopup();
+							INSTANCE.showDialog = false;
+							ImGui.endPopup();
 
-						return true;
+							return true;
+						}
+					} else { // TODO: rework
+						if (ImGui.imageButton(((Texture2D) ((EditorAssetManager) Project.GetActive().GetAssetManager())
+								.GetAssetFromPath(metaData.getPath())).GetTextureId(), 64, 64)) {
+							INSTANCE.selected = Project.GetActive().GetAssetManager()
+									.GetAsset(((EditorAssetManager) Project.GetActive().GetAssetManager()).GetUUIDFromMetadata(metaData));
+
+							INSTANCE.showDialog = false;
+							ImGui.endPopup();
+
+							return true;
+						}
 					}
 				}
 

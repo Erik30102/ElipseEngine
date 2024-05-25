@@ -37,24 +37,18 @@ public class Renderer2D {
 		quad.bind();
 
 		BufferLayout bufferLayout = new BufferLayout(new BufferElement[] {
+				new BufferElement("position", DataType.VEC3),
 				new BufferElement("texCoords", DataType.VEC2),
 		});
 
 		VertexBuffer vbo = new VertexBuffer(new float[] {
-				0.5f, -0.5f, 0.0f,
-				-0.5f, 0.5f, 0f,
-				0.5f, 0.5f, 0f,
-				-0.5f, -0.5f, 0f });
-
-		float[][] vertexInfo = new float[][] {
-				{ 1, 1,
-						0, 0,
-						1, 0,
-						0, 1 }
-		};
+				0.5f, -0.5f, 0.0f, 1, 1,
+				-0.5f, 0.5f, 0f, 0, 0,
+				0.5f, 0.5f, 0f, 1, 0,
+				-0.5f, -0.5f, 0f, 0, 1 });
 
 		vbo.SetLayout(bufferLayout);
-		quad.addVertexBuffer(vbo, vertexInfo);
+		quad.addVertexBuffer(vbo);
 
 		IndexBuffer idx = new IndexBuffer(new int[] { 2, 1, 0,
 				0, 1, 3 });
@@ -88,7 +82,7 @@ public class Renderer2D {
 
 		texture.Bind(0);
 		Shader_Quad.loadInt("tex", 0);
-
+		quad.bind();
 		RendererApi.DrawIndexed(quad);
 
 		texture.Unbind();

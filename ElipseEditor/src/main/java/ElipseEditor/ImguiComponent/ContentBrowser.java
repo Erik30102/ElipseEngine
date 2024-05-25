@@ -12,6 +12,7 @@ import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.Script;
 import Elipse.Core.Scripting.ScriptEngine;
 import Elipse.Core.Scripting.Script.ScriptType;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Utils.Serializer.LocalSceneSerializer;
 import ElipseEditor.Utils.SerializingHelper;
 import imgui.ImGui;
@@ -108,15 +109,21 @@ public class ContentBrowser {
 
 	private void HandelFile(File file) {
 		AssetType type = Asset.GetTypeFromPath(file.getPath());
+		EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
 
 		ImGui.pushID(file.getPath());
-		if (ImGui.button(type != AssetType.NONE ? type.name() : "NF", size, size)) {
-			if (type != AssetType.NONE) {
-				EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
+		if (type != AssetType.TEXTURE2D && !assetManager.IsAssetImported(file.getPath())) {
+			if (ImGui.button(type != AssetType.NONE ? type.name() : "NF", size, size)) {
+				if (type != AssetType.NONE) {
 
-				if (!assetManager.IsAssetImported(file.getPath())) {
-					assetManager.ImportAsset(file.getPath());
+					if (!assetManager.IsAssetImported(file.getPath())) {
+						assetManager.ImportAsset(file.getPath());
+					}
 				}
+			}
+		} else { // TODO: rework
+			if (ImGui.imageButton(((Texture2D) assetManager.GetAssetFromPath(file.getPath())).GetTextureId(), size, size)) {
+
 			}
 		}
 		ImGui.popID();
