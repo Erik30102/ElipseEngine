@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.Assets.Asset.AssetType;
+import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.Script;
 import Elipse.Core.Scripting.ScriptEngine;

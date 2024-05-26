@@ -1,4 +1,4 @@
-package Elipse.Core.Assets.Importers;
+package Elipse.Core.Assets.Editor.Importers;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.AssetMetaData;
-import Elipse.Core.Assets.IAssetImporter;
+import Elipse.Core.Assets.Editor.AssetMetaData;
+import Elipse.Core.Assets.Editor.IAssetImporter;
 import Elipse.Core.ECS.Scene;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Utils.Serializer.AssetSerializer;

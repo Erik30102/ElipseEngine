@@ -1,7 +1,8 @@
-package Elipse.Core.Assets;
+package Elipse.Core.Assets.Editor;
 
 import java.util.UUID;
 
+import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 
 public interface AssetManager {

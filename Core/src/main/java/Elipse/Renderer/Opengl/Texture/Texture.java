@@ -35,6 +35,8 @@ public abstract class Texture extends Asset {
 	protected int width, height;
 
 	protected TextureFormat format;
+	protected TextureFiltering filtering;
+	protected TextureWrapMode wrapMode;
 	protected int internalFormat;
 	protected int internalDataFormat;
 
@@ -52,6 +54,18 @@ public abstract class Texture extends Asset {
 
 	public int GetTextureId() {
 		return textureId;
+	}
+
+	public TextureFormat GetTextureFormat() {
+		return format;
+	}
+
+	public TextureFiltering GetTextureFiltering() {
+		return filtering;
+	}
+
+	public TextureWrapMode GetTextureWrapMode() {
+		return wrapMode;
 	}
 
 	public abstract void Bind(int slot);

@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.AssetMetaData;
+import Elipse.Core.Assets.Editor.AssetMetaData;
 
 public class AssetBankSerializer implements JsonDeserializer<Map<String, AssetMetaData>> {
 

@@ -50,6 +50,12 @@ public class BufferElement {
 		return 0;
 	}
 
+	/**
+	 * <b>INTERNAL CODE</b>
+	 * Do not use is called from the layout itself
+	 * 
+	 * @param offset
+	 */
 	public void SetOffset(int offset) {
 		this.offset = offset;
 	}
@@ -91,6 +97,9 @@ public class BufferElement {
 		return this.DataType != DataType.BOOL ? GetComponentCount() * 4 : 1;
 	}
 
+	/**
+	 * if you have to use this code your in too deep just build your own game engine
+	 */
 	public int GetOffset() {
 		return this.offset;
 	}

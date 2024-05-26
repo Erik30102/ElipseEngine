@@ -1,6 +1,8 @@
-package Elipse.Core.Assets;
+package Elipse.Core.Assets.Editor;
 
 import java.util.UUID;
+
+import Elipse.Core.Assets.Asset;
 
 public interface IAssetImporter {
 	public Asset GetAsset(UUID id, AssetMetaData metaData);

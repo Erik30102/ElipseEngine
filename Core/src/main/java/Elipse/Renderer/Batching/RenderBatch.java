@@ -40,6 +40,11 @@ public class RenderBatch {
 
 	private int[] texSlots = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 
+	/**
+	 * Creates new Render batch with support of x many sprites
+	 * 
+	 * @param Size the max number of sprites in the batch
+	 */
 	public RenderBatch(int Size) {
 		this.maxBatchSize = Size;
 
@@ -48,7 +53,7 @@ public class RenderBatch {
 		Start();
 	}
 
-	public void Start() {
+	private void Start() {
 		BufferLayout bufferLayout = new BufferLayout(new BufferElement[] {
 				new BufferElement("position", DataType.VEC3),
 				new BufferElement("texCoords", DataType.VEC2),
@@ -68,6 +73,9 @@ public class RenderBatch {
 		vao.addVertexBuffer(vbo);
 	}
 
+	/**
+	 * clear the batch data from the last frame
+	 */
 	public void Begin() {
 		textureCount = 0;
 		numOfSprites = 0;
@@ -77,14 +85,23 @@ public class RenderBatch {
 		textures.clear();
 	}
 
+	/**
+	 * Adds sprite to the batch
+	 */
 	public void AddSprite(Texture2D texture, Vector position) {
 		AddSprite(texture, position, new Vector(1, 1), 0);
 	}
 
+	/**
+	 * Adds sprite to the batch
+	 */
 	public void AddSprite(Texture2D texture, Transform transform) {
 		AddSprite(texture, transform.position, transform.scale, transform.rotation);
 	}
 
+	/**
+	 * Adds sprite to the batch
+	 */
 	public void AddSprite(Texture2D texture, Vector position, Vector scale, float rotation) {
 		int texIndex = 0;
 
@@ -138,12 +155,24 @@ public class RenderBatch {
 		}
 	}
 
+	/**
+	 * reloades the changes of the vertecies in the vbo and uploades the changes to
+	 * the gpu
+	 */
 	public void reloadData() {
 		this.vbo.bind();
 		this.vbo.SetData(this.vertecies);
 		this.vbo.unbind();
 	}
 
+	// TODO: have singular scene data and use that
+
+	/**
+	 * Draws the batch in a single draw call
+	 * 
+	 * @param viewMatrix       the view matrix of the camera
+	 * @param projectionMatrix the projection matrix of the camera
+	 */
 	public void render(Matrix4f viewMatrix, Matrix4f projectionMatrix) {
 		shader.bind();
 		shader.loadMatrix4("viewMat", viewMatrix);
@@ -160,12 +189,32 @@ public class RenderBatch {
 		textures.get(0).Unbind();
 	}
 
+	/**
+	 * Checks if the batch has room for more draw calls
+	 * 
+	 * @return true or false depending if the batch has room
+	 */
 	public boolean hasRoom() {
 		return hasRoom;
 	}
 
+	/**
+	 * Checks if the batch has room for more textures
+	 * 
+	 * @return true or false depending if the batch has room for textures
+	 */
 	public boolean hasRoomTextures() {
 		return hasRoomTextures;
+	}
+
+	/**
+	 * Checks if a texture is already apart of the batch
+	 * 
+	 * @param texture the texture to check
+	 * @return true or false depending if the texture is already in the batch
+	 */
+	public boolean isTextureLoaded(Texture2D texture) {
+		return textures.contains(texture);
 	}
 
 	private int[] generateIndecies() {

@@ -52,7 +52,7 @@
       },
       "Components": [
         {
-          "zoom": 6.0,
+          "FOV": 6.0,
           "isActive": true,
           "compType": "Camera"
         },

@@ -1,5 +1,6 @@
-package Elipse.Core.Assets;
+package Elipse.Core.Assets.Editor;
 
+import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 
 public class AssetMetaData {

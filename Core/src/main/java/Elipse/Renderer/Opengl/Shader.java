@@ -58,6 +58,15 @@ public class Shader {
 		this.LoadShader(vertexShader, fragmentShader);
 	}
 
+	/**
+	 * Loads a shader from disk
+	 * 
+	 * <p>
+	 * not for use in prod
+	 * </p>
+	 * 
+	 * @param filepath the filepath of the shader
+	 */
 	public Shader(String filepath) {
 		try {
 			String contents = Files.readString(Path.of(filepath));
@@ -69,7 +78,14 @@ public class Shader {
 		}
 	}
 
-	// TODO: find a better way of doing this type of shit
+	/**
+	 * the shader file is in the form of #type vertex or #type fragment
+	 * 
+	 * @param src the String source of the glsl shader containing Vertex and
+	 *            Fragment shader
+	 * @return a pair of the vertex and fragment shader first is the vertex shader
+	 *         and the second is the fragment
+	 */
 	private Pair<String, String> PreProcessShaderSrc(String src) {
 
 		String vertexSrc = "";
@@ -93,6 +109,12 @@ public class Shader {
 		return new Pair<String, String>(vertexSrc, fragmentSrc);
 	}
 
+	/**
+	 * Load the shader program into vram
+	 * 
+	 * @param vertexShader   the vertex shader source
+	 * @param fragmentShader the fragment shader source
+	 */
 	private void LoadShader(String vertexShader, String fragmentShader) {
 		this.ShaderId = GL46.glCreateProgram();
 
@@ -121,10 +143,21 @@ public class Shader {
 		return shaderId;
 	}
 
+	/**
+	 * Load a uniforms location into the uniform hashmap
+	 * 
+	 * @param uniformName the uniform to load
+	 */
 	private void initUniform(String uniformName) {
 		uniforms.put(uniformName, GL46.glGetUniformLocation(this.ShaderId, uniformName));
 	}
 
+	/**
+	 * Checks the uniform hashmap to see if the uniform exists. If it does not exist
+	 * it'll load it
+	 * 
+	 * @param uniformName the name of the uniform
+	 */
 	private void chckUniform(String uniformName) {
 		if (!uniforms.containsKey(uniformName)) {
 			initUniform(uniformName);
@@ -216,8 +249,15 @@ public class Shader {
 		GL46.glUseProgram(0);
 	}
 
-	public void loadIntArray(String location, int[] is) {
+	/**
+	 * Loads an array of ints into the specified location also works for array of
+	 * textures
+	 * 
+	 * @param location the location to load the array to
+	 * @param data     the array itself
+	 */
+	public void loadIntArray(String location, int[] data) {
 		chckUniform(location);
-		GL46.glUniform1iv(uniforms.get(location), is);
+		GL46.glUniform1iv(uniforms.get(location), data);
 	}
 }

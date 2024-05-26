@@ -72,7 +72,6 @@ public class ScriptEngine {
 		}
 	}
 
-	// TODO: refactor this is ass
 	private void ImplmentClass(Class<?> clazz) {
 		if (BaseComponent.class.isAssignableFrom(clazz)) {
 			this.ScriptDirectory.put(clazz.getCanonicalName(), new BaseComponentScript(clazz));

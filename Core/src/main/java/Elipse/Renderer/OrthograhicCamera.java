@@ -13,7 +13,7 @@ public class OrthograhicCamera {
 	private Matrix4f inversProjection;
 	private Matrix4f inversTransform;
 
-	private float zoom = 5f;
+	private float FOV = 5f;
 
 	/**
 	 * Internal Representation of a camera for 2D rendering prettymuch no need to
@@ -34,8 +34,8 @@ public class OrthograhicCamera {
 	public void Resize(int width, int height) {
 		float aspectRatio = (float) width / height;
 
-		float _width = zoom * 0.5f * aspectRatio;
-		float _height = zoom * 0.5f;
+		float _width = FOV * 0.5f * aspectRatio;
+		float _height = FOV * 0.5f;
 
 		projection.identity();
 		projection.ortho(-_width, _width, -_height, _height, 0f, 100f);
@@ -70,19 +70,17 @@ public class OrthograhicCamera {
 	}
 
 	/**
-	 * TODO: implement proper zoom
-	 * 
-	 * @param f the factor of which by it zooms
+	 * @param f the factor of which by it FOVs
 	 */
-	public void SetZoom(float f) {
-		zoom = f;
+	public void SetFOV(float f) {
+		FOV = f;
 	}
 
 	/**
-	 * @return the current zoom
+	 * @return the current FOV
 	 */
-	public float GetZoom() {
-		return zoom;
+	public float GetFOV() {
+		return FOV;
 	}
 
 	public void Move(Vector positon) {

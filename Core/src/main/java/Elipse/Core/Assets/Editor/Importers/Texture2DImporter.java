@@ -1,10 +1,10 @@
-package Elipse.Core.Assets.Importers;
+package Elipse.Core.Assets.Editor.Importers;
 
 import java.util.UUID;
 
 import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.AssetMetaData;
-import Elipse.Core.Assets.IAssetImporter;
+import Elipse.Core.Assets.Editor.AssetMetaData;
+import Elipse.Core.Assets.Editor.IAssetImporter;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Renderer.Opengl.Texture.Texture.TextureFiltering;
 import Elipse.Renderer.Opengl.Texture.Texture.TextureWrapMode;

@@ -1,4 +1,4 @@
-package Elipse.Core.Assets;
+package Elipse.Core.Assets.Editor;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Project.Project;
 import Elipse.Utils.Serializer.AssetBankSerializer;
@@ -22,8 +23,8 @@ import Elipse.Utils.Serializer.UUIDSerializer;
 
 public class EditorAssetManager implements AssetManager {
 
-	public Map<String, Asset> loadedAssets = new HashMap<>();
-	public Map<String, AssetMetaData> assetMap = new HashMap<>();
+	private Map<String, Asset> loadedAssets = new HashMap<>();
+	private Map<String, AssetMetaData> assetMap = new HashMap<>();
 
 	public EditorAssetManager() {
 		AssetImporter.Init();
@@ -47,7 +48,7 @@ public class EditorAssetManager implements AssetManager {
 			AssetMetaData metaData = assetMap.get(id.toString());
 			Asset asset = AssetImporter.ImportAsset(id, metaData);
 			if (asset != null) {
-				asset.id = id;
+				asset.SetId(id);
 				loadedAssets.put(id.toString(), asset);
 				return (T) asset;
 			}
@@ -70,7 +71,7 @@ public class EditorAssetManager implements AssetManager {
 
 		Asset asset = AssetImporter.ImportAsset(id, metaData);
 		if (asset != null) {
-			asset.id = id;
+			asset.SetId(id);
 			loadedAssets.put(id.toString(), asset);
 			assetMap.put(id.toString(), metaData);
 			SerializeAssetBank();

@@ -17,6 +17,9 @@ public class Texture2D extends Texture {
 		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, textureId);
 
+		this.filtering = filtering;
+		this.wrapMode = wrapMode;
+
 		this.path = path;
 
 		IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -54,6 +57,7 @@ public class Texture2D extends Texture {
 					this.internalDataFormat, this.width, this.height,
 					0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, image);
 
+			STBImage.stbi_image_free(image);
 		} else {
 			Logger.c_error("Texture: Could not load image '" + path + "'");
 			return;
@@ -85,6 +89,9 @@ public class Texture2D extends Texture {
 		this.format = format;
 
 		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
+
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, this.textureId);
+
 		GL46.glTextureStorage2D(this.textureId, 1, this.internalFormat, this.width, this.height);
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
@@ -97,6 +104,36 @@ public class Texture2D extends Texture {
 
 		GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalDataFormat,
 				GL30.GL_UNSIGNED_BYTE, 0);
+
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
+	}
+
+	public Texture2D(byte[] texture, int width, int height, TextureFormat format, TextureFiltering filtering,
+			TextureWrapMode wrapMode) {
+
+		this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
+		this.internalFormat = this.InternalFormatToGLInternalFormat(format);
+		this.width = width;
+		this.height = height;
+		this.format = format;
+
+		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, this.textureId);
+		ByteBuffer img = ByteBuffer.wrap(texture);
+
+		GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
+				this.internalDataFormat, this.width, this.height,
+				0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
+
+		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
+				this.InternalFilteringToGLFiltering(filtering));
+		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MAG_FILTER,
+				this.InternalFilteringToGLFiltering(filtering));
+
+		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_S, this.InternalWrapModeToGLWrapMode(wrapMode));
+		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_T, this.InternalWrapModeToGLWrapMode(wrapMode));
+
+		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
 	}
 
 	@Override
@@ -119,6 +156,24 @@ public class Texture2D extends Texture {
 	@Override
 	public void Dispose() {
 		GL46.glDeleteTextures(textureId);
+	}
+
+	public byte[] GetRawData() {
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		IntBuffer channels = BufferUtils.createIntBuffer(1);
+
+		ByteBuffer img = STBImage.stbi_load(
+				path, width, height,
+				channels, 0);
+
+		byte[] arr = new byte[img.remaining()];
+
+		img.get(arr);
+
+		STBImage.stbi_image_free(img);
+
+		return arr;
 	}
 
 	@Override

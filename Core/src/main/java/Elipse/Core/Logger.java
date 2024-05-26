@@ -1,10 +1,21 @@
 package Elipse.Core;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 // TODO: loggin to file
 public class Logger {
+
+	public Logger() {
+		try {
+			fileWriter = new FileWriter("latest.log");
+			fileWriter.write("");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public enum LogMode {
 		CORE,
@@ -19,6 +30,8 @@ public class Logger {
 
 	private static Logger logger;
 	private LoggerCallbackFunc Callback;
+
+	private FileWriter fileWriter;
 
 	/**
 	 * Setus up Logger has to be called befor Logging or it wont log
@@ -110,12 +123,27 @@ public class Logger {
 		switch (level) {
 			case ERROR:
 				System.out.println(ANSI_RED + f_message + ANSI_WHITE);
+				try {
+					fileWriter.append("ERROR: " + f_message + "\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case WARN:
 				System.out.println(ANSI_YELLOW + f_message + ANSI_WHITE);
+				try {
+					fileWriter.append("WARN: " + f_message + "\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case INFO:
 				System.out.println(f_message);
+				try {
+					fileWriter.append("INFO: " + f_message + "\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 		}
 

@@ -10,8 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import Elipse.Core.Logger;
-import Elipse.Core.Assets.AssetManager;
-import Elipse.Core.Assets.EditorAssetManager;
+import Elipse.Core.Assets.Editor.AssetManager;
+import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.ECS.Scene;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Utils.Serializer.AssetSerializer;

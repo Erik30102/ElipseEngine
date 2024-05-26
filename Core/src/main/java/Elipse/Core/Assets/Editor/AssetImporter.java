@@ -1,12 +1,13 @@
-package Elipse.Core.Assets;
+package Elipse.Core.Assets.Editor;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
-import Elipse.Core.Assets.Importers.SceneImporter;
-import Elipse.Core.Assets.Importers.Texture2DImporter;
+import Elipse.Core.Assets.Editor.Importers.SceneImporter;
+import Elipse.Core.Assets.Editor.Importers.Texture2DImporter;
 
 public class AssetImporter {
 	private static HashMap<AssetType, IAssetImporter> importers;

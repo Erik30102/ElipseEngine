@@ -19,11 +19,11 @@ public class CameraComponentSerializer implements JsonSerializer<CameraComponent
 	public CameraComponent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject jsonObject = json.getAsJsonObject();
-		float zoom = jsonObject.get("zoom").getAsFloat();
+		float FOV = jsonObject.get("FOV").getAsFloat();
 		boolean isActive = jsonObject.get("isActive").getAsBoolean();
 
 		CameraComponent camera = new CameraComponent();
-		camera.SetZoom(zoom);
+		camera.SetFOV(FOV);
 		camera.SetActive(isActive);
 
 		return camera;
@@ -32,7 +32,7 @@ public class CameraComponentSerializer implements JsonSerializer<CameraComponent
 	@Override
 	public JsonElement serialize(CameraComponent src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject result = new JsonObject();
-		result.add("zoom", new JsonPrimitive(src.GetZoom()));
+		result.add("FOV", new JsonPrimitive(src.GetFOV()));
 		result.add("isActive", new JsonPrimitive(src.isActive()));
 
 		return result;

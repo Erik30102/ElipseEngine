@@ -55,7 +55,11 @@ public abstract class Asset {
 		}
 	}
 
-	protected transient UUID id;
+	private transient UUID id;
+
+	public final void SetId(UUID id) {
+		this.id = id;
+	}
 
 	public UUID GetAssetHandel() {
 		return id;

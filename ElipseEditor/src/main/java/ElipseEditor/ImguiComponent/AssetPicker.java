@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 import Elipse.Core.Assets.Asset.AssetType;
+import Elipse.Core.Assets.Editor.AssetMetaData;
+import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.AssetMetaData;
-import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.Project.Project;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import imgui.ImGui;

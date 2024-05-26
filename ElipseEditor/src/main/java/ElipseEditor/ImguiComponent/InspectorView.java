@@ -109,13 +109,13 @@ public class InspectorView {
 					} else if (component.getClass() == CameraComponent.class) {
 						ImGui.columns(2);
 
-						ImGui.text("Zoom: ");
+						ImGui.text("FOV: ");
 
 						ImGui.nextColumn();
 
-						float[] f = { ((CameraComponent) component).GetZoom() };
-						if (ImGui.dragFloat("##Zoom", f, 0.1f)) {
-							((CameraComponent) component).SetZoom(f[0]);
+						float[] f = { ((CameraComponent) component).GetFOV() };
+						if (ImGui.dragFloat("##FOV", f, 0.1f)) {
+							((CameraComponent) component).SetFOV(f[0]);
 						}
 
 						ImGui.nextColumn();
@@ -176,8 +176,6 @@ public class InspectorView {
 				}
 
 				ImGui.separator();
-
-				// TODO: reimplment with cashing
 
 				for (BaseComponentScript comp : ScriptEngine.GetInstance().GetScripts(ScriptType.BASECOMPONENT,
 						BaseComponentScript.class)) {

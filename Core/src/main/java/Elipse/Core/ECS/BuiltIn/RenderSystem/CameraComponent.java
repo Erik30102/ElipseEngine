@@ -6,10 +6,8 @@ import Elipse.Core.ECS.Component;
 import Elipse.Core.Maths.Vector;
 import Elipse.Renderer.OrthograhicCamera;
 
-// TODO: abstraction to seperate camera class
-
 public class CameraComponent implements Component {
-	public float zoom;
+	public float FOV;
 
 	public boolean isActive = true;
 
@@ -18,7 +16,7 @@ public class CameraComponent implements Component {
 	public CameraComponent() {
 		orthograhicCamera = new OrthograhicCamera();
 
-		zoom = 5f;
+		FOV = 5f;
 
 		this.Resize(1, 1);
 	}
@@ -64,19 +62,21 @@ public class CameraComponent implements Component {
 	}
 
 	/**
-	 * TODO: implement proper zoom
+	 * TODO: implement proper FOV
 	 * 
-	 * @param f the factor of which by it zooms
+	 * @param f the factor of which by it FOVs
 	 */
-	public void SetZoom(float f) {
-		zoom = f;
+	public void SetFOV(float f) {
+		FOV = f;
+
+		orthograhicCamera.SetFOV(f);
 	}
 
 	/**
-	 * @return the current zoom
+	 * @return the current FOV
 	 */
-	public float GetZoom() {
-		return zoom;
+	public float GetFOV() {
+		return FOV;
 	}
 
 	/**
