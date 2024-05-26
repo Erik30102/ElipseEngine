@@ -14,8 +14,11 @@ public class CameraScript extends BaseComponent {
 
 	@Override
 	public void OnUpdate(float dt) {
-		if (player == null)
+		if (player == null) {
+			player = this.entity.GetScene().GetEntityByName("Player");
 			return;
+		}
+
 		float diffX = this.entity.transform.position.getX() - player.transform.position.getX();
 		float diffY = this.entity.transform.position.getY() - player.transform.position.getY();
 

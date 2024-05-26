@@ -1,6 +1,5 @@
 package Elipse.Renderer.Opengl.Buffers;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

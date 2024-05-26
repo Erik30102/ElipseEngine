@@ -7,6 +7,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
 import Elipse.Core.ECS.Transform;
+import Elipse.Core.Maths.Vector;
 import Elipse.Renderer.Opengl.RendererApi;
 import Elipse.Renderer.Opengl.Shader;
 import Elipse.Renderer.Opengl.Buffers.BufferElement;
@@ -76,7 +77,15 @@ public class RenderBatch {
 		textures.clear();
 	}
 
+	public void AddSprite(Texture2D texture, Vector position) {
+		AddSprite(texture, position, new Vector(1, 1), 0);
+	}
+
 	public void AddSprite(Texture2D texture, Transform transform) {
+		AddSprite(texture, transform.position, transform.scale, transform.rotation);
+	}
+
+	public void AddSprite(Texture2D texture, Vector position, Vector scale, float rotation) {
 		int texIndex = 0;
 
 		if (!textures.contains(texture)) {
@@ -84,9 +93,9 @@ public class RenderBatch {
 			textureCount++;
 		}
 
-		Matrix4f transformMatrix = new Matrix4f().identity().translate(transform.position.getX(),
-				transform.position.getY(), 10).scale(transform.scale.getX(), transform.scale.getY(), 1)
-				.rotateZ((float) Math.toRadians(transform.rotation));
+		Matrix4f transformMatrix = new Matrix4f().identity().translate(position.getX(),
+				position.getY(), 10).scale(scale.getX(), scale.getY(), 1)
+				.rotateZ((float) Math.toRadians(rotation));
 
 		texIndex = textures.indexOf(texture);
 

@@ -16,6 +16,7 @@ import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.RenderSystem;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.TilemapComponent;
 import Elipse.Core.EventSystem.Events.Event;
 import Elipse.Core.EventSystem.Events.KeyPressedEvent;
 import Elipse.Core.EventSystem.Events.Event.EventType;
@@ -69,7 +70,7 @@ public class EditorLayer extends Layer {
 		INSTANCE = this;
 
 		components = new Class[] { SpriteRenderComponent.class, CameraComponent.class, RidgedBodyComponent.class,
-				BoxColliderComponent.class, PointLightComponent.class };
+				BoxColliderComponent.class, PointLightComponent.class, TilemapComponent.class };
 
 		fbo = new Framebuffer(200, 200);
 
@@ -236,6 +237,9 @@ public class EditorLayer extends Layer {
 			if (((KeyPressedEvent) event).GetKeyCode() == KeyCode.EL_KEY_F) {
 				Application.getApplication().GetWindow().SetFullscreen();
 			}
+		}
+		if (event.GetEventType() == EventType.WindowClose) {
+			Editor.SetShouldBeRunning(false);
 		}
 	}
 

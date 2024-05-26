@@ -3,7 +3,6 @@ package ElipseEditor.ImguiComponent;
 import Elipse.Core.ECS.ECSSystem;
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.Maths.Color;
-import Elipse.Core.Scripting.Script;
 import Elipse.Core.Scripting.ScriptEngine;
 import Elipse.Core.Scripting.Script.ScriptType;
 import Elipse.Core.Scripting.Scripts.SystemScript;

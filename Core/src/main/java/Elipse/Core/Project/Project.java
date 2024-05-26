@@ -13,6 +13,8 @@ import Elipse.Core.Logger;
 import Elipse.Core.Assets.AssetManager;
 import Elipse.Core.Assets.EditorAssetManager;
 import Elipse.Core.ECS.Scene;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
+import Elipse.Utils.Serializer.AssetSerializer;
 import Elipse.Utils.Serializer.LocalSceneSerializer;
 import Elipse.Utils.Serializer.UUIDSerializer;
 
@@ -155,7 +157,9 @@ public class Project {
 
 		// TODO: clean up
 
-		Gson scene_gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Scene.class, new LocalSceneSerializer())
+		// TODO: make all assets use the asset serializer if part of a component
+		Gson scene_gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Texture2D.class, new AssetSerializer())
+				.registerTypeAdapter(Scene.class, new LocalSceneSerializer())
 				.create();
 
 		String scene_json = scene_gson.toJson((Scene) this.assetManager.GetAsset(StartScene));

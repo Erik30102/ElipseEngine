@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import Elipse.Core.EventSystem.Events.Event;
 import Elipse.Core.EventSystem.Events.WindowCloseEvent;
-import Elipse.Core.EventSystem.Events.WindowResizeEvent;
 import Elipse.Core.Input.Input;
 import Elipse.Core.Layers.Layer;
 import Elipse.Core.Layers.LayerStack;
@@ -79,9 +78,6 @@ public abstract class Application {
 			case WindowClose:
 				this.OnCloseEvent((WindowCloseEvent) event);
 				break;
-			case WindowResize:
-				this.OnResizeEvent((WindowResizeEvent) event);
-				break;
 			default:
 				break;
 		}
@@ -91,10 +87,6 @@ public abstract class Application {
 
 	private void OnCloseEvent(WindowCloseEvent event) {
 		Stop();
-	}
-
-	private void OnResizeEvent(WindowResizeEvent event) {
-		// TODO: implement
 	}
 
 	/**

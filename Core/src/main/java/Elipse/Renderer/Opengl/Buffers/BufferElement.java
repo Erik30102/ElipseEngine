@@ -1,7 +1,5 @@
 package Elipse.Renderer.Opengl.Buffers;
 
-import java.nio.ByteBuffer;
-
 import org.lwjgl.opengl.GL30;
 
 import Elipse.Core.Logger;
@@ -88,6 +86,7 @@ public class BufferElement {
 		return 0;
 	}
 
+	@SuppressWarnings("static-access")
 	public int GetSize() {
 		return this.DataType != DataType.BOOL ? GetComponentCount() * 4 : 1;
 	}

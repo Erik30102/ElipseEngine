@@ -280,6 +280,20 @@ public class InspectorView {
 							field.set(component, !val);
 						}
 						ImGui.nextColumn();
+					} else if (type == Texture2D.class) {
+						ImGui.text(name);
+						ImGui.nextColumn();
+						ImGui.pushID(field.hashCode());
+						if (ImGui.button("Select Texture")) {
+							AssetPicker.Open(field.hashCode() + "TEX", AssetType.TEXTURE2D);
+						}
+						ImGui.popID();
+
+						if (AssetPicker.Display(field.hashCode() + "TEX")) {
+							field.set(component, AssetPicker.GetSelected(Texture2D.class));
+						}
+
+						ImGui.nextColumn();
 					}
 				}
 			}

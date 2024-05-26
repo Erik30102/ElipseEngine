@@ -7,11 +7,13 @@ import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.ECSSystem;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Transform;
+import Elipse.Core.Maths.Vector;
 import Elipse.Renderer.OrthograhicCamera;
 import Elipse.Renderer.Batching.RenderBatch;
 import Elipse.Renderer.Opengl.Framebuffer;
 import Elipse.Renderer.Opengl.Renderer2D;
 import Elipse.Renderer.Opengl.RendererApi;
+import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Utils.Pair;
 
 public class RenderSystem extends ECSSystem {
@@ -96,6 +98,35 @@ public class RenderSystem extends ECSSystem {
 			}
 		}
 
+		List<Pair<Entity, Component>> TilemapComponent = scene.GetComponents(TilemapComponent.class);
+		if (TilemapComponent != null) {
+			for (Pair<Entity, Component> pair : TilemapComponent) {
+				TilemapComponent tilemap = (TilemapComponent) pair.getValue();
+				Transform transform = pair.getKey().transform;
+
+				Texture2D[] grid = tilemap.GetGrid();
+
+				if (grid == null)
+					continue;
+
+				for (int i = 0; i < grid.length; i++) {
+					int x = i % tilemap.GetWidth();
+					int y = (int) Math.floor(i / tilemap.GetWidth());
+
+					if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
+						renderBatch.get(batchIndex).AddSprite(grid[i], new Vector(x, y).add(transform.position));
+					} else {
+						batchIndex++;
+						if (renderBatch.get(batchIndex) == null) {
+							renderBatch.add(new RenderBatch(20000));
+						}
+						renderBatch.get(batchIndex).Begin();
+						renderBatch.get(batchIndex).AddSprite(grid[i], new Vector(x, y).add(transform.position));
+					}
+				}
+			}
+		}
+
 		for (RenderBatch batch : renderBatch) {
 			batch.reloadData();
 			batch.render(camera.GetView(), camera.GetProjection());
@@ -147,6 +178,35 @@ public class RenderSystem extends ECSSystem {
 					}
 					renderBatch.get(batchIndex).Begin();
 					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
+				}
+			}
+		}
+
+		List<Pair<Entity, Component>> TilemapComponent = scene.GetComponents(TilemapComponent.class);
+		if (TilemapComponent != null) {
+			for (Pair<Entity, Component> pair : TilemapComponent) {
+				TilemapComponent tilemap = (TilemapComponent) pair.getValue();
+				Transform transform = pair.getKey().transform;
+
+				Texture2D[] grid = tilemap.GetGrid();
+
+				if (grid == null)
+					continue;
+
+				for (int i = 0; i < grid.length; i++) {
+					int x = i % tilemap.GetWidth();
+					int y = (int) Math.floor(i / tilemap.GetWidth());
+
+					if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
+						renderBatch.get(batchIndex).AddSprite(grid[i], new Vector(x, y).add(transform.position));
+					} else {
+						batchIndex++;
+						if (renderBatch.get(batchIndex) == null) {
+							renderBatch.add(new RenderBatch(20000));
+						}
+						renderBatch.get(batchIndex).Begin();
+						renderBatch.get(batchIndex).AddSprite(grid[i], new Vector(x, y).add(transform.position));
+					}
 				}
 			}
 		}

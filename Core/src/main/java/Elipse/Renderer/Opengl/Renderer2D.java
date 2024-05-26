@@ -1,7 +1,6 @@
 package Elipse.Renderer.Opengl;
 
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL30;
 
 import Elipse.Core.ECS.Transform;
 import Elipse.Renderer.OrthograhicCamera;

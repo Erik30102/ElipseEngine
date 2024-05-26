@@ -10,6 +10,9 @@ public class OrthograhicCamera {
 
 	private Matrix4f projection;
 
+	private Matrix4f inversProjection;
+	private Matrix4f inversTransform;
+
 	private float zoom = 5f;
 
 	/**
@@ -36,6 +39,8 @@ public class OrthograhicCamera {
 
 		projection.identity();
 		projection.ortho(-_width, _width, -_height, _height, 0f, 100f);
+
+		inversProjection = projection.invert(new Matrix4f());
 	}
 
 	/**
@@ -54,6 +59,14 @@ public class OrthograhicCamera {
 	 */
 	public Matrix4f GetView() {
 		return transform;
+	}
+
+	public Matrix4f GetInversView() {
+		return this.inversTransform;
+	}
+
+	public Matrix4f GetInversProjection() {
+		return this.inversProjection;
 	}
 
 	/**
@@ -81,5 +94,7 @@ public class OrthograhicCamera {
 						positon.getX(),
 						positon.getY(), 20),
 				cameraFront.add(positon.getX(), positon.getY(), 0), cameraUp);
+
+		inversTransform = transform.invert(new Matrix4f());
 	}
 }
