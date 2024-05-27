@@ -7,8 +7,8 @@ import Elipse.Core.Physics.Collider.Collider;
 import Elipse.Core.Physics.PhysicsBody.BodyType;
 
 public class RidgedBodyComponent implements Component {
-	public PhysicsBody rg;
-	public boolean RotationLocked = false;
+	public final PhysicsBody rg;
+	private boolean RotationLocked = false;
 
 	public RidgedBodyComponent() {
 		rg = new PhysicsBody(BodyType.DYNAMIC);

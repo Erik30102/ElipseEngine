@@ -30,4 +30,5 @@ public interface AssetManager {
 	 * @return the type of the asset
 	 */
 	public AssetType GetAssetType(UUID id);
+
 }

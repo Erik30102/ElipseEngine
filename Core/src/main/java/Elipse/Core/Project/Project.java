@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import Elipse.Core.Logger;
+import Elipse.Core.Assets.AssetPacks.AssetPack;
+import Elipse.Core.Assets.AssetPacks.RuntimeAssetManager;
 import Elipse.Core.Assets.Editor.AssetManager;
 import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.ECS.Scene;
@@ -27,7 +29,7 @@ public class Project {
 	private String ProjectDir, AssetDir, AssetMapPath, ScriptProject;
 
 	// TODO: dynamic when i implement a runtime Asset Manager
-	private transient AssetManager assetManager = new EditorAssetManager();
+	private transient AssetManager assetManager;
 
 	/**
 	 * Creates a Project with name at given directory
@@ -40,6 +42,7 @@ public class Project {
 		AssetDir = dir + "/Assets";
 		AssetMapPath = AssetDir + "/AssetMap.elbank";
 		ScriptProject = dir + "/Scripts";
+		assetManager = new EditorAssetManager();
 		name = Name;
 
 		try {
@@ -98,6 +101,20 @@ public class Project {
 		}
 
 		return null;
+	}
+
+	public Project() {
+		INSTANCE = this;
+	}
+
+	public static Project LoadFromAssetPack(String path) {
+		AssetPack assetPack = AssetPack.LoadFromDisk(path);
+
+		Project project = new Project();
+		project.StartScene = UUID.fromString(assetPack.GetStartScene());
+		project.assetManager = new RuntimeAssetManager(assetPack);
+
+		return project;
 	}
 
 	// TODO: make the asset and assetMapPath relative to the porject dir

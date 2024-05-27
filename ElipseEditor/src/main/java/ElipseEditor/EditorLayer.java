@@ -7,16 +7,8 @@ import org.joml.Vector3f;
 
 import Elipse.Core.Application;
 import Elipse.Core.Logger;
-import Elipse.Core.Assets.Asset;
-import Elipse.Core.Assets.Asset.AssetType;
-import Elipse.Core.Assets.AssetPacks.AssetInfo;
 import Elipse.Core.Assets.AssetPacks.AssetPack;
-import Elipse.Core.Assets.AssetPacks.AssetPack.HEADERS;
-import Elipse.Core.Assets.AssetPacks.AssetSources.AssetSource;
-import Elipse.Core.Assets.AssetPacks.AssetSources.TextureSource;
-import Elipse.Core.Assets.AssetPacks.Importers.RuntimeTextureImporter;
-import Elipse.Core.Assets.Editor.AssetMetaData;
-import Elipse.Core.Assets.Editor.EditorAssetManager;
+import Elipse.Core.Assets.AssetPacks.RuntimeAssetImporter;
 import Elipse.Core.ECS.Component;
 import Elipse.Core.ECS.Entity;
 import Elipse.Core.ECS.Scene;
@@ -164,33 +156,12 @@ public class EditorLayer extends Layer {
 		// DEBUG DEBUG DEBUG DEBUG DEBGU DEBUG DEBUG
 
 		if (ImGui.button("test function")) {
-			AssetPack pack = new AssetPack();
-
-			EditorAssetManager as = ((EditorAssetManager) Project.GetActive().GetAssetManager());
-
-			AssetMetaData metaData = as.GetAssetsFromType(AssetType.TEXTURE2D).get(0);
-
-			AssetSource source = new RuntimeTextureImporter().Serialize(
-					as.GetAsset(as.GetUUIDFromMetadata(metaData)));
-
-			AssetInfo assetInfo = new AssetInfo(HEADERS.TEXTURE2D, source, AssetType.TEXTURE2D);
-
-			pack.AddAsset(as.GetUUIDFromMetadata(metaData), assetInfo);
-
-			AssetPack.SaveToDisk("test.data", pack);
+			RuntimeAssetImporter.Init();
+			AssetPack.SaveToDisk("assetpack.ep", AssetPack.BuildFromCurrentProject());
 		}
 
 		if (ImGui.button("testa")) {
-			AssetPack pack = AssetPack.LoadFromDisk("test.data");
 
-			pack.GetAssetInfoMap().values().forEach(a -> {
-				switch (a.getHeader()) {
-					case TEXTURE2D:
-						TextureSource ts = (TextureSource) a.getContent();
-						Asset asss = new RuntimeTextureImporter().Deserialize(ts);
-						break;
-				}
-			});
 		}
 
 		ImGui.end();

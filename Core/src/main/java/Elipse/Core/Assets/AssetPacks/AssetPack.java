@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import Elipse.Core.Assets.Asset;
+import Elipse.Core.Assets.Editor.AssetMetaData;
+import Elipse.Core.Assets.Editor.EditorAssetManager;
+import Elipse.Core.Project.Project;
+
 public class AssetPack implements Serializable {
 	public enum HEADERS {
 		TEXTURE2D(1),
@@ -39,6 +44,7 @@ public class AssetPack implements Serializable {
 
 	private byte[] appBinary;
 	private Map<String, AssetInfo> assetInfoMap = new HashMap<>();
+	private String StartScene;
 
 	public void SetAppBinary(byte[] appBinary) {
 		this.appBinary = appBinary;
@@ -56,8 +62,30 @@ public class AssetPack implements Serializable {
 		return assetInfoMap;
 	}
 
+	public String GetStartScene() {
+		return StartScene;
+	}
+
 	public AssetInfo GetAssetInfo(UUID id) {
-		return assetInfoMap.get(id);
+		return assetInfoMap.get(id.toString());
+	}
+
+	public static AssetPack BuildFromCurrentProject() {
+		AssetPack assetPack = new AssetPack();
+
+		Map<String, AssetMetaData> assets = ((EditorAssetManager) Project.GetActive().GetAssetManager()).GetAllAssets();
+
+		for (Map.Entry<String, AssetMetaData> entry : assets.entrySet()) {
+			Asset asset = Project.GetActive().GetAssetManager().GetAsset(UUID.fromString(entry.getKey()));
+
+			AssetInfo assetInfo = new AssetInfo(RuntimeAssetImporter.GetAssetInfo(asset), asset.GetAssetType());
+
+			assetPack.AddAsset(entry.getKey(), assetInfo);
+		}
+
+		assetPack.StartScene = Project.GetActive().GetStartScene().toString();
+
+		return assetPack;
 	}
 
 	public static void SaveToDisk(String path, AssetPack assetPack) {

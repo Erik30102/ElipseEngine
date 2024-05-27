@@ -111,19 +111,15 @@ public class Texture2D extends Texture {
 	public Texture2D(byte[] texture, int width, int height, TextureFormat format, TextureFiltering filtering,
 			TextureWrapMode wrapMode) {
 
-		this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
-		this.internalFormat = this.InternalFormatToGLInternalFormat(format);
 		this.width = width;
 		this.height = height;
 		this.format = format;
+		this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
+		this.internalFormat = this.InternalFormatToGLInternalFormat(format);
 
 		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, this.textureId);
 		ByteBuffer img = ByteBuffer.wrap(texture);
-
-		GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
-				this.internalDataFormat, this.width, this.height,
-				0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
 				this.InternalFilteringToGLFiltering(filtering));
@@ -132,6 +128,10 @@ public class Texture2D extends Texture {
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_S, this.InternalWrapModeToGLWrapMode(wrapMode));
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_T, this.InternalWrapModeToGLWrapMode(wrapMode));
+
+		GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
+				this.internalDataFormat, this.width, this.height,
+				0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
 
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
 	}

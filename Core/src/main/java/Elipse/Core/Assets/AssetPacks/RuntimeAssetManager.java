@@ -14,11 +14,8 @@ public class RuntimeAssetManager implements AssetManager {
 	private Map<String, Asset> loadedAssets = new HashMap<>();
 	private Map<String, AssetInfo> assetInfoMap = new HashMap<>();
 
-	public RuntimeAssetManager(String AssetPackPath) {
+	public RuntimeAssetManager(AssetPack assetPack) {
 		RuntimeAssetImporter.Init();
-		AssetPack assetPack = AssetPack.LoadFromDisk(AssetPackPath);
-
-		// TODO: load bin from assetpack
 
 		assetInfoMap = assetPack.GetAssetInfoMap();
 	}

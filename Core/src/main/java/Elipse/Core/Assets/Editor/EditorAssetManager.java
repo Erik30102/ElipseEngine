@@ -163,4 +163,8 @@ public class EditorAssetManager implements AssetManager {
 		return null;
 	}
 
+	public Map<String, AssetMetaData> GetAllAssets() {
+		return this.assetMap;
+	}
+
 }

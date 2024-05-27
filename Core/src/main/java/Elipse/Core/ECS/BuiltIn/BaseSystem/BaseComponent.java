@@ -1,8 +1,10 @@
 package Elipse.Core.ECS.BuiltIn.BaseSystem;
 
+import java.io.Serializable;
+
 import Elipse.Core.ECS.Entity;
 
-public abstract class BaseComponent {
+public abstract class BaseComponent implements Serializable {
 	protected transient Entity entity;
 
 	final void setEntity(Entity entity) {

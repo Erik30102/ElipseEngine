@@ -1,9 +1,11 @@
 package Elipse.Core.Maths;
 
+import java.io.Serializable;
+
 /**
  * Represents a 2D vector with x and y components.
  */
-public class Vector {
+public class Vector implements Serializable {
 
 	/**
 	 * X component of the vector.
