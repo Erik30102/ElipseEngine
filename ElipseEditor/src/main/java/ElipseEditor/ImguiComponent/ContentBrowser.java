@@ -41,7 +41,7 @@ public class ContentBrowser {
 	private ImString filename = new ImString();
 
 	public void OnImgui() {
-		if (ImGui.beginPopupModal("assetmodal", new ImBoolean(true),
+		if (ImGui.beginPopupModal("##assetmodal", new ImBoolean(true),
 				ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoTitleBar)) {
 			ImGui.inputText("Filename", filename);
 
@@ -57,7 +57,7 @@ public class ContentBrowser {
 
 		if (ImGui.beginPopup("CreateNewAsset")) {
 			if (ImGui.selectable("New Scene")) {
-				ImGui.openPopup("assetmodal");
+				ImGui.openPopup("##assetmodal");
 			}
 
 			ImGui.separator();
@@ -89,9 +89,11 @@ public class ContentBrowser {
 
 		for (File file : content.get(currentPath)) {
 			if (file.isDirectory()) {
+				ImGui.pushID(file.getPath());
 				if (ImGui.button("Folder", size, size)) {
 					currentPath = file.getPath();
 				}
+				ImGui.popID();
 				ImGui.text(file.getName());
 			} else {
 				HandelFile(file);

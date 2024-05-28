@@ -18,4 +18,10 @@ public class Texture2DImporter implements IAssetImporter {
 		return texture;
 	}
 
+	@Override
+	public void SerializeAsset(String path, Asset asset) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'SerializeAsset'");
+	}
+
 }

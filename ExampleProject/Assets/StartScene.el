@@ -1,11 +1,39 @@
 {
   "entities": [
     {
+      "Name": "Camera",
+      "transform": {
+        "position": {
+          "x": 1.2727785,
+          "y": 0.50578403
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "rotation": 0.0
+      },
+      "Components": [
+        {
+          "FOV": 6.0,
+          "isActive": true,
+          "compType": "Camera"
+        },
+        {
+          "type": "Sandbox.CameraScript",
+          "properties": {
+            "comp": {}
+          },
+          "compType": "Base"
+        }
+      ]
+    },
+    {
       "Name": "Player",
       "transform": {
         "position": {
-          "x": 1.3902096,
-          "y": 2.4485214
+          "x": 1.2727767,
+          "y": 0.5057839
         },
         "scale": {
           "x": 0.9925065,
@@ -34,27 +62,6 @@
             }
           },
           "compType": "Base"
-        }
-      ]
-    },
-    {
-      "Name": "Camera",
-      "transform": {
-        "position": {
-          "x": 0.0,
-          "y": 1.4776118
-        },
-        "scale": {
-          "x": 1.0,
-          "y": 1.0
-        },
-        "rotation": 0.0
-      },
-      "Components": [
-        {
-          "FOV": 6.0,
-          "isActive": true,
-          "compType": "Camera"
         }
       ]
     }

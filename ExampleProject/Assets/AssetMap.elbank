@@ -14,5 +14,9 @@
   "8356db31-6ace-47a8-8f15-026bed2896e0": {
     "type": "TEXTURE2D",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\floor_1.png"
+  },
+  "d37ba855-90a0-4a69-b3e9-f116e3ac20b9": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\tilemap\\Dragonheart.png"
   }
 }

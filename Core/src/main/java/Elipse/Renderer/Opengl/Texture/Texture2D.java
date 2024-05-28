@@ -129,9 +129,9 @@ public class Texture2D extends Texture {
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_S, this.InternalWrapModeToGLWrapMode(wrapMode));
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_WRAP_T, this.InternalWrapModeToGLWrapMode(wrapMode));
 
-		GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
-				this.internalDataFormat, this.width, this.height,
-				0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
+		// GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
+		// this.internalDataFormat, this.width, this.height,
+		// 0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
 
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
 	}

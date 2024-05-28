@@ -51,6 +51,8 @@ public class Input {
 		return instance.GetMousePosY_implemenation();
 	}
 
+	// TODO: wrap using my math Vector class
+
 	/**
 	 * @return The Mouse Position in a Vector2
 	 */

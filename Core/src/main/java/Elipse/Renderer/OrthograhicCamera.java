@@ -83,6 +83,10 @@ public class OrthograhicCamera {
 		return FOV;
 	}
 
+	public void Move(float x, float y) {
+		this.Move(new Vector(x, y));
+	}
+
 	public void Move(Vector positon) {
 		Vector3f cameraFront = new Vector3f(0, 0, -1);
 		Vector3f cameraUp = new Vector3f(0, 1, 0);

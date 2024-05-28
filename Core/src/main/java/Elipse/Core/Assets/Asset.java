@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 import Elipse.Core.ECS.Scene;
 import Elipse.Core.Scripting.ScriptableObject;
+import Elipse.Core.Tilemap.Tilemap;
+import Elipse.Renderer.Batching.Spritesheet;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 
 public abstract class Asset {
@@ -25,7 +27,10 @@ public abstract class Asset {
 		SCRIPTABLEOBJ(3),
 
 		@SerializedName("TILEMAP")
-		TILEMAP(4);
+		TILEMAP(4),
+
+		@SerializedName("SPRITESHEET")
+		SPRITESHEET(5);
 
 		private int id;
 
@@ -50,6 +55,10 @@ public abstract class Asset {
 				return AssetType.TEXTURE2D;
 			case "SCRIPTABLEOBJ":
 				return AssetType.SCRIPTABLEOBJ;
+			case "TILEMAP":
+				return AssetType.TILEMAP;
+			case "SPRITESHEET":
+				return AssetType.SPRITESHEET;
 			default:
 				return AssetType.NONE;
 		}
@@ -73,6 +82,8 @@ public abstract class Asset {
 			extensionDir.put("png", AssetType.TEXTURE2D);
 			extensionDir.put("el", AssetType.SCENE);
 			extensionDir.put(".elobj", AssetType.SCRIPTABLEOBJ);
+			extensionDir.put(".elsheet", AssetType.SPRITESHEET);
+			extensionDir.put(".elmap", AssetType.TILEMAP);
 		}
 
 		String extension = path.substring(path.lastIndexOf('.') + 1);
@@ -91,6 +102,10 @@ public abstract class Asset {
 			return AssetType.TEXTURE2D;
 		} else if (ScriptableObject.class.isAssignableFrom(clazz)) {
 			return AssetType.SCRIPTABLEOBJ;
+		} else if (clazz == Tilemap.class) {
+			return AssetType.TILEMAP;
+		} else if (clazz == Spritesheet.class) {
+			return AssetType.SPRITESHEET;
 		} else {
 			return AssetType.NONE;
 		}

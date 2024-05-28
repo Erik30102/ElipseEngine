@@ -155,6 +155,63 @@ public class RenderBatch {
 		}
 	}
 
+	public void AddSprite(Sprite sprite, Vector position) {
+		AddSprite(sprite, position, new Vector(1, 1), 0);
+	}
+
+	public void AddSprite(Sprite sprite, Vector position, Vector scale, float rotation) {
+		int texIndex = 0;
+
+		if (!textures.contains(sprite.getTexture())) {
+			textures.add(sprite.getTexture());
+			textureCount++;
+		}
+
+		Matrix4f transformMatrix = new Matrix4f().identity().translate(position.getX(),
+				position.getY(), 10).scale(scale.getX(), scale.getY(), 1)
+				.rotateZ((float) Math.toRadians(rotation));
+
+		texIndex = textures.indexOf(sprite.getTexture());
+
+		Vector4f[] vec = new Vector4f[] {
+				new Vector4f(0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
+				new Vector4f(-0.5f, 0.5f, 0f, 1f).mul(transformMatrix),
+				new Vector4f(0.5f, 0.5f, 0f, 1f).mul(transformMatrix),
+				new Vector4f(-0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
+		};
+
+		float[] ux = new float[] {
+				sprite.getUv()[0].getX(),
+				sprite.getUv()[1].getX(),
+				sprite.getUv()[2].getX(),
+				sprite.getUv()[3].getX()
+		};
+
+		float[] uy = new float[] {
+				sprite.getUv()[0].getY(),
+				sprite.getUv()[1].getY(),
+				sprite.getUv()[2].getY(),
+				sprite.getUv()[3].getY()
+		};
+
+		for (int i = 0; i < 4; i++) {
+			int start = numOfSprites * OFFSET_VERTECIE * 4;
+
+			vertecies[start + i * 6 + 0] = vec[i].x;
+			vertecies[start + i * 6 + 1] = vec[i].y;
+			vertecies[start + i * 6 + 2] = vec[i].z;
+			vertecies[start + i * 6 + 3] = ux[i];
+			vertecies[start + i * 6 + 4] = uy[i];
+			vertecies[start + i * 6 + 5] = texIndex;
+		}
+
+		this.numOfSprites++;
+
+		if (numOfSprites >= maxBatchSize) {
+			hasRoom = false;
+		}
+	}
+
 	/**
 	 * reloades the changes of the vertecies in the vbo and uploades the changes to
 	 * the gpu
@@ -230,4 +287,5 @@ public class RenderBatch {
 		}
 		return indecies;
 	}
+
 }

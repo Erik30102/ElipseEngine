@@ -32,6 +32,7 @@ import ElipseEditor.ImguiComponent.AssetPicker;
 import ElipseEditor.ImguiComponent.ContentBrowser;
 import ElipseEditor.ImguiComponent.SceneHiarchy;
 import ElipseEditor.ImguiComponent.SettingsInspector;
+import ElipseEditor.ImguiComponent.TilemapEditor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
@@ -58,6 +59,8 @@ public class EditorLayer extends Layer {
 	private SceneHiarchy sceneHiarchy;
 	private ScriptEngine scriptEngine;
 	private ContentBrowser contentBrowser;
+
+	private TilemapEditor tilemapEditor;
 
 	private Framebuffer fbo;
 	private int fboWidth = 200, fboHeight = 200;
@@ -95,6 +98,8 @@ public class EditorLayer extends Layer {
 		contentBrowser = new ContentBrowser();
 		settingsInspector = new SettingsInspector(scene);
 
+		tilemapEditor = new TilemapEditor();
+
 		AssetPicker.Init();
 	}
 
@@ -115,6 +120,7 @@ public class EditorLayer extends Layer {
 	@Override
 	public void OnImguiRender() {
 		sceneHiarchy.OnImgui();
+		tilemapEditor.OnImGui();
 		contentBrowser.OnImgui();
 		settingsInspector.OnImgui();
 
