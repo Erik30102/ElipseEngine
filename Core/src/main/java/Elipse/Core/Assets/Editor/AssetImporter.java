@@ -37,4 +37,8 @@ public class AssetImporter {
 
 		return importers.get(metaData.getType()).GetAsset(id, metaData);
 	}
+
+	public static void SerializeAsset(String path, Asset asset) {
+		importers.get(asset.GetAssetType()).SerializeAsset(path, asset);
+	}
 }

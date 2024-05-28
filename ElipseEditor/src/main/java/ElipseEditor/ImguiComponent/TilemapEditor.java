@@ -8,9 +8,11 @@ import org.joml.Vector4f;
 
 import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset.AssetType;
+import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.Input.Input;
 import Elipse.Core.Input.KeyCode;
 import Elipse.Core.Maths.Vector;
+import Elipse.Core.Project.Project;
 import Elipse.Core.Tilemap.Tilemap;
 import Elipse.Renderer.OrthograhicCamera;
 import Elipse.Renderer.Batching.RenderBatch;
@@ -113,6 +115,13 @@ public class TilemapEditor {
 
 				Spritesheet = new Spritesheet(spritesheetTexture, spriteWidth[0], spriteHeight[0]);
 				tilemap = new Tilemap(Spritesheet, 20, 10);
+			}
+
+			if (ImGui.button("Save all")) {
+				EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
+
+				assetManager.AddAssetToProject(Spritesheet, Project.GetActive().GetAssetDir() + "\\Spritesheet.elsheet");
+				assetManager.AddAssetToProject(tilemap, Project.GetActive().GetAssetDir() + "\\Tilemap.elmap");
 			}
 		}
 		ImGui.end();

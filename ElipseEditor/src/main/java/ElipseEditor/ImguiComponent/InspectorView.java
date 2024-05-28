@@ -15,11 +15,13 @@ import Elipse.Core.ECS.BuiltIn.BaseSystem.BaseComponentWrapper;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.CameraComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.PointLightComponent;
 import Elipse.Core.ECS.BuiltIn.RenderSystem.SpriteRenderComponent;
+import Elipse.Core.ECS.BuiltIn.RenderSystem.TilemapComponent;
 import Elipse.Core.Maths.Color;
 import Elipse.Core.Scripting.ScriptEngine;
 import Elipse.Core.Scripting.Script.ScriptType;
 import Elipse.Core.Scripting.Scripts.BaseComponentScript;
 import Elipse.Core.Scripting.Scripts.ComponentScript;
+import Elipse.Core.Tilemap.Tilemap;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import ElipseEditor.EditorLayer;
 import imgui.ImGui;
@@ -105,6 +107,18 @@ public class InspectorView {
 							((SpriteRenderComponent) component).SetTexture(AssetPicker.GetSelected(Texture2D.class));
 						}
 
+						ImGui.columns(1);
+					} else if (component.getClass() == TilemapComponent.class) {
+						ImGui.columns(2);
+
+						ImGui.text("Tilemap: ");
+						ImGui.nextColumn();
+						if (ImGui.button("Select Texture")) {
+							AssetPicker.Open("TILEMAP", AssetType.TILEMAP);
+						}
+						if (AssetPicker.Display("TILEMAP")) {
+							((TilemapComponent) component).setTilemap(AssetPicker.GetSelected(Tilemap.class));
+						}
 						ImGui.columns(1);
 					} else if (component.getClass() == CameraComponent.class) {
 						ImGui.columns(2);

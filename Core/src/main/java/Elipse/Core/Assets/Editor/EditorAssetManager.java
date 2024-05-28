@@ -81,6 +81,20 @@ public class EditorAssetManager implements AssetManager {
 		return null;
 	}
 
+	public void AddAssetToProject(Asset asset, String path) {
+		AssetMetaData metaData = new AssetMetaData(asset.GetAssetType(), path);
+
+		UUID id = UUID.randomUUID();
+		asset.SetId(id);
+
+		AssetImporter.SerializeAsset(path, asset);
+
+		assetMap.put(id.toString(), metaData);
+		loadedAssets.put(id.toString(), asset);
+
+		SerializeAssetBank();
+	}
+
 	public boolean IsAssetImported(String path) {
 		for (AssetMetaData metaData : assetMap.values()) {
 			if (metaData.getPath().equals(path)) {

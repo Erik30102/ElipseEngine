@@ -53,4 +53,8 @@ public class Spritesheet extends Asset {
 	public AssetType GetAssetType() {
 		return AssetType.SPRITESHEET;
 	}
+
+	public Sprite getSprite(int getTile) {
+		return sprites.get(getTile);
+	}
 }

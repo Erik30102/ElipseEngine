@@ -1,39 +1,11 @@
 {
   "entities": [
     {
-      "Name": "Camera",
-      "transform": {
-        "position": {
-          "x": 1.2727785,
-          "y": 0.50578403
-        },
-        "scale": {
-          "x": 1.0,
-          "y": 1.0
-        },
-        "rotation": 0.0
-      },
-      "Components": [
-        {
-          "FOV": 6.0,
-          "isActive": true,
-          "compType": "Camera"
-        },
-        {
-          "type": "Sandbox.CameraScript",
-          "properties": {
-            "comp": {}
-          },
-          "compType": "Base"
-        }
-      ]
-    },
-    {
       "Name": "Player",
       "transform": {
         "position": {
-          "x": 1.2727767,
-          "y": 0.5057839
+          "x": 1.0973692,
+          "y": 0.7848838
         },
         "scale": {
           "x": 0.9925065,
@@ -60,6 +32,53 @@
               "movementSpeed": 100.0,
               "decellSpeed": 5.0
             }
+          },
+          "compType": "Base"
+        }
+      ]
+    },
+    {
+      "Name": "Entity: 3",
+      "transform": {
+        "position": {
+          "x": -1.1120263,
+          "y": -0.86538464
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "rotation": 0.0
+      },
+      "Components": [
+        {
+          "compType": "Tilemap"
+        }
+      ]
+    },
+    {
+      "Name": "Camera",
+      "transform": {
+        "position": {
+          "x": 1.0973717,
+          "y": 0.78488326
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "rotation": 0.0
+      },
+      "Components": [
+        {
+          "FOV": 6.0,
+          "isActive": true,
+          "compType": "Camera"
+        },
+        {
+          "type": "Sandbox.CameraScript",
+          "properties": {
+            "comp": {}
           },
           "compType": "Base"
         }

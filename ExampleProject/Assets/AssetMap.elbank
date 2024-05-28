@@ -1,4 +1,12 @@
 {
+  "d37ba855-90a0-4a69-b3e9-f116e3ac20b9": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\tilemap\\Dragonheart.png"
+  },
+  "f170f197-7d55-4a24-8e84-297ca7d5f890": {
+    "type": "TILEMAP",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Tilemap.elmap"
+  },
   "fb8dcbad-93a9-434e-a73c-64fdfc4b3328": {
     "type": "SCENE",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets/StartScene.el"
@@ -7,16 +15,20 @@
     "type": "TEXTURE2D",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\wall_mid.png"
   },
+  "1a17779a-4655-46d1-bbf4-445a52a9b87c": {
+    "type": "SPRITESHEET",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Spritesheet.elsheet"
+  },
   "850013df-74d4-464c-b9cc-ec39280cbf69": {
     "type": "TEXTURE2D",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\knight_m_idle_anim_f0.png"
   },
+  "81187977-c918-48f0-9ab6-7d2101e3296a": {
+    "type": "SPRITESHEET",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Spritesheet.elsheet"
+  },
   "8356db31-6ace-47a8-8f15-026bed2896e0": {
     "type": "TEXTURE2D",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\floor_1.png"
-  },
-  "d37ba855-90a0-4a69-b3e9-f116e3ac20b9": {
-    "type": "TEXTURE2D",
-    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\tilemap\\Dragonheart.png"
   }
 }

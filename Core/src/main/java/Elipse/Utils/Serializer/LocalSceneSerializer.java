@@ -181,7 +181,7 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 						entity.AddComponent(comp);
 						break;
 					case "Tilemap":
-						entity.AddComponent(new TilemapComponent());
+						entity.AddComponent(new TilemapComponent()); // TODO: implement
 						break;
 					default:
 						Logger.c_error("Unknown Component Type: " + componentObject.get("compType").getAsString());

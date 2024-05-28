@@ -173,7 +173,7 @@ public class RuntimeSceneImporter implements IRuntimeAssetImporter {
 						entity.AddComponent(pointLightComponent);
 						break;
 					case TilemapComponent:
-						entity.AddComponent(new TilemapComponent());
+						entity.AddComponent(new TilemapComponent()); // TODO: implment
 						break;
 					case BaseComponent:
 						BaseComponentSource baseComponentSource = (BaseComponentSource) componentSource;
