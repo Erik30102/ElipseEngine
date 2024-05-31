@@ -22,7 +22,6 @@ public class RenderSystem extends ECSSystem {
 	private Framebuffer fbo;
 
 	private OrthograhicCamera scenecamera;
-	private List<RenderBatch> renderBatch = new ArrayList<>();
 
 	public RenderSystem(Framebuffer fbo) {
 		super();
@@ -30,8 +29,6 @@ public class RenderSystem extends ECSSystem {
 		this.fbo = fbo;
 
 		Renderer2D.Init();
-
-		renderBatch.add(new RenderBatch(20000));
 	}
 
 	@Override
@@ -71,31 +68,16 @@ public class RenderSystem extends ECSSystem {
 			}
 		}
 
-		renderBatch.get(0).Begin();
-
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
 
 		// TODO: check if the spritebatch has the texture and if it has still use that
-
-		int batchIndex = 0;
 
 		if (components != null) {
 			for (Pair<Entity, Component> component : components) {
 				SpriteRenderComponent SpriteRenderComp = (SpriteRenderComponent) component.getValue();
 				Transform transform = component.getKey().transform;
 
-				// Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
-
-				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
-					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
-				} else {
-					batchIndex++;
-					if (renderBatch.get(batchIndex) == null) {
-						renderBatch.add(new RenderBatch(20000));
-					}
-					renderBatch.get(batchIndex).Begin();
-					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
-				}
+				Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
 			}
 		}
 
@@ -110,58 +92,20 @@ public class RenderSystem extends ECSSystem {
 
 				Spritesheet spritesheet = tilemap.getTilemap().GetSpritesheet();
 
-				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
-					for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
-						for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
-							if (renderBatch.get(batchIndex).hasRoom())
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							else {
-								batchIndex++;
-								if (renderBatch.get(batchIndex) == null) {
-									renderBatch.add(new RenderBatch(20000));
-								}
-								renderBatch.get(batchIndex).Begin();
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							}
-						}
-					}
-				} else {
-					batchIndex++;
-					if (renderBatch.get(batchIndex) == null) {
-						renderBatch.add(new RenderBatch(20000));
-					}
-					renderBatch.get(batchIndex).Begin();
-					for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
-						for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
-							if (renderBatch.get(batchIndex).hasRoom())
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							else {
-								batchIndex++;
-								if (renderBatch.get(batchIndex) == null) {
-									renderBatch.add(new RenderBatch(20000));
-								}
-								renderBatch.get(batchIndex).Begin();
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							}
-						}
+				for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
+					for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
+						Renderer2D.AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
+								new Vector(x, y).add(transform.position));
 					}
 				}
 			}
-		}
-
-		for (RenderBatch batch : renderBatch) {
-			batch.reloadData();
-			batch.render(camera.GetView(), camera.GetProjection());
 		}
 
 		Renderer2D.EndScene();
 
 		if (fbo != null)
 			fbo.Unbind();
+
 	}
 
 	@Override
@@ -185,26 +129,12 @@ public class RenderSystem extends ECSSystem {
 
 		List<Pair<Entity, Component>> components = scene.GetComponents(SpriteRenderComponent.class);
 
-		renderBatch.get(0).Begin();
-		int batchIndex = 0;
-
 		if (components != null) {
 			for (Pair<Entity, Component> component : components) {
 				SpriteRenderComponent SpriteRenderComp = (SpriteRenderComponent) component.getValue();
 				Transform transform = component.getKey().transform;
 
-				// Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
-
-				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
-					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
-				} else {
-					batchIndex++;
-					if (renderBatch.get(batchIndex) == null) {
-						renderBatch.add(new RenderBatch(20000));
-					}
-					renderBatch.get(batchIndex).Begin();
-					renderBatch.get(batchIndex).AddSprite(SpriteRenderComp.getTexture(), transform);
-				}
+				Renderer2D.DrawSprite(SpriteRenderComp.getTexture(), transform);
 			}
 		}
 
@@ -219,52 +149,13 @@ public class RenderSystem extends ECSSystem {
 
 				Spritesheet spritesheet = tilemap.getTilemap().GetSpritesheet();
 
-				if (renderBatch.get(batchIndex).hasRoom() && renderBatch.get(batchIndex).hasRoomTextures()) {
-					for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
-						for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
-							if (renderBatch.get(batchIndex).hasRoom())
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							else {
-								batchIndex++;
-								if (renderBatch.get(batchIndex) == null) {
-									renderBatch.add(new RenderBatch(20000));
-								}
-								renderBatch.get(batchIndex).Begin();
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							}
-						}
-					}
-				} else {
-					batchIndex++;
-					if (renderBatch.get(batchIndex) == null) {
-						renderBatch.add(new RenderBatch(20000));
-					}
-					renderBatch.get(batchIndex).Begin();
-					for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
-						for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
-							if (renderBatch.get(batchIndex).hasRoom())
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							else {
-								batchIndex++;
-								if (renderBatch.get(batchIndex) == null) {
-									renderBatch.add(new RenderBatch(20000));
-								}
-								renderBatch.get(batchIndex).Begin();
-								renderBatch.get(batchIndex).AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
-										new Vector(x, y).add(transform.position));
-							}
-						}
+				for (int x = 0; x < tilemap.getTilemap().GetWidth(); x++) {
+					for (int y = 0; y < tilemap.getTilemap().GetHeight(); y++) {
+						Renderer2D.AddSprite(spritesheet.getSprite(tilemap.getTilemap().GetTile(x, y)),
+								new Vector(x, y).add(transform.position));
 					}
 				}
 			}
-		}
-
-		for (RenderBatch batch : renderBatch) {
-			batch.reloadData();
-			batch.render(scenecamera.GetView(), scenecamera.GetProjection());
 		}
 
 		Renderer2D.EndScene();

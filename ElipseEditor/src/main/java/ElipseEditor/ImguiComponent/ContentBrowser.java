@@ -11,7 +11,9 @@ import Elipse.Core.Assets.Editor.EditorAssetManager;
 import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.Script;
 import Elipse.Core.Scripting.ScriptEngine;
+import Elipse.Core.Scripting.ScriptableObject;
 import Elipse.Core.Scripting.Script.ScriptType;
+import Elipse.Core.Scripting.Scripts.ScriptableObjectScript;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import Elipse.Utils.Serializer.LocalSceneSerializer;
 import ElipseEditor.Utils.SerializingHelper;
@@ -20,6 +22,8 @@ import imgui.flag.ImGuiMouseButton;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 import imgui.type.ImString;
+
+// TODO: rewrite whole editor
 
 public class ContentBrowser {
 	public String Path;
@@ -66,7 +70,11 @@ public class ContentBrowser {
 			for (Script script : ScriptEngine.GetInstance().GetScripts()) {
 				if (script.GetScriptType() == ScriptType.SCRIPTABLEOBJ) {
 					if (ImGui.selectable(script.GetBaseClazz().getSimpleName())) {
+						ScriptableObjectScript objscript = (ScriptableObjectScript) script;
+						ScriptableObject obj = objscript.GetScript(ScriptableObject.class);
 
+						EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
+						assetManager.AddAssetToProject(obj, currentPath + "/testobj.elobj");
 					}
 				}
 			}
@@ -114,7 +122,7 @@ public class ContentBrowser {
 		EditorAssetManager assetManager = (EditorAssetManager) Project.GetActive().GetAssetManager();
 
 		ImGui.pushID(file.getPath());
-		if (type != AssetType.TEXTURE2D && !assetManager.IsAssetImported(file.getPath())) {
+		if (type != AssetType.TEXTURE2D) {
 			if (ImGui.button(type != AssetType.NONE ? type.name() : "NF", size, size)) {
 				if (type != AssetType.NONE) {
 

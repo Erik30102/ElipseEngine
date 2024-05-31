@@ -7,6 +7,7 @@ import Elipse.Core.Logger;
 import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Assets.Editor.Importers.SceneImporter;
+import Elipse.Core.Assets.Editor.Importers.ScriptableObjectImporter;
 import Elipse.Core.Assets.Editor.Importers.SpritesheetImporter;
 import Elipse.Core.Assets.Editor.Importers.Texture2DImporter;
 import Elipse.Core.Assets.Editor.Importers.TilemapImporter;
@@ -26,6 +27,7 @@ public class AssetImporter {
 		importers.put(AssetType.TEXTURE2D, new Texture2DImporter());
 		importers.put(AssetType.TILEMAP, new TilemapImporter());
 		importers.put(AssetType.SPRITESHEET, new SpritesheetImporter());
+		importers.put(AssetType.SCRIPTABLEOBJ, new ScriptableObjectImporter());
 	}
 
 	public static Asset ImportAsset(UUID id, AssetMetaData metaData) {

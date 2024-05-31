@@ -1,4 +1,36 @@
 {
+  "15b4fd95-d7a3-4ace-82ca-eb19baef1a88": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
+  "e2f1f26f-4177-4f09-b3d9-2e91424ba7c3": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
+  "a8d03a03-5baf-42ab-9ac2-4fff66d8629d": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
+  "850013df-74d4-464c-b9cc-ec39280cbf69": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\knight_m_idle_anim_f0.png"
+  },
+  "97fe1c94-26b8-4912-b2db-be36c3c55d68": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
+  "81187977-c918-48f0-9ab6-7d2101e3296a": {
+    "type": "SPRITESHEET",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Spritesheet.elsheet"
+  },
+  "8356db31-6ace-47a8-8f15-026bed2896e0": {
+    "type": "TEXTURE2D",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\floor_1.png"
+  },
+  "e191eb3f-b065-418f-8c0c-f720b760892d": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
   "d37ba855-90a0-4a69-b3e9-f116e3ac20b9": {
     "type": "TEXTURE2D",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\tilemap\\Dragonheart.png"
@@ -7,9 +39,25 @@
     "type": "TILEMAP",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Tilemap.elmap"
   },
+  "6100812f-7dbb-43d3-85ea-71a78e54d79c": {
+    "type": "SCENE",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\StartScene.el"
+  },
+  "dfccb1c0-d14d-4058-8095-c9cfee049118": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
   "fb8dcbad-93a9-434e-a73c-64fdfc4b3328": {
     "type": "SCENE",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets/StartScene.el"
+  },
+  "c970cd4f-7c6b-4dd3-aea8-4df3ffade6d1": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
+  },
+  "b3c0baa4-2064-473a-bc52-7460baa9e5f4": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
   },
   "24ddd739-f9db-48cd-8544-850244435790": {
     "type": "TEXTURE2D",
@@ -19,16 +67,12 @@
     "type": "SPRITESHEET",
     "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Spritesheet.elsheet"
   },
-  "850013df-74d4-464c-b9cc-ec39280cbf69": {
-    "type": "TEXTURE2D",
-    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\knight_m_idle_anim_f0.png"
+  "9e6480bb-a735-4d60-a99e-36b89c6562f8": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
   },
-  "81187977-c918-48f0-9ab6-7d2101e3296a": {
-    "type": "SPRITESHEET",
-    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject/Assets\\Spritesheet.elsheet"
-  },
-  "8356db31-6ace-47a8-8f15-026bed2896e0": {
-    "type": "TEXTURE2D",
-    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets\\textures\\floor_1.png"
+  "b4746b35-a517-4bf3-8bf6-1da660191bac": {
+    "type": "SCRIPTABLEOBJ",
+    "path": "C:\\Users\\Administrator\\Documents\\InfoEngine\\ExampleProject\\Assets/testobj.elobj"
   }
 }

@@ -102,6 +102,8 @@ public class AssetPack implements Serializable {
 		try (FileInputStream fileIn = new FileInputStream(path)) {
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			assetPack = (AssetPack) in.readObject();
+			in.close();
+			fileIn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

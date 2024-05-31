@@ -13,6 +13,7 @@ import Elipse.Core.EventSystem.Events.Event.EventType;
 import Elipse.Core.Layers.Layer;
 import Elipse.Core.Project.Project;
 import Elipse.Core.Scripting.ScriptEngine;
+import Elipse.Renderer.Opengl.Framebuffer;
 import Elipse.Renderer.Opengl.RendererApi;
 import Elipse.Utils.Pair;
 
@@ -21,16 +22,18 @@ public class RuntimeLayer extends Layer {
 	private Scene scene;
 	private ScriptEngine scriptEngine;
 
+	private Framebuffer fbo;
+
 	@Override
 	public void OnAttach() {
 		this.scriptEngine = new ScriptEngine();
+
+		RenderSystem renderSystem = new RenderSystem(null);
 
 		Project proj = Project.LoadFromAssetPack("assetpack.ep");
 
 		this.scriptEngine.LoadJar(
 				"C:\\Users\\Administrator\\Documents\\InfoEngine\\Sandbox\\build\\libs\\Sandbox-1.0-SNAPSHOT.jar");
-
-		RenderSystem renderSystem = new RenderSystem(null);
 
 		this.scene = (Scene) proj.GetAssetManager().GetAsset(proj.GetStartScene());
 		this.scene.AddSystem(renderSystem);

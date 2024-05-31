@@ -35,6 +35,7 @@ import Elipse.Utils.Serializer.Components.CameraComponentSerializer;
 import Elipse.Utils.Serializer.Components.PointLightComponentSerializer;
 import Elipse.Utils.Serializer.Components.RidgetbodyComponentSerializer;
 import Elipse.Utils.Serializer.Components.SpriteRenderComponentSerializer;
+import Elipse.Utils.Serializer.Components.TilemapComponentSerializer;
 
 public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerializer<Scene> {
 
@@ -104,7 +105,12 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 					componentResult.add("compType", new JsonPrimitive("PointLight"));
 					componentArray.add(componentResult);
 				} else if (component instanceof TilemapComponent) {
-					JsonObject componentResult = new JsonObject();
+					JsonObject componentResult = new TilemapComponentSerializer()
+							.serialize((TilemapComponent) component,
+									TilemapComponent.class,
+									context)
+							.getAsJsonObject();
+
 					componentResult.add("compType", new JsonPrimitive("Tilemap"));
 					componentArray.add(componentResult);
 				}
@@ -181,7 +187,10 @@ public class LocalSceneSerializer implements JsonDeserializer<Scene>, JsonSerial
 						entity.AddComponent(comp);
 						break;
 					case "Tilemap":
-						entity.AddComponent(new TilemapComponent()); // TODO: implement
+						TilemapComponentSerializer tilemap_ser = new TilemapComponentSerializer();
+						comp = tilemap_ser.deserialize(componentObject, TilemapComponent.class, context);
+
+						entity.AddComponent(comp);
 						break;
 					default:
 						Logger.c_error("Unknown Component Type: " + componentObject.get("compType").getAsString());

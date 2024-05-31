@@ -19,6 +19,7 @@ import Elipse.Renderer.Batching.RenderBatch;
 import Elipse.Renderer.Batching.Sprite;
 import Elipse.Renderer.Batching.Spritesheet;
 import Elipse.Renderer.Opengl.Framebuffer;
+import Elipse.Renderer.Opengl.Renderer2D;
 import Elipse.Renderer.Opengl.RendererApi;
 import Elipse.Renderer.Opengl.Texture.Texture2D;
 import imgui.ImGui;
@@ -44,7 +45,19 @@ public class TilemapEditor {
 
 	public void OnImGui() {
 		ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
-		if (ImGui.begin("Tilemap editor", ImGuiWindowFlags.NoScrollbar)) {
+		if (ImGui.begin("Tilemap editor", ImGuiWindowFlags.MenuBar)) {
+
+			if (ImGui.beginMenuBar()) {
+
+				if (ImGui.beginMenu("File")) {
+					if (ImGui.menuItem("Open")) {
+					}
+					ImGui.endMenu();
+				}
+
+				ImGui.endMenuBar();
+			}
+
 			ImVec2 windowSize = new ImVec2();
 			ImGui.getContentRegionAvail(windowSize);
 
@@ -71,7 +84,23 @@ public class TilemapEditor {
 		}
 		ImGui.end();
 
-		if (ImGui.begin("Spritesheet selector")) {
+		if (ImGui.begin("Spritesheet selector", ImGuiWindowFlags.MenuBar)) {
+
+			if (ImGui.beginMenuBar()) {
+
+				if (ImGui.beginMenu("File")) {
+					if (ImGui.menuItem("Open")) {
+
+					}
+					if (ImGui.menuItem("Save")) {
+
+					}
+					ImGui.endMenu();
+				}
+
+				ImGui.endMenuBar();
+			}
+
 			ImVec2 windowSize = new ImVec2();
 			ImGui.getContentRegionAvail(windowSize);
 
@@ -161,16 +190,15 @@ public class TilemapEditor {
 			}
 		}
 
-		renderBatch.Begin();
+		Renderer2D.BeginScene(spritesheetCamera);
 
 		List<Sprite> sprites = Spritesheet.getSprites();
 
 		for (int i = 0; i < sprites.size(); i++) {
-			renderBatch.AddSprite(sprites.get(i), new Vector(i, 0));
+			Renderer2D.AddSprite(sprites.get(i), new Vector(i, 0));
 		}
 
-		renderBatch.reloadData();
-		renderBatch.render(spritesheetCamera.GetView(), spritesheetCamera.GetProjection());
+		Renderer2D.EndScene();
 	}
 
 	private OrthograhicCamera tilemapFboCamera = new OrthograhicCamera();
@@ -201,19 +229,18 @@ public class TilemapEditor {
 		newPos.mul(tilemapFboCamera.GetInversView().mul(tilemapFboCamera.GetInversProjection(), new Matrix4f()));
 
 		if (Spritesheet != null) {
-			renderBatch.Begin();
+			Renderer2D.BeginScene(tilemapFboCamera);
 
-			renderBatch.AddSprite(Spritesheet.getSprites().get(
+			Renderer2D.AddSprite(Spritesheet.getSprites().get(
 					currentTileIndex), new Vector((float) Math.round(newPos.x), (float) Math.round(newPos.y)));
 
 			for (int x = 0; x < tilemap.GetWidth(); x++) {
 				for (int y = 0; y < tilemap.GetHeight(); y++) {
-					renderBatch.AddSprite(Spritesheet.getSprites().get(tilemap.GetTile(x, y)), new Vector(x, y));
+					Renderer2D.AddSprite(Spritesheet.getSprites().get(tilemap.GetTile(x, y)), new Vector(x, y));
 				}
 			}
 
-			renderBatch.reloadData();
-			renderBatch.render(tilemapFboCamera.GetView(), tilemapFboCamera.GetProjection());
+			Renderer2D.EndScene();
 		}
 
 		if (Input.IsMouseButtonPressed(KeyCode.EL_MOUSE_BUTTON_1) && ImGui.isWindowHovered()) {

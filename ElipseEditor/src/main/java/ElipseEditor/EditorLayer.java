@@ -69,6 +69,8 @@ public class EditorLayer extends Layer {
 
 	private RenderSystem renderSystem;
 
+	private boolean TileEditor = false;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void OnAttach() {
@@ -120,7 +122,8 @@ public class EditorLayer extends Layer {
 	@Override
 	public void OnImguiRender() {
 		sceneHiarchy.OnImgui();
-		tilemapEditor.OnImGui();
+		if (TileEditor)
+			tilemapEditor.OnImGui();
 		contentBrowser.OnImgui();
 		settingsInspector.OnImgui();
 
@@ -140,6 +143,13 @@ public class EditorLayer extends Layer {
 				// TODO:
 			}
 
+			ImGui.endMenu();
+		}
+
+		if (ImGui.beginMenu("Windows")) {
+			if (ImGui.menuItem("Tilemap Editor", null, TileEditor)) {
+				TileEditor = !TileEditor;
+			}
 			ImGui.endMenu();
 		}
 

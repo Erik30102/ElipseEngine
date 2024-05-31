@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL46;
 
-import Elipse.Core.ECS.Transform;
 import Elipse.Core.Maths.Vector;
 import Elipse.Renderer.Opengl.RendererApi;
 import Elipse.Renderer.Opengl.Shader;
@@ -38,7 +38,7 @@ public class RenderBatch {
 	private int numOfSprites;
 	private final int OFFSET_VERTECIE = 6;
 
-	private int[] texSlots = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+	private int[] texSlots;
 
 	/**
 	 * Creates new Render batch with support of x many sprites
@@ -51,6 +51,16 @@ public class RenderBatch {
 		shader = new Shader("Shaders/Batch_sprite.glsl");
 
 		Start();
+
+		this.texSlots = CreateTexSlots(GetMaxBindedTextures());
+	}
+
+	private int[] CreateTexSlots(int count) {
+		int[] slots = new int[count];
+		for (int i = 0; i < count; i++) {
+			slots[i] = i;
+		}
+		return slots;
 	}
 
 	private void Start() {
@@ -88,33 +98,20 @@ public class RenderBatch {
 	/**
 	 * Adds sprite to the batch
 	 */
-	public void AddSprite(Texture2D texture, Vector position) {
-		AddSprite(texture, position, new Vector(1, 1), 0);
-	}
-
-	/**
-	 * Adds sprite to the batch
-	 */
-	public void AddSprite(Texture2D texture, Transform transform) {
-		AddSprite(texture, transform.position, transform.scale, transform.rotation);
-	}
-
-	/**
-	 * Adds sprite to the batch
-	 */
-	public void AddSprite(Texture2D texture, Vector position, Vector scale, float rotation) {
-		int texIndex = 0;
-
+	public void AddSprite(Texture2D texture, Vector[] uvs, Vector position, Vector scale, float rotation) {
 		if (!textures.contains(texture)) {
 			textures.add(texture);
 			textureCount++;
+			if (textureCount >= this.texSlots.length) {
+				hasRoomTextures = false;
+			}
 		}
+
+		int texIndex = textures.indexOf(texture);
 
 		Matrix4f transformMatrix = new Matrix4f().identity().translate(position.getX(),
 				position.getY(), 10).scale(scale.getX(), scale.getY(), 1)
 				.rotateZ((float) Math.toRadians(rotation));
-
-		texIndex = textures.indexOf(texture);
 
 		Vector4f[] vec = new Vector4f[] {
 				new Vector4f(0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
@@ -123,19 +120,19 @@ public class RenderBatch {
 				new Vector4f(-0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
 		};
 
-		float[] ux = new float[] {
-				1,
-				0,
-				1,
-				0
-		};
+		// float[] ux = new float[] {
+		// 1,
+		// 0,
+		// 1,
+		// 0
+		// };
 
-		float[] uy = new float[] {
-				1,
-				0,
-				0,
-				1
-		};
+		// float[] uy = new float[] {
+		// 1,
+		// 0,
+		// 0,
+		// 1
+		// };
 
 		for (int i = 0; i < 4; i++) {
 			int start = numOfSprites * OFFSET_VERTECIE * 4;
@@ -143,8 +140,8 @@ public class RenderBatch {
 			vertecies[start + i * 6 + 0] = vec[i].x;
 			vertecies[start + i * 6 + 1] = vec[i].y;
 			vertecies[start + i * 6 + 2] = vec[i].z;
-			vertecies[start + i * 6 + 3] = ux[i];
-			vertecies[start + i * 6 + 4] = uy[i];
+			vertecies[start + i * 6 + 3] = uvs[i].getX();
+			vertecies[start + i * 6 + 4] = uvs[i].getY();
 			vertecies[start + i * 6 + 5] = texIndex;
 		}
 
@@ -155,61 +152,8 @@ public class RenderBatch {
 		}
 	}
 
-	public void AddSprite(Sprite sprite, Vector position) {
-		AddSprite(sprite, position, new Vector(1, 1), 0);
-	}
-
-	public void AddSprite(Sprite sprite, Vector position, Vector scale, float rotation) {
-		int texIndex = 0;
-
-		if (!textures.contains(sprite.getTexture())) {
-			textures.add(sprite.getTexture());
-			textureCount++;
-		}
-
-		Matrix4f transformMatrix = new Matrix4f().identity().translate(position.getX(),
-				position.getY(), 10).scale(scale.getX(), scale.getY(), 1)
-				.rotateZ((float) Math.toRadians(rotation));
-
-		texIndex = textures.indexOf(sprite.getTexture());
-
-		Vector4f[] vec = new Vector4f[] {
-				new Vector4f(0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
-				new Vector4f(-0.5f, 0.5f, 0f, 1f).mul(transformMatrix),
-				new Vector4f(0.5f, 0.5f, 0f, 1f).mul(transformMatrix),
-				new Vector4f(-0.5f, -0.5f, 0f, 1f).mul(transformMatrix),
-		};
-
-		float[] ux = new float[] {
-				sprite.getUv()[0].getX(),
-				sprite.getUv()[1].getX(),
-				sprite.getUv()[2].getX(),
-				sprite.getUv()[3].getX()
-		};
-
-		float[] uy = new float[] {
-				sprite.getUv()[0].getY(),
-				sprite.getUv()[1].getY(),
-				sprite.getUv()[2].getY(),
-				sprite.getUv()[3].getY()
-		};
-
-		for (int i = 0; i < 4; i++) {
-			int start = numOfSprites * OFFSET_VERTECIE * 4;
-
-			vertecies[start + i * 6 + 0] = vec[i].x;
-			vertecies[start + i * 6 + 1] = vec[i].y;
-			vertecies[start + i * 6 + 2] = vec[i].z;
-			vertecies[start + i * 6 + 3] = ux[i];
-			vertecies[start + i * 6 + 4] = uy[i];
-			vertecies[start + i * 6 + 5] = texIndex;
-		}
-
-		this.numOfSprites++;
-
-		if (numOfSprites >= maxBatchSize) {
-			hasRoom = false;
-		}
+	public boolean IsTextureAttached(Texture2D texture) {
+		return textures.contains(texture);
 	}
 
 	/**
@@ -253,6 +197,10 @@ public class RenderBatch {
 	 */
 	public boolean hasRoom() {
 		return hasRoom;
+	}
+
+	private int GetMaxBindedTextures() {
+		return GL46.glGetInteger(GL46.GL_MAX_TEXTURE_IMAGE_UNITS);
 	}
 
 	/**

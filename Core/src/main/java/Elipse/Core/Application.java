@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import Elipse.Core.EventSystem.Events.Event;
 import Elipse.Core.EventSystem.Events.WindowCloseEvent;
+import Elipse.Core.EventSystem.Events.WindowResizeEvent;
 import Elipse.Core.Input.Input;
 import Elipse.Core.Layers.Layer;
 import Elipse.Core.Layers.LayerStack;
@@ -30,6 +31,8 @@ public abstract class Application {
 		layerStack = new LayerStack(imgui);
 
 		OnInitialize();
+
+		this.OnEvent(new WindowResizeEvent(width, height));
 	}
 
 	/**

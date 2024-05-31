@@ -130,3 +130,29 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
 
 }
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': "example.main"
+        )
+    }
+}
+
+tasks.register('uberJar', Jar) {
+    archiveClassifier = 'uber'
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+    manifest {
+        attributes(
+            'Main-Class': "ElipseEditor.Editor"
+        )
+    }
+}

@@ -41,6 +41,8 @@ public abstract class Asset {
 		public int GetId() {
 			return id;
 		}
+
+		// TODO: add function to get asset fileending by asset type
 	}
 
 	// TODO: to asset helper class has no reason to be here

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.stb.STBImage;
@@ -117,9 +118,30 @@ public class Texture2D extends Texture {
 		this.internalDataFormat = this.InternalFormatToGLDataFormat(format);
 		this.internalFormat = this.InternalFormatToGLInternalFormat(format);
 
+		ByteBuffer testImG = ByteBuffer.wrap(texture);
+
+		ByteBuffer img = ByteBuffer.allocateDirect(testImG.remaining());
+		img.put(testImG);
+		img.position(0);
+
+		IntBuffer _width = BufferUtils.createIntBuffer(1);
+		IntBuffer _height = BufferUtils.createIntBuffer(1);
+		IntBuffer channels = BufferUtils.createIntBuffer(1);
+		// ByteBuffer image = STBImage.stbi_load_from_memory(img, _width, _height,
+		// channels, 0);
+		// if (image == null) {
+		// throw new RuntimeException("Failed to load image: " +
+		// STBImage.stbi_failure_reason());
+		// }
+
+		GL46.glGetError();
+
 		this.textureId = GL46.glCreateTextures(GL46.GL_TEXTURE_2D);
+		// GL46.glTextureStorage2D(textureId, 1, internalFormat, width, height);
+
+		GL46.glActiveTexture(GL46.GL_TEXTURE0);
+
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, this.textureId);
-		ByteBuffer img = ByteBuffer.wrap(texture);
 
 		GL46.glTextureParameteri(this.textureId, GL46.GL_TEXTURE_MIN_FILTER,
 				this.InternalFilteringToGLFiltering(filtering));
@@ -132,6 +154,15 @@ public class Texture2D extends Texture {
 		// GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0,
 		// this.internalDataFormat, this.width, this.height,
 		// 0, this.internalDataFormat, GL30.GL_UNSIGNED_BYTE, img);
+
+		GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, GL46.GL_RGBA, width, height, 0,
+				GL46.GL_RGBA, GL46.GL_UNSIGNED_BYTE,
+				img);
+
+		// GL46.glTextureSubImage2D(
+		// this.textureId, 0, 0, 0, width, height, GL46.GL_RGBA,
+		// GL46.GL_UNSIGNED_BYTE,
+		// img);
 
 		GL46.glBindTexture(GL46.GL_TEXTURE_2D, 0);
 	}
@@ -170,6 +201,7 @@ public class Texture2D extends Texture {
 		byte[] arr = new byte[img.remaining()];
 
 		img.get(arr);
+		img.flip();
 
 		STBImage.stbi_image_free(img);
 
