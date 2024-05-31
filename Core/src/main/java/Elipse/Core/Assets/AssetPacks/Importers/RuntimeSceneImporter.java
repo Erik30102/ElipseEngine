@@ -92,6 +92,7 @@ public class RuntimeSceneImporter implements IRuntimeAssetImporter {
 					componentSources.add(pointLightComponentSource);
 				} else if (component instanceof TilemapComponent) {
 					TilemapComponentSource tilemapComponentSource = new TilemapComponentSource();
+					tilemapComponentSource.tilemapID = ((TilemapComponent) component).getTilemap().GetAssetHandel();
 					componentSources.add(tilemapComponentSource);
 				} else if (component instanceof BoxColliderComponent) {
 					BoxColliderComponentSource boxColliderComponentSource = new BoxColliderComponentSource();
@@ -173,7 +174,12 @@ public class RuntimeSceneImporter implements IRuntimeAssetImporter {
 						entity.AddComponent(pointLightComponent);
 						break;
 					case TilemapComponent:
-						entity.AddComponent(new TilemapComponent()); // TODO: implment
+						TilemapComponentSource tilemapComponentSource = (TilemapComponentSource) componentSource;
+
+						TilemapComponent t = new TilemapComponent();
+						t.setTilemap(Project.GetActive().GetAssetManager().GetAsset(tilemapComponentSource.tilemapID));
+
+						entity.AddComponent(t);
 						break;
 					case BaseComponent:
 						BaseComponentSource baseComponentSource = (BaseComponentSource) componentSource;

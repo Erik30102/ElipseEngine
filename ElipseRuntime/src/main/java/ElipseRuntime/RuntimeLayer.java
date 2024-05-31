@@ -22,8 +22,6 @@ public class RuntimeLayer extends Layer {
 	private Scene scene;
 	private ScriptEngine scriptEngine;
 
-	private Framebuffer fbo;
-
 	@Override
 	public void OnAttach() {
 		this.scriptEngine = new ScriptEngine();

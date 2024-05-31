@@ -9,7 +9,9 @@ import Elipse.Core.Assets.Asset;
 import Elipse.Core.Assets.Asset.AssetType;
 import Elipse.Core.Assets.AssetPacks.AssetSources.AssetSource;
 import Elipse.Core.Assets.AssetPacks.Importers.RuntimeSceneImporter;
+import Elipse.Core.Assets.AssetPacks.Importers.RuntimeSpritesheetImporter;
 import Elipse.Core.Assets.AssetPacks.Importers.RuntimeTextureImporter;
+import Elipse.Core.Assets.AssetPacks.Importers.RuntimeTilemapImporter;
 
 public class RuntimeAssetImporter {
 	private static Map<AssetType, IRuntimeAssetImporter> importers = new HashMap<AssetType, IRuntimeAssetImporter>();
@@ -17,6 +19,8 @@ public class RuntimeAssetImporter {
 	public static void Init() {
 		importers.put(AssetType.SCENE, new RuntimeSceneImporter());
 		importers.put(AssetType.TEXTURE2D, new RuntimeTextureImporter());
+		importers.put(AssetType.SPRITESHEET, new RuntimeSpritesheetImporter());
+		importers.put(AssetType.TILEMAP, new RuntimeTilemapImporter());
 	}
 
 	public static Asset ImportAsset(UUID id, AssetInfo assetInfo) {

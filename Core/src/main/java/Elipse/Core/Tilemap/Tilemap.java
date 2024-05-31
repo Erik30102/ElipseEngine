@@ -54,4 +54,8 @@ public class Tilemap extends Asset {
 		return tiles[y * width + x];
 	}
 
+	public void SetTiles(int[] tiles) {
+		this.tiles = tiles;
+	}
+
 }
